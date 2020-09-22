@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1hSEJmwqSIrYdN4BrKZO9LnNciX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\MyProjects\powerManagement\js" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\marci\AppData\Roaming\Subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="" />
+      <created>1599996023547</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1599996023547</updated>
+      <workItem from="1599996025931" duration="32792000" />
+      <workItem from="1600175445735" duration="1652000" />
+      <workItem from="1600206034949" duration="4306000" />
+      <workItem from="1600340301891" duration="7492000" />
+      <workItem from="1600384963680" duration="6688000" />
+      <workItem from="1600391722052" duration="949000" />
+      <workItem from="1600421454892" duration="27084000" />
+      <workItem from="1600623652689" duration="5805000" />
+      <workItem from="1600630323546" duration="31053000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="690" y="287" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1600388680042">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="690" y="287" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600388680042" />
+    <state x="784" y="460" key="Github.CreateGistDialog" timestamp="1600779985328">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="784" y="460" key="Github.CreateGistDialog/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600779985328" />
+    <state x="461" y="185" key="SettingsEditor" timestamp="1600677027964">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="461" y="185" key="SettingsEditor/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600677027964" />
+    <state x="0" y="138" width="922" height="928" key="dock-window-1" timestamp="1600389604071">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="0" y="138" width="922" height="928" key="dock-window-1/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600389604071" />
+    <state x="616" y="250" key="run.anything.popup" timestamp="1600342951129">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="616" y="250" key="run.anything.popup/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600342951129" />
+  </component>
+</project>
