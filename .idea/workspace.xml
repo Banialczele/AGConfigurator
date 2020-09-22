@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="" />
+    <list default="true" id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/button.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/button.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/device.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/device.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +21,9 @@
         <option value="JavaScript File" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1hSEJmwqSIrYdN4BrKZO9LnNciX" />
   <component name="ProjectViewState">
@@ -55,7 +63,8 @@
       <workItem from="1600391722052" duration="949000" />
       <workItem from="1600421454892" duration="27084000" />
       <workItem from="1600623652689" duration="5805000" />
-      <workItem from="1600630323546" duration="31053000" />
+      <workItem from="1600630323546" duration="33903000" />
+      <workItem from="1600810855061" duration="2198000" />
     </task>
     <servers />
   </component>

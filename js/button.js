@@ -30,14 +30,13 @@ const button = function(Devices, selectedDeviceIndex, selectedWireIndex, segment
 		deleteButton.type = 'button';
 		deleteButton.setAttribute('id', `Usun${index + 1}`);
 		deleteButton.value = `Usuń`;
-		deleteButton.addEventListener('click', e => handleDeleteDevice(e, device, index));
+		deleteButton.addEventListener('click', e => handleDeleteDevice(e));
 
 		deviceButtonContainer.appendChild(copyButton);
 		deviceButtonContainer.appendChild(deleteButton);
 		deviceContainer.appendChild(deviceButtonContainer);
 		segmentContainer.appendChild(deviceContainer);
 	});
-
 };
 
 function handleCopyNthTimes(e, selectedDeviceIndex, selectedWireIndex, deviceIndex, buttonContainer) {
@@ -71,23 +70,7 @@ function handleCopyNthTimes(e, selectedDeviceIndex, selectedWireIndex, deviceInd
 	});
 }
 
-function handleDeleteDevice(e, device, selectedDeviceIndex) {
-	console.log(device);
-	console.log(selectedDeviceIndex);
-	// const divToRemove = document.getElementById('')
+function handleDeleteDevice(e) {
+	const nodeToRemove =	e.srcElement.parentNode.parentNode.parentNode; 
+	nodeToRemove.parentNode.removeChild(e.srcElement.parentNode.parentNode.parentNode);
 }
-
-// for( let i = 0; i < parentContainer.children.length; i++ ) {
-// 	const indexOfElement = parentContainer.children[i].className.split(/(\d+)/)[1];
-// 	if( parseInt(indexOfElement) === deviceIndex ) {
-// 		for( let k = 0; k < e.target.value; k++ ) {
-// 			clone = installationContainer.cloneNode(true);
-// 			clone.id = `segmentContainer${deviceIndex + 1000 + k}`;
-// 			clone.className = `segmentContainer${deviceIndex + 1000 + k}`;
-// 			parentContainer.insertBefore(clone, parentContainer.children[deviceIndex + 1 + k]);
-// 		}
-// 	} else if( parentContainer.children[i + 1] !== undefined && (parseInt(indexOfElement) > parseInt(
-// 			parentContainer.children[i + 1].className.split(/(\d+)/)[1])) ) {
-// 			console.log(parentContainer.children[i+1]);
-// 	}
-// }

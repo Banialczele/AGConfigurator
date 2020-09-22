@@ -6,7 +6,6 @@ const Device = {
 	},
 	deviceButtons: function(Devices, selectedDeviceIndex, selectedWireIndex) {
 		button(Devices, selectedDeviceIndex, selectedWireIndex, `segmentContainer`, `deviceContainer`, `buttonContainer`);
-
 	}
 }
 

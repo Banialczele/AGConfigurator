@@ -14,12 +14,14 @@ window.addEventListener('load' || 'change', () => {
 		wires[i] = wires.find(wire => wire.type === e.target.value);
 		selectedWireIndex = wire.selectedIndex;
 	}));
+	const inputs = document.querySelectorAll(`input[name="wireInput"]`);
+	let quantity = 0;
+	inputs.forEach((input, i) => input.addEventListener('change', e => e.target.value));
 	const selectDevice = document.querySelectorAll('.deviceSelect');
 	selectDevice.forEach((device, i) => device.addEventListener('change', (e) => {
 		devices[i] = devices.find(device => device.type === e.target.value);
-		Device.deviceButtons(devices, device.selectedIndex, selectedWireIndex);
+		Device.deviceButtons(devices, device.selectedIndex, selectedWireIndex, quantity);
 	}));
-
 });
 
 
