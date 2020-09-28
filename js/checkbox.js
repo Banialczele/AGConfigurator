@@ -3,6 +3,7 @@ const checkbox = function (param, installationContainerName, segmentName, checkb
 	const segmentDiv = document.createElement('div');
 	const checkboxDiv = document.createElement('div');
 	segmentDiv.className = segmentName;
+	segmentDiv.classList.add('installationSegment');	
 	segmentDiv.setAttribute('id', segmentName );
 	checkboxDiv.className = checkboxContainer;
 	const div = document.querySelector(`.${installationContainerName}`);

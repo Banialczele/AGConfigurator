@@ -2,8 +2,7 @@ const powerSupplies = Installation.powerSupplies.map(powerSupply => ({ ...powerS
 const wires = Installation.cables.map(wires => ({ ...wires }));
 const devices = Installation.devices.map(devices => ({ ...devices }));
 
-window.addEventListener('load' || 'change', () => {
-	console.table(wires);
+window.addEventListener('load', () => {
 	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerManagementPowerSupplyContainer', `powerSupplyContainer`);
 	Cable.cableComponent(wires);
 	Device.deviceComponent(devices);
@@ -15,13 +14,36 @@ window.addEventListener('load' || 'change', () => {
 		selectedWireIndex = wire.selectedIndex;
 	}));
 	const inputs = document.querySelectorAll(`input[name="wireInput"]`);
-	let quantity = 0;
 	inputs.forEach((input, i) => input.addEventListener('change', e => e.target.value));
 	const selectDevice = document.querySelectorAll('.deviceSelect');
 	selectDevice.forEach((device, i) => device.addEventListener('change', (e) => {
 		devices[i] = devices.find(device => device.type === e.target.value);
-		Device.deviceButtons(devices, device.selectedIndex, selectedWireIndex, quantity);
+		Device.deviceButtons(devices, device.selectedIndex, selectedWireIndex);
 	}));
+
+
+
+	const handleDOMChange = function() {
+		const installationSegments = document.querySelectorAll('.installationSegment');
+		const segmentContainer = '.segmentContainer';
+		installationSegments.forEach((segment, i) => {
+			const deviceButtonContainer = document.querySelector(`${segmentContainer}${i} .deviceContainer .buttonContainer `);	
+			segment.addEventListener('click', e => {
+				if( e.target.id.includes("Skopiuj") ) {
+					handleCopyNthTimes(e, selectedWireIndex,deviceButtonContainer, segment, i);	
+				} else if( e.target.id.includes("Usun")) {
+					handleDeleteDevice(e);
+				}
+			}, true)
+		})
+	}
+
+	const targetNode = document.getElementById("installationContainer");
+	const config = { childList: true }
+	const observer = new MutationObserver(handleDOMChange);
+	observer.observe(targetNode, config)
+
+
 });
 
 

@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/button.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/button.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/checkbox.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/checkbox.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/device.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/device.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
     </list>
@@ -31,8 +33,15 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -64,7 +73,11 @@
       <workItem from="1600421454892" duration="27084000" />
       <workItem from="1600623652689" duration="5805000" />
       <workItem from="1600630323546" duration="33903000" />
-      <workItem from="1600810855061" duration="2198000" />
+      <workItem from="1600810855061" duration="2844000" />
+      <workItem from="1600852712067" duration="3898000" />
+      <workItem from="1600938819995" duration="4464000" />
+      <workItem from="1601050296904" duration="14000" />
+      <workItem from="1601293819444" duration="7800000" />
     </task>
     <servers />
   </component>
@@ -92,5 +105,9 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="616" y="250" key="run.anything.popup/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600342951129" />
+    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1600852843798">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600852843798" />
   </component>
 </project>
