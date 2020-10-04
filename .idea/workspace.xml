@@ -8,9 +8,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/button.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/button.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/checkbox.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/checkbox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/cable.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/cable.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/device.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/device.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/input.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/input.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/select.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/select.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +37,9 @@
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AnalysisEngine" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -77,37 +81,15 @@
       <workItem from="1600852712067" duration="3898000" />
       <workItem from="1600938819995" duration="4464000" />
       <workItem from="1601050296904" duration="14000" />
-      <workItem from="1601293819444" duration="7800000" />
+      <workItem from="1601293819444" duration="20646000" />
+      <workItem from="1601467052728" duration="4220000" />
+      <workItem from="1601813595493" duration="5105000" />
+      <workItem from="1601826566058" duration="13528000" />
+      <workItem from="1601850651988" duration="556000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="690" y="287" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1600388680042">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="690" y="287" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600388680042" />
-    <state x="784" y="460" key="Github.CreateGistDialog" timestamp="1600779985328">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="784" y="460" key="Github.CreateGistDialog/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600779985328" />
-    <state x="461" y="185" key="SettingsEditor" timestamp="1600677027964">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="461" y="185" key="SettingsEditor/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600677027964" />
-    <state x="0" y="138" width="922" height="928" key="dock-window-1" timestamp="1600389604071">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="0" y="138" width="922" height="928" key="dock-window-1/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600389604071" />
-    <state x="616" y="250" key="run.anything.popup" timestamp="1600342951129">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="616" y="250" key="run.anything.popup/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600342951129" />
-    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1600852843798">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup/0.0.1920.1080/-1680.25.1680.1050@0.0.1920.1080" timestamp="1600852843798" />
   </component>
 </project>

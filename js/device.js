@@ -1,11 +1,9 @@
 const Device = {
-	deviceComponent: function(Devices) {
-		Devices.forEach((device, index) => {
-			select(Devices, `deviceLabel`, `deviceSelect`, `segmentContainer${index}`, `deviceContainer`);
-		})
+	deviceComponent: function(device, index) {
+		select(null, `deviceLabel`, `deviceSelect`, `segmentContainer${index}`, `deviceContainer`, 'device');
 	},
-	deviceButtons: function(Devices, selectedDeviceIndex, selectedWireIndex) {
-		button(Devices, selectedDeviceIndex, selectedWireIndex );
+	deviceButtons: function(element, index) {
+		button(element, index);
 	}
 }
 

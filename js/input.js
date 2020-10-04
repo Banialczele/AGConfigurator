@@ -7,7 +7,6 @@ const input = function(param, wireContainer, wireLabel, inputName, inputContaine
 	const input = document.createElement('input');
 	input.type = `number`;
 	input.name = inputName;
-	
 	inputDiv.appendChild(label);
 	inputDiv.appendChild(input);
 	wireDiv.appendChild(inputDiv);
