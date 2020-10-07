@@ -1,11 +1,11 @@
-const cables = Installation.cables.map(wires => ({ ...wires }));
-const devices = Installation.devices.map(devices => ({ ...devices }));
+const cables = Cables.map(wires => ({ ...wires }));
+const devices = Devices.map(devices => ({ ...devices }));
 
-const generateOptions = (param, select) => {
+const generateOptions = (param, select, targetName) => {
 	for( let i = 0; i < param.length; i++ ) {
 		const option = document.createElement('option');
 		if( i === 0 ) {
-			const blank = new Option('Wybierz...', '');
+			const blank = new Option(`Wybierz ${targetName}`, '');
 			select.add(blank, undefined);
 		}
 		option.innerHTML = param[i].type;
@@ -16,6 +16,7 @@ const generateOptions = (param, select) => {
 
 const select = function(param, labelClass, selectName, segmentName, selectContainer, type) {
 	const selectContainerDiv = document.createElement('div');
+
 	selectContainerDiv.className = selectContainer;
 	const label = document.createElement('label');
 	label.className = labelClass;
@@ -28,16 +29,16 @@ const select = function(param, labelClass, selectName, segmentName, selectContai
 
 	switch( type ) {
 		case 'powerSupply' : {
-			generateOptions(param, select);
+			generateOptions(param, select, 'zasilacz');
 			break;
 		}
 		case 'cable' : {
-			generateOptions(cables, select);
+			generateOptions(cables, select, 'przewód');
 			break;
 		}
 
 		case 'device' : {
-			generateOptions(devices, select);
+			generateOptions(devices, select, 'urządzenie');
 			break;
 		}
 	}

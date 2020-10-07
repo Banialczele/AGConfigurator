@@ -5,10 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/js/data/models.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/test.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/button.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/button.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/cable.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/cable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/data/Engine.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/data/Installation.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/data/System.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/js/device.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/device.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/input.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/input.js" afterDir="false" />
@@ -22,6 +27,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="CSS File" />
         <option value="JavaScript File" />
       </list>
     </option>
@@ -39,7 +45,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AnalysisEngine" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -86,6 +93,10 @@
       <workItem from="1601813595493" duration="5105000" />
       <workItem from="1601826566058" duration="13528000" />
       <workItem from="1601850651988" duration="556000" />
+      <workItem from="1601889080646" duration="8426000" />
+      <workItem from="1601899714497" duration="12595000" />
+      <workItem from="1601973684213" duration="28348000" />
+      <workItem from="1602042866894" duration="1810000" />
     </task>
     <servers />
   </component>

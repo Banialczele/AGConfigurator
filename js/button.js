@@ -27,7 +27,7 @@ const button = function(segment, index) {
 
 
 	copyButton.addEventListener('click', e => handleCopyNthTimes(e, segmentContainer, index));
-	deleteButton.addEventListener('click', e => handleDeleteDevice(e));
+	deleteButton.addEventListener('click', e => handleDeleteDevice(e, segmentContainer, index));
 
 	deviceButtonContainer.appendChild(copyButton);
 	deviceButtonContainer.appendChild(deleteButton);
@@ -36,12 +36,11 @@ const button = function(segment, index) {
 };
 
 function handleCopyNthTimes(e, segmentContainer, index) {
-	const cableTypeToCopy = e.target.parentNode.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].value;
-	const cableIndexToCopy = e.target.parentNode.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].selectedIndex;
-	const deviceTypeToCopy = e.target.parentNode.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[0].value;
-	const deviceIndexToCopy = e.target.parentNode.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[0].selectedIndex;
-	console.log(cableTypeToCopy);
-	console.log(deviceTypeToCopy);
+	const cableTypeToCopy = segmentContainer.querySelector(`.wireContainer .wireLabel .wireSelect`).value;
+	const cableIndexToCopy = segmentContainer.querySelector(`.wireContainer .wireLabel .wireSelect`).selectedIndex;
+	const deviceTypeToCopy = segmentContainer.querySelector(`.deviceContainer .deviceLabel .deviceSelect`).value;
+	const deviceIndexToCopy = segmentContainer.querySelector(`.deviceContainer .deviceLabel .deviceSelect`).selectedIndex;
+
 	const checkIfInputExists = document.querySelector(`#${segmentContainer.id} .deviceContainer .deviceButtons #quantity`);
 	if( checkIfInputExists !== null ) {
 		const inputToRemove = document.getElementById("quantity");
@@ -51,6 +50,9 @@ function handleCopyNthTimes(e, segmentContainer, index) {
 		const installationContainer = document.querySelector('.installationContainer');
 		const segmentDiv = segmentContainer;
 		const buttonContainer = document.querySelector(`#${segmentContainer.id} .deviceContainer .deviceButtons`);
+		const cableLengthDiv = document.querySelector(`#${segmentContainer.id} .wireContainer .wireContainerInput`);
+		let cableLength = cableLengthDiv.childNodes[1].value;
+
 		input.type = 'Number';
 		input.setAttribute('id', `quantity`);
 		input.setAttribute('min', 0);
@@ -70,16 +72,25 @@ function handleCopyNthTimes(e, segmentContainer, index) {
 							break;
 						}
 					}
+					const newSegment = {
+						wireType: `${cableTypeToCopy}`,
+						wireLength: `${cableLength}`,
+						deviceType: `${deviceTypeToCopy}`
+					}
+					collectedData.splice(index + 1, 0, newSegment);
+					// collectedData.push(newSegment);
+
 					clone = segmentDiv.cloneNode(true);
 					clone.id = `segmentContainer${newIndex}`;
 					clone.className = `segmentContainer${newIndex}`;
 					clone.classList.add("installationSegment");
-					clone.children[1].children[0].children[0].selectedIndex = cableIndexToCopy;
-					clone.children[1].children[0].children[0].selectedOptions = clone.children[1].children[0].children[0].options[cableTypeToCopy];
-				 	clone.childNodes[2].childNodes[1].childNodes[0].setAttribute('id', `Skopiuj${newIndex}`);
-				 	clone.childNodes[2].childNodes[1].childNodes[1].setAttribute('id', `Usun${newIndex}`);
-					clone.children[2].children[0].children[0].selectedIndex = deviceIndexToCopy;
-					clone.children[2].children[0].children[0].selectedOptions = clone.children[2].children[0].children[0].options[deviceTypeToCopy];
+					clone.children[3].children[0].children[0].selectedIndex = cableIndexToCopy;
+					clone.children[3].children[0].children[0].selectedOptions = clone.children[3].children[0].children[0].options[cableTypeToCopy];
+					clone.childNodes[1].childNodes[0].setAttribute('id', `deviceImg${newIndex}`);
+					clone.childNodes[3].childNodes[1].childNodes[0].setAttribute('id', `Skopiuj${newIndex}`);
+					clone.childNodes[3].childNodes[1].childNodes[1].setAttribute('id', `Usun${newIndex}`);
+					clone.children[3].children[0].children[0].selectedIndex = deviceIndexToCopy;
+					clone.children[3].children[0].children[0].selectedOptions = clone.children[3].children[0].children[0].options[deviceTypeToCopy];
 					installationContainer.insertBefore(clone, installationContainer.children[index + 1 + i]);
 				}
 			}
@@ -88,8 +99,9 @@ function handleCopyNthTimes(e, segmentContainer, index) {
 
 }
 
-function handleDeleteDevice(e) {
-	const nodeToRemove = e.srcElement.parentNode.parentNode.parentNode;
-	nodeToRemove.parentNode.removeChild(e.srcElement.parentNode.parentNode.parentNode);
+function handleDeleteDevice(e, segmentContainer, index) {
+	// console.log(segmentContainer);
+	segmentContainer.parentNode.removeChild(segmentContainer);
+	collectedData.splice(index, 1);
 }
 

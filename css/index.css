@@ -1,0 +1,17 @@
+body {
+    box-sizing: border-box;
+    margin: 0;
+    width: 100vw;
+    min-height: 100vh;
+    background: #f8f8f8;
+}
+
+.powerManagementContainer {
+    width: 80vw;
+    padding: 15px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
