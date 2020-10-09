@@ -12,19 +12,30 @@
     grid-template-areas: "checkboxAndWire wireImage deviceImage deviceSelect";
 }
 
-.installationSegment .checkboxContainer {
+.installationSegment .checkboxAndcableContainer {
     grid-area: checkboxAndWire;
+    /*position: relative;*/
+    /*height: 0;*/
+    /*width: 100%;*/
+    /*padding: 0;*/
+    /*padding-bottom: 100%;*/
 }
 
-.installationSegment .wireContainer {
-    grid-area: checkboxAndWire;
-}
-
-.installationSegment .wireContainer .imgDiv{
+.installationSegment .cableImageContainer {
     grid-area: wireImage;
+    /*position: absolute;*/
+    /*height: 100%;*/
+    /*width: 100%;*/
+    /*left: 0;*/
+    /*top: 0;*/
 }
 
-.installationSegment .deviceContainer {
+.installationSegment .cableImageContainer svg {
+    height: 150px;
+    width: 100px;
+}
+
+.installationSegment .deviceImageContainer {
     grid-area: deviceImage;
 }
 

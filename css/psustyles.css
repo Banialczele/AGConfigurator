@@ -4,7 +4,7 @@
 
 .powerSupplyContainer {
     display: grid;
-    height: 4em;
+    height: 100%;
     width: 100%;
     grid-template-columns: repeat(4, 1fr);
     grid-template-areas: ". psuImage . psuSelect";
@@ -12,7 +12,7 @@
     align-items: center;
 }
 
-.powerSupplyContainer .imgDiv {
+.powerSupplyContainer .psuImageContainer {
     grid-area: psuImage;
 }
 

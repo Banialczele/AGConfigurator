@@ -1,4 +1,4 @@
-const cables = Cables.map(wires => ({ ...wires }));
+const cables = Cables.map(cables => ({ ...cables }));
 const devices = Devices.map(devices => ({ ...devices }));
 
 const generateOptions = (param, select, targetName) => {

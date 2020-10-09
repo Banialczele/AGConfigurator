@@ -1,4 +1,4 @@
-const button = function(segment, index) {
+const button = function(index) {
 	const segmentContainer = document.querySelector(`#segmentContainer${index}`);
 	const deviceContainer = document.querySelector(`#segmentContainer${index} .deviceContainer`);
 	const deviceButtons = document.querySelector(`#segmentContainer${index} .deviceContainer .deviceButtons`);
@@ -25,19 +25,19 @@ const button = function(segment, index) {
 	copyButton.setAttribute('id', `Skopiuj0`);
 	deleteButton.setAttribute('id', `Usun0`);
 
-
-	copyButton.addEventListener('click', e => handleCopyNthTimes(e, segmentContainer, index));
-	deleteButton.addEventListener('click', e => handleDeleteDevice(e, segmentContainer, index));
-
 	deviceButtonContainer.appendChild(copyButton);
 	deviceButtonContainer.appendChild(deleteButton);
 	deviceContainer.appendChild(deviceButtonContainer);
 	segmentContainer.appendChild(deviceContainer);
 };
 
-function handleCopyNthTimes(e, segmentContainer, index) {
-	const cableTypeToCopy = segmentContainer.querySelector(`.wireContainer .wireLabel .wireSelect`).value;
-	const cableIndexToCopy = segmentContainer.querySelector(`.wireContainer .wireLabel .wireSelect`).selectedIndex;
+function handleCopyNthTimes(e) {
+	//get number of element from id
+	const index = e.target.id.match(/\d+/)[0];
+	const segmentContainer = e.target.parentNode.parentNode.parentNode;
+	
+	const cableTypeToCopy = segmentContainer.querySelector(`.cableContainer .cableLabel .cableSelect`).value;
+	const cableIndexToCopy = segmentContainer.querySelector(`.cableContainer .cableLabel .cableSelect`).selectedIndex;
 	const deviceTypeToCopy = segmentContainer.querySelector(`.deviceContainer .deviceLabel .deviceSelect`).value;
 	const deviceIndexToCopy = segmentContainer.querySelector(`.deviceContainer .deviceLabel .deviceSelect`).selectedIndex;
 
@@ -50,9 +50,9 @@ function handleCopyNthTimes(e, segmentContainer, index) {
 		const installationContainer = document.querySelector('.installationContainer');
 		const segmentDiv = segmentContainer;
 		const buttonContainer = document.querySelector(`#${segmentContainer.id} .deviceContainer .deviceButtons`);
-		const cableLengthDiv = document.querySelector(`#${segmentContainer.id} .wireContainer .wireContainerInput`);
+		const cableLengthDiv = document.querySelector(`#${segmentContainer.id} .cableContainer .cableContainerInput`);
 		let cableLength = cableLengthDiv.childNodes[1].value;
-
+		let num = parseInt(cableLength) || 0 ;
 		input.type = 'Number';
 		input.setAttribute('id', `quantity`);
 		input.setAttribute('min', 0);
@@ -73,20 +73,18 @@ function handleCopyNthTimes(e, segmentContainer, index) {
 						}
 					}
 					const newSegment = {
-						wireType: `${cableTypeToCopy}`,
-						wireLength: `${cableLength}`,
+						cableType: `${cableTypeToCopy}`,
+						calbleLen_m: num,
 						deviceType: `${deviceTypeToCopy}`
 					}
 					collectedData.splice(index + 1, 0, newSegment);
-					// collectedData.push(newSegment);
-
 					clone = segmentDiv.cloneNode(true);
 					clone.id = `segmentContainer${newIndex}`;
 					clone.className = `segmentContainer${newIndex}`;
 					clone.classList.add("installationSegment");
-					clone.children[3].children[0].children[0].selectedIndex = cableIndexToCopy;
-					clone.children[3].children[0].children[0].selectedOptions = clone.children[3].children[0].children[0].options[cableTypeToCopy];
-					clone.childNodes[1].childNodes[0].setAttribute('id', `deviceImg${newIndex}`);
+					clone.children[2].children[1].children[0].children[0].selectedIndex = cableIndexToCopy;
+					clone.children[2].children[1].children[0].children[0].selectedOptions = clone.children[2].children[1].children[0].children[0].options[cableTypeToCopy];
+					clone.childNodes[1].childNodes[0].setAttribute('id', `cableimage${newIndex}`);
 					clone.childNodes[3].childNodes[1].childNodes[0].setAttribute('id', `Skopiuj${newIndex}`);
 					clone.childNodes[3].childNodes[1].childNodes[1].setAttribute('id', `Usun${newIndex}`);
 					clone.children[3].children[0].children[0].selectedIndex = deviceIndexToCopy;
@@ -99,9 +97,14 @@ function handleCopyNthTimes(e, segmentContainer, index) {
 
 }
 
-function handleDeleteDevice(e, segmentContainer, index) {
-	// console.log(segmentContainer);
-	segmentContainer.parentNode.removeChild(segmentContainer);
+function handleDeleteDevice(e) {
+	//get number of element from id
+	const index = e.target.id.match(/\d+/)[0];	
+	const segmentContainer = e.target.parentNode.parentNode.parentNode;
+	
+	if( segmentContainer !== null && segmentContainer.parentNode !== null) {
+		segmentContainer.parentNode.removeChild(segmentContainer);
+	}
 	collectedData.splice(index, 1);
 }
 

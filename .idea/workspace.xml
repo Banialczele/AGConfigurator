@@ -5,18 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/js/data/models.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/test.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/installationsegment.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/installationsegment.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/psustyles.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/psustyles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/button.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/button.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/cable.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/cable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/data/Engine.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/data/Installation.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/data/System.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/checkbox.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/checkbox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/data/analysisEngine.js" beforeDir="false" afterPath="$PROJECT_DIR$/analysisEngine.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/data/models.js" beforeDir="false" afterPath="$PROJECT_DIR$/models.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/device.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/device.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/input.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/input.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/picture.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/picture.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/select.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/select.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,6 +63,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\MyProjects\DlaTomka\powerManagement" />
       <recent name="D:\MyProjects\powerManagement\js" />
     </key>
   </component>
@@ -96,7 +99,13 @@
       <workItem from="1601889080646" duration="8426000" />
       <workItem from="1601899714497" duration="12595000" />
       <workItem from="1601973684213" duration="28348000" />
-      <workItem from="1602042866894" duration="1810000" />
+      <workItem from="1602042866894" duration="15353000" />
+      <workItem from="1602113277386" duration="1546000" />
+      <workItem from="1602155576616" duration="3522000" />
+      <workItem from="1602159676118" duration="2216000" />
+      <workItem from="1602199451635" duration="6600000" />
+      <workItem from="1602237360053" duration="791000" />
+      <workItem from="1602238220203" duration="11846000" />
     </task>
     <servers />
   </component>
