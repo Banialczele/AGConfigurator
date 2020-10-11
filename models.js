@@ -34,65 +34,37 @@ const Cables = [
 const Devices = [
   {
     type: "Teta EcoWent",
-    power_W: 0.1,
-    current_A: 0.1,
-    minVoltage_V: 15,
     icon: "EcoWent.svg"
   },
   {
     type: "Teta EcoDet",
-    power_W: 1.5,
-    current_A: 0,
-    minVoltage_V: 15,
-    icon: "EcoDet.svg"
   },
   {
     type: "Teta EcoWent + MiniDet",
-    power_W: 1.5,
-    current_A: 0,
-    minVoltage_V: 15,
     icon: "EcoWent_MiniPel.svg"
   },
   {
     type: "Teta EcoTerm",
-    power_W: 1.7,
-    current_A: 0,
-    minVoltage_V: 15,
     icon: "EcoTerm.svg"
   },
   {
     type: "Teta EcoH",
-    power_W: 1.7,
-    current_A: 0,
-    minVoltage_V: 15,
     icon: "EcoH.svg"
   },
   {
     type: "Teta EcoN",
-    power_W: 1.7,
-    current_A: 0,
-    minVoltage_V: 15,
     icon: "EcoN.svg"
   },
   {
     type: "TOLED",
-    power_W: 1.7,
-    current_A: 0,
-    minVoltage_V: 15,
     icon: "TOLED.svg"
   },
   {
     type: "SZOA",
-    power_W: 1.7,
-    current_A: 0,
-    minVoltage_V: 15,
     icon: "SZOA.svg"
   },
   {
     type: "Control V",
-    power_W: 1.7,
-    current_A: 0,
-    minVoltage_V: 15,
     icon: "ControlV.svg"
   },
 ]
