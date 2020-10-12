@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysisEngine.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/button.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/button.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/checkbox.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/checkbox.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +24,9 @@
         <option value="JavaScript File" />
       </list>
     </option>
+  </component>
+  <component name="Git.Pull.Settings">
+    <option name="BRANCH" value="master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -104,6 +109,8 @@
       <workItem from="1602361879160" duration="3365000" />
       <workItem from="1602367692628" duration="27964000" />
       <workItem from="1602458990590" duration="4660000" />
+      <workItem from="1602501390139" duration="6906000" />
+      <workItem from="1602526396155" duration="2745000" />
     </task>
     <servers />
   </component>

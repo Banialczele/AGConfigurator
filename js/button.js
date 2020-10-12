@@ -85,6 +85,7 @@ function handleCopyNthTimes(e) {
 					clone.classList.add("installationSegment");
 					clone.children[2].children[1].children[0].children[0].selectedIndex = cableIndexToCopy;
 					clone.children[2].children[1].children[0].children[0].selectedOptions = clone.children[2].children[1].children[0].children[0].options[cableTypeToCopy];
+					clone.childNodes[0].childNodes[0].setAttribute('id', `deviceimage${newIndex}`);
 					clone.childNodes[1].childNodes[0].setAttribute('id', `cableimage${newIndex}`);
 					clone.childNodes[3].childNodes[1].childNodes[0].setAttribute('id', `Skopiuj${newIndex}`);
 					clone.childNodes[3].childNodes[1].childNodes[1].setAttribute('id', `Usun${newIndex}`);

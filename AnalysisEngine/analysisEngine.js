@@ -120,7 +120,7 @@ function getBusEleStatus(allBusSection, initVoltage)
 		requiredSupplyVoltage_V: eleStatus.inputVoltage_V,
 		currentConsumption_A: eleStatus.inputCurrent_A,
 		isEveryDeviceGoodVoltage: eleStatus.isDeviceGoodVoltage,
-		powerConsumption_A: eleStatus.inputCurrent_A * eleStatus.inputVoltage_V
+		powerConsumption_W: eleStatus.inputCurrent_A * eleStatus.inputVoltage_V
 	};
 	if (eleStatus == null) stat = null;
 	return stat;
