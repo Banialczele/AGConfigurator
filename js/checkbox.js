@@ -1,4 +1,4 @@
-const checkbox = function (param, installationContainerName, segmentName, checkboxContainer, i) {	
+const checkbox = function (param, installationContainerName, segmentName, checkboxContainer, i) {
 	const input = document.createElement('input');
 	const segmentDiv = document.createElement('div');
 	const checkboxDiv = document.createElement('div');
@@ -9,7 +9,7 @@ const checkbox = function (param, installationContainerName, segmentName, checkb
 	checkboxDiv.className = checkboxContainer;
 	const div = document.querySelector(`.${installationContainerName}`);
 	input.type = 'checkbox';
-	input.name = param.type;
+	input.name = 'cableType';
 	checkboxDiv.appendChild(input);
 	segmentDiv.appendChild(checkboxDiv);
 	div.appendChild(segmentDiv);

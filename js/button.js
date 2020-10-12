@@ -36,11 +36,11 @@ function handleCopyNthTimes(e) {
 	const index = e.target.id.match(/\d+/)[0];
 	const segmentContainer = e.target.parentNode.parentNode.parentNode;
 	
-	const cableTypeToCopy = segmentContainer.querySelector(`.cableContainer .cableLabel .cableSelect`).value;
-	const cableIndexToCopy = segmentContainer.querySelector(`.cableContainer .cableLabel .cableSelect`).selectedIndex;
-	const deviceTypeToCopy = segmentContainer.querySelector(`.deviceContainer .deviceLabel .deviceSelect`).value;
-	const deviceIndexToCopy = segmentContainer.querySelector(`.deviceContainer .deviceLabel .deviceSelect`).selectedIndex;
-
+	const cableTypeToCopy = segmentContainer.querySelector(`.cableSelect`).value;
+	const cableIndexToCopy = segmentContainer.querySelector(`.cableSelect`).selectedIndex;
+	const deviceTypeToCopy = segmentContainer.querySelector(`.deviceSelect`).value;
+	const deviceIndexToCopy = segmentContainer.querySelector(`.deviceSelect`).selectedIndex;
+	
 	const checkIfInputExists = document.querySelector(`#${segmentContainer.id} .deviceContainer .deviceButtons #quantity`);
 	if( checkIfInputExists !== null ) {
 		const inputToRemove = document.getElementById("quantity");
@@ -58,7 +58,6 @@ function handleCopyNthTimes(e) {
 		input.setAttribute('min', 0);
 		let newIndex = 0;
 		buttonContainer.appendChild(input);
-		input.addEventListener('input', (e) => e.target.value);
 		input.addEventListener('keypress', (e) => {
 			if( e.key === 'Enter' ) {
 				const inputToRemove = document.getElementById("quantity");
@@ -79,6 +78,8 @@ function handleCopyNthTimes(e) {
 					}
 					collectedData.splice(index + 1, 0, newSegment);
 					clone = segmentDiv.cloneNode(true);
+					const checkboxNewId = clone.querySelector('input[type="checkbox"]');
+					checkboxNewId.setAttribute('id', `checkbox${newIndex}`);
 					clone.id = `segmentContainer${newIndex}`;
 					clone.className = `segmentContainer${newIndex}`;
 					clone.classList.add("installationSegment");
@@ -94,7 +95,6 @@ function handleCopyNthTimes(e) {
 			}
 		});
 	}
-
 }
 
 function handleDeleteDevice(e) {
