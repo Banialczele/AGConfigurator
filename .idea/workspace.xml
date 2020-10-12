@@ -6,11 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysisEngine.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnalysisEngine/analysisEngine.js" beforeDir="false" afterPath="$PROJECT_DIR$/AnalysisEngine/analysisEngine.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnalysisEngine/models.js" beforeDir="false" afterPath="$PROJECT_DIR$/AnalysisEngine/models.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README!!!!.txt" beforeDir="false" afterPath="$PROJECT_DIR$/README!!!!.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/installationsegment.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/installationsegment.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/psustyles.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/psustyles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/button.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/button.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/cable.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/cable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/checkbox.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/checkbox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/device.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/device.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/input.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/input.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/picture.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/picture.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/select.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/select.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +119,8 @@
       <workItem from="1602367692628" duration="27964000" />
       <workItem from="1602458990590" duration="4660000" />
       <workItem from="1602501390139" duration="6906000" />
-      <workItem from="1602526396155" duration="2745000" />
+      <workItem from="1602526396155" duration="2822000" />
+      <workItem from="1602540721306" duration="6077000" />
     </task>
     <servers />
   </component>
