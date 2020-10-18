@@ -73,11 +73,11 @@ function handleCopyNthTimes(e) {
 					}
 					const newSegment = {
 						cableType: `${cableTypeToCopy}`,
-						cableLen_m: num,
+						calbleLen_m: num,
 						deviceType: `${deviceTypeToCopy}`
 					}
 					collectedData.splice(index + 1, 0, newSegment);
-					let clone = segmentDiv.cloneNode(true);
+					clone = segmentDiv.cloneNode(true);
 					const checkboxNewId = clone.querySelector('input[type="checkbox"]');
 					checkboxNewId.setAttribute('id', `checkbox${newIndex}`);
 					clone.id = `segmentContainer${newIndex}`;
@@ -85,7 +85,6 @@ function handleCopyNthTimes(e) {
 					clone.classList.add("installationSegment");
 					clone.children[2].children[1].children[0].children[0].selectedIndex = cableIndexToCopy;
 					clone.children[2].children[1].children[0].children[0].selectedOptions = clone.children[2].children[1].children[0].children[0].options[cableTypeToCopy];
-					clone.childNodes[0].childNodes[0].setAttribute('id', `deviceimage${newIndex}`);
 					clone.childNodes[1].childNodes[0].setAttribute('id', `cableimage${newIndex}`);
 					clone.childNodes[3].childNodes[1].childNodes[0].setAttribute('id', `Skopiuj${newIndex}`);
 					clone.childNodes[3].childNodes[1].childNodes[1].setAttribute('id', `Usun${newIndex}`);

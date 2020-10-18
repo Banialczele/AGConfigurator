@@ -8,7 +8,7 @@ body {
 }
 
 .powerManagementContainer {
-    width: 100vw;
+    width: 80vw;
     padding: 15px;
     margin: 0 auto;
     display: flex;
@@ -24,17 +24,4 @@ select {
     background: lightgray;
     -moz-appearance: none; /* Firefox */
     -webkit-appearance: none; /* Safari and Chrome */
-}
-
-
-.buttonContainer {
-    position: absolute;
-    top: 50px;
-    left: 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-.buttonContainer > *{
-    margin-bottom: 5px;
 }

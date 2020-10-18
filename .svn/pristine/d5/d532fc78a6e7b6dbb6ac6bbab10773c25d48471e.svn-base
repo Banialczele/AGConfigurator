@@ -8,7 +8,7 @@ body {
 }
 
 .powerManagementContainer {
-    width: 100vw;
+    width: 80vw;
     padding: 15px;
     margin: 0 auto;
     display: flex;
@@ -37,4 +37,8 @@ select {
 
 .buttonContainer > *{
     margin-bottom: 5px;
+}
+
+.sticky {
+    position: fixed;
 }

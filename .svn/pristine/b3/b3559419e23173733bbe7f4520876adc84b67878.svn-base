@@ -1,0 +1,45 @@
+.powerManagementInstallationContainer {
+    width: 100%;
+}
+.installationContainer {
+    width: 100%;
+}
+
+.installationContainer > .installationSegment {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: "checkboxAndWire wireImage deviceImage deviceSelect";
+}
+
+.installationSegment .checkboxAndcableContainer {
+    grid-area: checkboxAndWire;
+    /*position: relative;*/
+    /*height: 0;*/
+    /*width: 100%;*/
+    /*padding: 0;*/
+    /*padding-bottom: 100%;*/
+}
+
+.installationSegment .cableImageContainer {
+    grid-area: wireImage;
+    /*position: absolute;*/
+    /*height: 100%;*/
+    /*width: 100%;*/
+    /*left: 0;*/
+    /*top: 0;*/
+}
+
+.installationSegment .cableImageContainer svg {
+    height: 150px;
+    width: 100px;
+}
+
+.installationSegment .deviceImageContainer {
+    grid-area: deviceImage;
+}
+
+.installationSegment .deviceContainer {
+    grid-area: deviceSelect
+}
+

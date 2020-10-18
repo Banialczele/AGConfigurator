@@ -73,11 +73,11 @@ function handleCopyNthTimes(e) {
 					}
 					const newSegment = {
 						cableType: `${cableTypeToCopy}`,
-						cableLen_m: num,
+						calbleLen_m: num,
 						deviceType: `${deviceTypeToCopy}`
 					}
 					collectedData.splice(index + 1, 0, newSegment);
-					let clone = segmentDiv.cloneNode(true);
+					clone = segmentDiv.cloneNode(true);
 					const checkboxNewId = clone.querySelector('input[type="checkbox"]');
 					checkboxNewId.setAttribute('id', `checkbox${newIndex}`);
 					clone.id = `segmentContainer${newIndex}`;
