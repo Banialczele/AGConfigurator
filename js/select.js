@@ -5,7 +5,7 @@ const generateOptions = (param, select, targetName) => {
 	for( let i = 0; i < param.length; i++ ) {
 		const option = document.createElement('option');
 		if( i === 0 ) {
-			const blank = new Option(`Wybierz ${targetName}`, '');
+			const blank = new Option(`${targetName}`, '');
 			select.add(blank, undefined);
 		}
 		option.innerHTML = param[i].type;
@@ -29,16 +29,16 @@ const select = function(param, labelClass, selectName, segmentName, selectContai
 
 	switch( type ) {
 		case 'powerSupply' : {
-			generateOptions(param, select, 'zasilacz');
+			generateOptions(param, select, 'Zasilacz');
 			break;
 		}
 		case 'cable' : {
-			generateOptions(cables, select, 'przewód');
+			generateOptions(cables, select, 'Przewód');
 			break;
 		}
 
 		case 'device' : {
-			generateOptions(devices, select, 'urządzenie');
+			generateOptions(devices, select, 'Urządzenie');
 			break;
 		}
 	}

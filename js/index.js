@@ -17,7 +17,7 @@ window.addEventListener('scroll', () => {
 });
 
 window.addEventListener('change', () => {
-	console.log(completeData);
+	console.log(isSystemOk(completeData));		
 });
 
 window.addEventListener('load', () => {
@@ -45,9 +45,9 @@ window.addEventListener('load', () => {
 		const checkbox = segment.querySelector('input[type="checkbox"]');
 		segment.addEventListener('change', e => {
 			handleInputAndSelectChange(segments, i, e, checkbox.checked);
-		})
+		});
 	});
-
+	completeData.bus = [ ...collectedData ];
 	//setting up PSU value and it's image
 	const powerSupplyElement = document.getElementById('powerSupply');
 	powerSupplyElement.addEventListener('change', e => {
@@ -57,10 +57,12 @@ window.addEventListener('load', () => {
 			const parentNode = img.parentNode.parentNode;
 			parentNode.removeChild(img.parentNode);
 			picture('psu', `psuImageContainer`, `powerSupplyContainer`, `imagePSU`);
+		} else {
+			img.srcset = "./Gfx/CU.svg";
+			img.src = "./Gfx/CU.svg";
+			img.alt = 'Unable to find image';
 		}
-		img.srcset = "./Gfx/CU.svg";
-		img.src = "./Gfx/CU.svg";
-		img.alt = 'Unable to find image';
+
 	});
 
 	const buttonDiv = document.createElement('div');
