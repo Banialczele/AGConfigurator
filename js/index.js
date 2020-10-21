@@ -16,8 +16,8 @@ window.addEventListener('scroll', () => {
 	}
 });
 
-window.addEventListener('change', () => {
-	// console.log(isSystemOk(completeData));		
+window.addEventListener('change', () => {	
+	console.log(isSystemOk(completeData));		
 });
 
 window.addEventListener('load', () => {
