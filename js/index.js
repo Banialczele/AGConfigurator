@@ -200,15 +200,13 @@ function handleInputAndSelectChange(event, checkedSegments, index, checked) {
 			if( checked ) {
 				checkedSegments.forEach(segment => {
 					const deviceSelect = segment.querySelector(`.deviceSelect`);
-					const img = document.querySelectorAll(`.deviceimage`);
-           if( event.target.value === '' ) {
-						img.forEach(image => {
-							image.removeAttribute('src');
-							image.removeAttribute('srcset');
-							image.removeAttribute('alt');							
-							});
-					} else {
-						img.forEach( image => chooseImg(image, event.target.value));						
+					const img = segment.querySelector(`.deviceimage`);
+					if( event.target.value === '' ) {
+						img.removeAttribute('src');
+						img.removeAttribute('srcset');
+						img.removeAttribute('alt');
+					} else {				
+						chooseImg(img, event.target.value);
 						deviceSelect.value = event.target.value;
 						collectedData[index].deviceType = event.target.value;
 					}
