@@ -32,77 +32,93 @@ const button = function(index) {
 };
 
 function handleCopyNthTimes(e) {
-	//get number of element from id
+	//get index of an element from id
 	const index = e.target.id.match(/\d+/)[0];
-	const segmentContainer = e.target.parentNode.parentNode.parentNode;
 	
-	const cableTypeToCopy = segmentContainer.querySelector(`.cableSelect`).value;
-	const cableIndexToCopy = segmentContainer.querySelector(`.cableSelect`).selectedIndex;
-	const deviceTypeToCopy = segmentContainer.querySelector(`.deviceSelect`).value;
-	const deviceIndexToCopy = segmentContainer.querySelector(`.deviceSelect`).selectedIndex;
-	
-	const checkIfInputExists = document.querySelector(`#${segmentContainer.id} .deviceContainer .deviceButtons #quantity`);
-	if( checkIfInputExists !== null ) {
-		const inputToRemove = document.getElementById("quantity");
-		inputToRemove.parentNode.removeChild(inputToRemove);
-	} else {
-		const input = document.createElement('input');
-		const installationContainer = document.querySelector('.installationContainer');
-		const segmentDiv = segmentContainer;
-		const buttonContainer = document.querySelector(`#${segmentContainer.id} .deviceContainer .deviceButtons`);
-		const cableLengthDiv = document.querySelector(`#${segmentContainer.id} .cableContainer .cableContainerInput`);
-		let cableLength = cableLengthDiv.childNodes[1].value;
-		let num = parseInt(cableLength) || 0 ;
-		input.type = 'Number';
-		input.setAttribute('id', `quantity`);
-		input.setAttribute('min', 0);
-		let newIndex = 0;
-		buttonContainer.appendChild(input);
-		input.addEventListener('keypress', (e) => {
-			if( e.key === 'Enter' ) {
-				const inputToRemove = document.getElementById("quantity");
-				inputToRemove.parentNode.removeChild(inputToRemove);
-				for( let i = 0; i < e.target.value; i++ ) {
-					//generating unique index for segment.
-					while( newIndex === Cable.usedIndexes[newIndex] ) {
-						newIndex++;
-						if( newIndex !== Cable.usedIndexes[newIndex] ) {
-							Cable.usedIndexes.push(newIndex);
-							break;
-						}
+	//select segment to copy
+	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
+
+	//get data from segment to insert into copy
+	const cableTypeToCopy = (segmentContainer.querySelector(`.cableSelect`)).value;
+	const cableIndexToCopy = (segmentContainer.querySelector(`.cableSelect`)).selectedIndex;
+	const deviceTypeToCopy = (segmentContainer.querySelector(`.deviceSelect`)).value;
+	const deviceIndexToCopy = (segmentContainer.querySelector(`.deviceSelect`)).selectedIndex;
+ 	const cableLength = (segmentContainer.querySelector(`.cableContainerInput input`)).value;
+
+	//create input element to get amount of segments to create
+	const input = document.createElement('input');
+	//select parentNode of container to insert data at specific index
+	const installationContainer = segmentContainer.parentNode;
+	//button container to insert input to
+	const buttonContainer = segmentContainer.querySelector(`.deviceButtons`);
+
+	const num = parseInt(cableLength) || 0;
+
+	input.type = 'Number';
+	input.setAttribute('id', `quantity`);
+	input.setAttribute('min', 0);
+	let newIndex = 0;
+	buttonContainer.appendChild(input);
+
+	input.addEventListener('keypress', (e) => {
+		if( e.key === 'Enter' ) {
+			const inputToRemove = document.getElementById("quantity");
+			inputToRemove.parentNode.removeChild(inputToRemove);
+			for( let i = 0; i < e.target.value; i++ ) {
+				//generating unique index for segment.
+				while( newIndex === Cable.usedIndexes[newIndex] ) {
+					newIndex++;
+					if( newIndex !== Cable.usedIndexes[newIndex] ) {
+						Cable.usedIndexes.push(newIndex);
+						break;
 					}
-					const newSegment = {
-						cableType: `${cableTypeToCopy}`,
-						cableLen_m: num,
-						deviceType: `${deviceTypeToCopy}`
-					}
-					collectedData.splice(index + 1, 0, newSegment);
-					let clone = segmentDiv.cloneNode(true);
-					const checkboxNewId = clone.querySelector('input[type="checkbox"]');
-					checkboxNewId.setAttribute('id', `checkbox${newIndex}`);
-					clone.id = `segmentContainer${newIndex}`;
-					clone.className = `segmentContainer${newIndex}`;
-					clone.classList.add("installationSegment");
-					clone.children[2].children[1].children[0].children[0].selectedIndex = cableIndexToCopy;
-					clone.children[2].children[1].children[0].children[0].selectedOptions = clone.children[2].children[1].children[0].children[0].options[cableTypeToCopy];
-					clone.childNodes[0].childNodes[0].setAttribute('id', `deviceimage${newIndex}`);
-					clone.childNodes[1].childNodes[0].setAttribute('id', `cableimage${newIndex}`);
-					clone.childNodes[3].childNodes[1].childNodes[0].setAttribute('id', `Skopiuj${newIndex}`);
-					clone.childNodes[3].childNodes[1].childNodes[1].setAttribute('id', `Usun${newIndex}`);
-					clone.children[3].children[0].children[0].selectedIndex = deviceIndexToCopy;
-					clone.children[3].children[0].children[0].selectedOptions = clone.children[3].children[0].children[0].options[deviceTypeToCopy];
-					installationContainer.insertBefore(clone, installationContainer.children[index + 1 + i]);
 				}
+				const newSegment = {
+					cableType: `${cableTypeToCopy}`,
+					cableLen_m: num,
+					deviceType: `${deviceTypeToCopy}`
+				};
+				
+				//adding new segment at specific index ( not at the end of array )
+				collectedData.splice(index + 1, 0, newSegment);
+				
+				let clone = segmentContainer.cloneNode(true);
+				
+				const checkboxNewId = clone.querySelector('input[type="checkbox"]');
+				checkboxNewId.setAttribute('id', `checkbox${newIndex}`);
+				clone.id = `segmentContainer${newIndex}`;
+				clone.className = `segmentContainer${newIndex}`;
+				clone.classList.add("installationSegment");
+				
+				const cableSelect = clone.querySelector('select[name="cableSelect"]');
+				cableSelect.selectedIndex = cableIndexToCopy;
+				cableSelect.selectedOptions = cableSelect.options[cableTypeToCopy];
+				
+				const cloneImage = clone.querySelector('.deviceimage');
+				cloneImage.setAttribute('id', `deviceimage${newIndex}`);
+				cloneImage.setAttribute('id', `cableimage${newIndex}`);
+				
+				const cloneCopyButton = clone.querySelector(`.deviceButtons #Skopiuj${index}`);
+				const cloneDeleteButton = clone.querySelector(`.deviceButtons #Usun${index}`);
+				cloneCopyButton.setAttribute('id', `Skopiuj${newIndex}`);
+				cloneDeleteButton.setAttribute('id', `Usun${newIndex}`);
+				
+				const deviceSelect = clone.querySelector('select[name="deviceSelect"]');
+				deviceSelect.selectedIndex = deviceIndexToCopy;
+				deviceSelect.selectedOptions = cableSelect.options[deviceTypeToCopy];
+			
+				installationContainer.insertBefore(clone, installationContainer.children[index + 1 + i]);
 			}
-		});
-	}
+		}
+	});
+
 }
 
 function handleDeleteDevice(e) {
 	//get number of element from id
 	const index = e.target.id.match(/\d+/)[0];	
-	const segmentContainer = e.target.parentNode.parentNode.parentNode;
-	
+	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
+		
 	if( segmentContainer !== null && segmentContainer.parentNode !== null) {
 		segmentContainer.parentNode.removeChild(segmentContainer);
 	}

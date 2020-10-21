@@ -15,6 +15,17 @@ body {
     justify-content: center;
 }
 
+#quantity::-webkit-outer-spin-button,
+#quantity::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#quantity {
+    width: 80px;
+    -moz-appearance: textfield;
+}
+
 select {
     padding: 5px 10px;
     min-width: auto;
