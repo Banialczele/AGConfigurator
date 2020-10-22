@@ -4,7 +4,7 @@
 
 .powerSupplyContainer {
     margin: 0 auto;
-    width: 65%;
+    width: 67%;
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 2fr;
     grid-template-rows: 90px;
@@ -19,11 +19,13 @@
     width: 100%;
     grid-column: 2 / span 2;
     display: grid;
+    text-align: center;
     place-items: end center;  
-}                    
+} 
 
 .powerSupplyContainer .psuImageContainer img{
     height: 80%;
+    place-self: end center;
 }
 
 

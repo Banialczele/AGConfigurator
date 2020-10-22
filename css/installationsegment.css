@@ -1,7 +1,26 @@
 .powerManagementInstallationContainer {
-    width: 100%;
+    margin: 0 10px;
+    width: 95%;
     height: 100%;
     min-height: 100vh;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 90px 1fr;
+    grid-template-areas: 
+        "powerSupply ."
+        "installation installationInfo"
+    ;
+}
+
+.powerManagementInstallationContainer .powerSupplyContainer {
+    grid-area: powerSupply;
+    width: 100%;
+}
+.powerManagementInstallationContainer .installationContainer {
+    grid-area: installation;
+}
+.powerManagementInstallationContainer .systemInfo{
+    grid-area: installationInfo;
 }
 
 .installationContainer {
@@ -41,7 +60,7 @@
 }
 
 .cableContainerInput input {
-    width: 100px;
+    width: 50px;
 }
 
 .installationSegment .cableImageContainer {

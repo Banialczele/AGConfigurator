@@ -7,13 +7,12 @@ const input = function(param, cableContainer, cableLabel, inputName, inputContai
 	const input = document.createElement('input');
 	input.type = `number`;
 	input.name = inputName;
-	input.setAttribute('placeholder', 'Długość [m]');
 	input.setAttribute('step', '5');
 	input.setAttribute('min', "0");
 
 	inputDiv.appendChild(label);
 	inputDiv.appendChild(input);
-	input.after(" [m]");
+	input.after(" m");
 	cableDiv.appendChild(inputDiv);
 }
                                  	

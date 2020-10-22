@@ -7,17 +7,17 @@ const collectedData = [ {
 } ];
 const completeData = {};
 
-window.addEventListener('scroll', () => {
-	const buttonDiv = document.querySelector('.buttonDiv');
-	if( window.scrollY >= buttonDiv.offsetTop ) {
-		buttonDiv.classList.add('sticky');
-	} else {
-		buttonDiv.classList.remove('sticky');
-	}
-});
+// window.addEventListener('scroll', () => {
+// 	const buttonDiv = document.querySelector('.buttonDiv');
+// 	if( window.scrollY >= buttonDiv.offsetTop ) {
+// 		buttonDiv.classList.add('sticky');
+// 	} else {
+// 		buttonDiv.classList.remove('sticky');
+// 	}
+// });
 
 window.addEventListener('load', () => {
-	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerSupplySegmentContainer', `powerSupplyContainer`, `powerSupply`);
+	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerManagementInstallationContainer', `powerSupplyContainer`, `powerSupply`);
 	picture('psu', `psuImageContainer`, `powerSupplyContainer`, `imagePSU`);
 
 	collectedData.forEach((element, index) => {
@@ -43,13 +43,13 @@ window.addEventListener('load', () => {
 	const powerSupplyElement = document.getElementById('powerSupply');
 	handlePSU(powerSupplyElement);
 	const targetNode = document.querySelector("#installationContainer");
-	checkboxButtons();
+	// checkboxButtons();
 
 	const config = {
 		childList: true,
 		subtree: true,
 		attributes: false,
-		characterData: false,
+		characterData: true,
 	};
 
 	const observer = new MutationObserver(handleDOMChange);
@@ -63,9 +63,8 @@ function handleDOMChange() {
 	const segments = document.querySelectorAll('.installationSegment');
 
 	updateInputs(segments);
-
 	handleCheckboxes();
-
+	
 	const powerSupplyElement = document.getElementById('powerSupply');
 	handlePSU(powerSupplyElement);
 
@@ -83,7 +82,6 @@ function displaySystemDataPanel() {
 
 	const isSystemOk = document.createElement('li');
 	isSystemOk.classList.add('isSystemOk');
-	isSystemOk.innerHTML = `isSystemOk: `;
 
 	const requiredSupplyVoltage = document.createElement('li');
 	requiredSupplyVoltage.classList.add('requiredSupplyVoltage');
@@ -134,26 +132,6 @@ function setupBusImage(imageElements) {
 	}
 }
 
-function checkboxButtons() {
-	const buttonContainer = document.querySelector('.powerManagementInstallationContainer');
-	const buttonDiv = document.createElement('div');
-	buttonDiv.className = 'buttonDiv';
-	//creating selectAll and unselectAll buttons for every segment
-	const selectAllCheckboxesButton = document.createElement('input');
-	selectAllCheckboxesButton.setAttribute('id', 'selectAllCheckboxes');
-	selectAllCheckboxesButton.type = 'button';
-	selectAllCheckboxesButton.value = 'Zaznacz wszystkie';
-
-	const unCheckAllCheckboxesButton = document.createElement('input');
-	unCheckAllCheckboxesButton.setAttribute('id', 'unCheckAllCheckboxesButton');
-	unCheckAllCheckboxesButton.type = 'button';
-	unCheckAllCheckboxesButton.value = 'Odznacz wszystkie';
-
-	buttonDiv.prepend(unCheckAllCheckboxesButton);
-	buttonDiv.prepend(selectAllCheckboxesButton);
-	buttonContainer.prepend(buttonDiv);
-}
-
 function selectedCheckboxes(segments) {
 	return Array.from(segments).filter((segment, i) => {
 		const checkbox = segment.querySelector('input[type="checkbox"]');
@@ -175,6 +153,8 @@ const unCheckAllCheckboxes = function() {
 	for( let checkbox of checkboxes ) {
 		checkbox.checked = false;
 	}
+	handleDOMChange();
+
 	const segments = document.querySelectorAll('.installationSegment');
 	updateInputs(segments);
 };
@@ -185,7 +165,6 @@ handleCheckboxes = function() {
 
 	function handleCheck(e) {
 		let inBetween = false;
-
 		if( e.shiftKey && this.checked ) {
 			checkboxes.forEach(checkbox => {
 				if( checkbox === this || checkbox === lastChecked ) {
@@ -248,7 +227,10 @@ function handleInputAndSelectChange(event, checkedSegments, index, checked) {
 					}
 				});
 			} else if( !checked ) {
-				const img = document.querySelector(`#deviceimage${index}`);
+				const segment = event.target.parentNode.parentNode.parentNode;
+				const selectedSegmentIndex = parseInt(segment.id.match(/\d+/)[0]);	
+				const img = document.querySelector(`#deviceimage${selectedSegmentIndex}`);
+
 				if( event.target.value === '' ) {
 					img.parentNode.removeChild(img);
 				} else {
@@ -357,9 +339,7 @@ function displaySystemInfo(completeData) {
 	const isSysOk = isSystemOk(completeData); //info, czy system jest ok
 	const sysPower = analiseSystem(completeData); //info ile system żre prądu, requiredSupplyVoltage_V, currentConsumption_a,
 																								// isEveryDeviceGoodVoltage_v, powerConsumption_w
-	console.log(isSysOk);
-	console.log(sysPower);
-	console.log(completeData);	 //inputVoltage_v, inputCurrent_a, deviceSupplyVoltage_v
+		//inputVoltage_v, inputCurrent_a, deviceSupplyVoltage_v
 	// created 3rd div to display only data from system, segment info etc.
 	infoPanelDiv.classList.add('toggle');
 	(infoPanelDiv.querySelector('.isSystemOk')).innerHTML = `isSystemOk: ${isSysOk}`;
@@ -370,7 +350,7 @@ function displaySystemInfo(completeData) {
 	const busInfoList = document.createElement('ul');
 	busInfoList.classList.add('busInfoList');
 	completeData.bus.forEach((element, i) => {
-		if( i === 0 && completeData.bus.length >= 2 ) {
+		if( i === 0 && completeData.bus.length >= 2 && infoPanelDiv.childNodes[1] !== undefined ) {
 			infoPanelDiv.childNodes[1].parentNode.removeChild(infoPanelDiv.childNodes[1]);
 		}
 		const segment = document.createElement('ul');

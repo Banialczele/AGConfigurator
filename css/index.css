@@ -3,7 +3,7 @@ body {
     margin: 0;
     width: 100%;
     min-height: auto;
-    background: #f8f8f8;
+    background: rgba(96,96,96, 0.5);
 }
 
 .powerManagementContainer {
@@ -36,28 +36,30 @@ select {
     -webkit-appearance: none; /* Safari and Chrome */
 }
 
-.powerManagementInstallationContainer {
-    display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
-    place-items: start;
-    grid-template-areas: "buttonDiv installationContainer systemDetails";
+.powerManagementInstallationContainer .systemInfo > * {
+    list-style: none;    
 }
 
-.powerManagementInstallationContainer .buttonDiv {
-    grid-area: buttonDiv;
-    place-self: start center;
+.powerManagementInstallationContainer .systemInfo ul > * {
+    list-style: none;
+    color:white;    
+    text-align: center;     
+    padding:5px 0;
+    margin: 2px 0;    
 }
 
-.powerManagementInstallationContainer .installationContainer {
-    grid-area: installationContainer;
+.powerManagementInstallationContainer .systemInfo ul.segmentInfo {
 }
 
-.powerManagementInstallationContainer .systemInfo {
-    grid-area: systemDetails;
-    place-self: start center;
-    display: none;
+.powerManagementInstallationContainer .systemInfo ul.segmentInfo:nth-child(odd){
+    background: rgba(65,64,66, 0.9);
 }
 
-.powerManagementInstallationContainer div.toggle {
-    display: block;
+.powerManagementInstallationContainer .systemInfo ul.segmentInfo:nth-child(even){
+    background: rgba(204,53,51, 0.9);  
 }
+
+
+/*.powerManagementInstallationContainer div.toggle {*/
+/*    display: block;*/
+/*}*/

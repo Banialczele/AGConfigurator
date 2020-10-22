@@ -33,11 +33,12 @@ const button = function(index) {
 
 function handleCopyNthTimes(e) {
 	//get index of an element from id
-	const index = e.target.id.match(/\d+/)[0];
-	
+	const index = parseInt(e.target.id.match(/\d+/)[0]);
+	console.log(index);
 	//select segment to copy
 	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
-
+	const segments = document.querySelectorAll('.installationSegment');
+	const indexWhereToCopyDiv = Array.from(segments).findIndex( segment => segment === segmentContainer);
 	//get data from segment to insert into copy
 	const cableTypeToCopy = (segmentContainer.querySelector(`.cableSelect`)).value;
 	const cableIndexToCopy = (segmentContainer.querySelector(`.cableSelect`)).selectedIndex;
@@ -45,13 +46,17 @@ function handleCopyNthTimes(e) {
 	const deviceIndexToCopy = (segmentContainer.querySelector(`.deviceSelect`)).selectedIndex;
  	const cableLength = (segmentContainer.querySelector(`.cableContainerInput input`)).value;
 
-	//create input element to get amount of segments to create
-	const input = document.createElement('input');
 	//select parentNode of container to insert data at specific index
 	const installationContainer = segmentContainer.parentNode;
+	console.log(segmentContainer);
 	//button container to insert input to
 	const buttonContainer = segmentContainer.querySelector(`.deviceButtons`);
-
+	const checkIfInputExists = buttonContainer.querySelector(`#quantity`);
+	if(checkIfInputExists){
+		buttonContainer.removeChild(checkIfInputExists);
+	}
+	//create input element to get amount of segments to create
+	const input = document.createElement('input');
 	const num = parseInt(cableLength) || 0;
 
 	input.type = 'Number';
@@ -81,7 +86,6 @@ function handleCopyNthTimes(e) {
 				
 				//adding new segment at specific index ( not at the end of array )
 				collectedData.splice(index + 1, 0, newSegment);
-				
 				let clone = segmentContainer.cloneNode(true);
 
 				const checkboxNewId = clone.querySelector('input[type="checkbox"]');
@@ -107,11 +111,13 @@ function handleCopyNthTimes(e) {
 				const deviceSelect = clone.querySelector('select[name="deviceSelect"]');
 				deviceSelect.selectedIndex = deviceIndexToCopy;
 				deviceSelect.selectedOptions = cableSelect.options[deviceTypeToCopy];
-			
-				installationContainer.insertBefore(clone, installationContainer.children[index + 1 + i]);
+				let updateIndexToCopyCloneTo = indexWhereToCopyDiv + 1 + i;  
+				installationContainer.insertBefore(clone, installationContainer.children[updateIndexToCopyCloneTo]);
 			}
 		}
 	});
+	
+	checkboxButtons(installationContainer);
 
 }
 
@@ -124,5 +130,31 @@ function handleDeleteDevice(e) {
 		segmentContainer.parentNode.removeChild(segmentContainer);
 	}
 	collectedData.splice(index, 1);
+}
+
+
+function checkboxButtons(installationContainer) {
+	const checkIfButtonsExists = installationContainer.querySelector('.buttonDiv');
+	if(checkIfButtonsExists){
+		installationContainer.removeChild(checkIfButtonsExists);
+	}
+	const buttonContainer = installationContainer;
+
+	const buttonDiv = document.createElement('div');
+	buttonDiv.className = 'buttonDiv';
+	//creating selectAll and unselectAll buttons for every segment
+	const selectAllCheckboxesButton = document.createElement('input');
+	selectAllCheckboxesButton.setAttribute('id', 'selectAllCheckboxes');
+	selectAllCheckboxesButton.type = 'button';
+	selectAllCheckboxesButton.value = 'Zaznacz wszystkie';
+
+	const unCheckAllCheckboxesButton = document.createElement('input');
+	unCheckAllCheckboxesButton.setAttribute('id', 'unCheckAllCheckboxesButton');
+	unCheckAllCheckboxesButton.type = 'button';
+	unCheckAllCheckboxesButton.value = 'Odznacz wszystkie';
+
+	buttonDiv.prepend(unCheckAllCheckboxesButton);
+	buttonDiv.prepend(selectAllCheckboxesButton);
+	buttonContainer.appendChild(buttonDiv);
 }
 
