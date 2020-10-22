@@ -35,3 +35,29 @@ select {
     -moz-appearance: none; /* Firefox */
     -webkit-appearance: none; /* Safari and Chrome */
 }
+
+.powerManagementInstallationContainer {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    place-items: start;
+    grid-template-areas: "buttonDiv installationContainer systemDetails";
+}
+
+.powerManagementInstallationContainer .buttonDiv {
+    grid-area: buttonDiv;
+    place-self: start center;
+}
+
+.powerManagementInstallationContainer .installationContainer {
+    grid-area: installationContainer;
+}
+
+.powerManagementInstallationContainer .systemInfo {
+    grid-area: systemDetails;
+    place-self: start center;
+    display: none;
+}
+
+.powerManagementInstallationContainer div.toggle {
+    display: block;
+}

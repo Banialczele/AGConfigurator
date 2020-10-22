@@ -83,26 +83,27 @@ function handleCopyNthTimes(e) {
 				collectedData.splice(index + 1, 0, newSegment);
 				
 				let clone = segmentContainer.cloneNode(true);
-				
+
 				const checkboxNewId = clone.querySelector('input[type="checkbox"]');
 				checkboxNewId.setAttribute('id', `checkbox${newIndex}`);
 				clone.id = `segmentContainer${newIndex}`;
 				clone.className = `segmentContainer${newIndex}`;
 				clone.classList.add("installationSegment");
-				
+
 				const cableSelect = clone.querySelector('select[name="cableSelect"]');
 				cableSelect.selectedIndex = cableIndexToCopy;
 				cableSelect.selectedOptions = cableSelect.options[cableTypeToCopy];
-				
-				const cloneImage = clone.querySelector('.deviceimage');
-				cloneImage.setAttribute('id', `deviceimage${newIndex}`);
-				cloneImage.setAttribute('id', `cableimage${newIndex}`);
-				
+
+				const cloneDeviceImage = clone.querySelector('.deviceimage');
+				const cloneCableImage = clone.querySelector('.cableimage');
+				cloneDeviceImage.setAttribute('id', `deviceimage${newIndex}`);
+				cloneCableImage.setAttribute('id', `cableimage${newIndex}`);
+
 				const cloneCopyButton = clone.querySelector(`.deviceButtons #Skopiuj${index}`);
 				const cloneDeleteButton = clone.querySelector(`.deviceButtons #Usun${index}`);
 				cloneCopyButton.setAttribute('id', `Skopiuj${newIndex}`);
 				cloneDeleteButton.setAttribute('id', `Usun${newIndex}`);
-				
+
 				const deviceSelect = clone.querySelector('select[name="deviceSelect"]');
 				deviceSelect.selectedIndex = deviceIndexToCopy;
 				deviceSelect.selectedOptions = cableSelect.options[deviceTypeToCopy];

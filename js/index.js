@@ -16,10 +16,6 @@ window.addEventListener('scroll', () => {
 	}
 });
 
-window.addEventListener('change', () => {	
-	// console.log(isSystemOk(completeData));		
-});
-
 window.addEventListener('load', () => {
 	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerSupplySegmentContainer', `powerSupplyContainer`, `powerSupply`);
 	picture('psu', `psuImageContainer`, `powerSupplyContainer`, `imagePSU`);
@@ -29,6 +25,8 @@ window.addEventListener('load', () => {
 		Device.deviceComponent(element, index);
 		Device.deviceButtons(index);
 	});
+
+	displaySystemDataPanel();
 
 	handleButtonEvents();
 
@@ -45,7 +43,7 @@ window.addEventListener('load', () => {
 	const powerSupplyElement = document.getElementById('powerSupply');
 	handlePSU(powerSupplyElement);
 	const targetNode = document.querySelector("#installationContainer");
-	checkboxButtons(targetNode);
+	checkboxButtons();
 
 	const config = {
 		childList: true,
@@ -62,17 +60,50 @@ window.addEventListener('load', () => {
 function handleDOMChange() {
 	const images = document.querySelectorAll('.cableimage');
 	setupBusImage(images);
-
 	const segments = document.querySelectorAll('.installationSegment');
+
+	updateInputs(segments);
 
 	handleCheckboxes();
 
 	const powerSupplyElement = document.getElementById('powerSupply');
 	handlePSU(powerSupplyElement);
 
-	updateInputs(segments);
+	completeData.bus = collectedData;
+	displaySystemInfo(completeData);
+}
 
-	completeData.bus = [ ...collectedData ];
+//create panel with system information
+function displaySystemDataPanel() {
+	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
+	const systemInfo = document.createElement('div');
+	systemInfo.classList.add('systemInfo');
+	const systemInfoList = document.createElement('ol');
+	systemInfoList.classList.add('systemInfoList');
+
+	const isSystemOk = document.createElement('li');
+	isSystemOk.classList.add('isSystemOk');
+	isSystemOk.innerHTML = `isSystemOk: `;
+
+	const requiredSupplyVoltage = document.createElement('li');
+	requiredSupplyVoltage.classList.add('requiredSupplyVoltage');
+
+	const currentConsumption = document.createElement('li');
+	currentConsumption.classList.add('currentConsumption');
+
+	const allDevicesPoweredUp = document.createElement('li');
+	allDevicesPoweredUp.classList.add('allDevicesPoweredUp');
+
+	const powerConsumption = document.createElement('li');
+	powerConsumption.classList.add('powerConsumption');
+
+	systemInfoList.append(isSystemOk);
+	systemInfoList.append(requiredSupplyVoltage);
+	systemInfoList.append(currentConsumption);
+	systemInfoList.append(allDevicesPoweredUp);
+	systemInfoList.append(powerConsumption);
+	systemInfo.append(systemInfoList);
+	installationContainer.appendChild(systemInfo);
 }
 
 function handlePSU(psuContainer) {
@@ -103,7 +134,8 @@ function setupBusImage(imageElements) {
 	}
 }
 
-function checkboxButtons(buttonContainer) {
+function checkboxButtons() {
+	const buttonContainer = document.querySelector('.powerManagementInstallationContainer');
 	const buttonDiv = document.createElement('div');
 	buttonDiv.className = 'buttonDiv';
 	//creating selectAll and unselectAll buttons for every segment
@@ -125,7 +157,7 @@ function checkboxButtons(buttonContainer) {
 function selectedCheckboxes(segments) {
 	return Array.from(segments).filter((segment, i) => {
 		const checkbox = segment.querySelector('input[type="checkbox"]');
-		return checkbox.checked ? segment : '';
+		return checkbox.checked ? segment : null;
 	});
 }
 
@@ -134,13 +166,17 @@ const checkAllCheckboxes = function() {
 	for( let checkbox of checkboxes ) {
 		checkbox.checked = true;
 	}
+	const segments = document.querySelectorAll('.installationSegment');
+	updateInputs(segments);
 };
 
 const unCheckAllCheckboxes = function() {
-	const checkboxes = document.querySelectorAll('input[name="cableType"]');
+	const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 	for( let checkbox of checkboxes ) {
 		checkbox.checked = false;
 	}
+	const segments = document.querySelectorAll('.installationSegment');
+	updateInputs(segments);
 };
 
 handleCheckboxes = function() {
@@ -168,14 +204,14 @@ handleCheckboxes = function() {
 }
 
 handleButtonEvents = function() {
-	const installationSegment = document.getElementById('installationContainer');
+	const installationSegment = document.getElementById('powerManagementInstallationContainer');
 	installationSegment.addEventListener('click', e => {
 		if( e.target.id.includes("Skopiuj") ) {
 			handleCopyNthTimes(e);
 		} else if( e.target.id.includes("Usun") ) {
 			handleDeleteDevice(e);
 		} else if( e.target.id === 'selectAllCheckboxes' ) {
-			checkAllCheckboxes(e);
+			checkAllCheckboxes();
 		} else if( e.target.id === 'unCheckAllCheckboxesButton' ) {
 			unCheckAllCheckboxes();
 		}
@@ -214,8 +250,6 @@ function handleInputAndSelectChange(event, checkedSegments, index, checked) {
 			} else if( !checked ) {
 				const img = document.querySelector(`#deviceimage${index}`);
 				if( event.target.value === '' ) {
-					const img = document.querySelector(`#deviceimage${index}`);
-					console.log(img);
 					img.parentNode.removeChild(img);
 				} else {
 					collectedData[index].deviceType = event.target.value;
@@ -317,6 +351,50 @@ chooseImg = (img, value) => {
 		}
 	}
 }
+
+function displaySystemInfo(completeData) {
+	const infoPanelDiv = document.querySelector('.systemInfo');
+	const isSysOk = isSystemOk(completeData); //info, czy system jest ok
+	const sysPower = analiseSystem(completeData); //info ile system żre prądu, requiredSupplyVoltage_V, currentConsumption_a,
+																								// isEveryDeviceGoodVoltage_v, powerConsumption_w
+	console.log(isSysOk);
+	console.log(sysPower);
+	console.log(completeData);	 //inputVoltage_v, inputCurrent_a, deviceSupplyVoltage_v
+	// created 3rd div to display only data from system, segment info etc.
+	infoPanelDiv.classList.add('toggle');
+	(infoPanelDiv.querySelector('.isSystemOk')).innerHTML = `isSystemOk: ${isSysOk}`;
+	(infoPanelDiv.querySelector('.requiredSupplyVoltage')).innerHTML = `requiredSupplyVoltage_V: ${sysPower.requiredSupplyVoltage_V}`;
+	(infoPanelDiv.querySelector('.currentConsumption')).innerHTML = `currentConsumption_A: ${sysPower.currentConsumption_A}`;
+	(infoPanelDiv.querySelector('.allDevicesPoweredUp')).innerHTML = `allDevicesPoweredUp: ${sysPower.isEveryDeviceGoodVoltage ? 'tak' : 'nie'}`;
+	(infoPanelDiv.querySelector('.powerConsumption')).innerHTML = `powerConsumption_W: ${sysPower.powerConsumption_W}`;
+	const busInfoList = document.createElement('ul');
+	busInfoList.classList.add('busInfoList');
+	completeData.bus.forEach((element, i) => {
+		if( i === 0 && completeData.bus.length >= 2 ) {
+			infoPanelDiv.childNodes[1].parentNode.removeChild(infoPanelDiv.childNodes[1]);
+		}
+		const segment = document.createElement('ul');
+		segment.classList.add('segmentInfo');
+		segment.classList.add(`segment${i}`);
+		segment.innerHTML = `Segment${i}:`;
+		const inputVoltage = document.createElement('li');
+		inputVoltage.setAttribute('id', `inputVoltage${i}`);
+		inputVoltage.innerHTML = `inputVoltage_V: ${element.eleStatus.inputVoltage_V}`;
+		const inputCurrent = document.createElement('li');
+		inputCurrent.setAttribute('id', `inputCurrent${i}`);
+		inputCurrent.innerHTML = `inputCurrent_A: ${element.eleStatus.inputCurrent_A}`;
+		const deviceSupplyVoltage = document.createElement('li');
+		deviceSupplyVoltage.setAttribute('id', `deviceSupplyVoltage${i}`);
+		deviceSupplyVoltage.innerHTML = `deviceSupplyVoltage_V: ${element.eleStatus.deviceSupplyVoltage_V}`;
+		segment.append(inputVoltage);
+		segment.append(inputCurrent);
+		segment.append(deviceSupplyVoltage);
+		busInfoList.append(segment);
+	});
+	infoPanelDiv.append(busInfoList);
+
+}
+
 
 
 
