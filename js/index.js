@@ -1,7 +1,7 @@
 const powerSupplies = PowerSupplies.map(powerSupply => ({ ...powerSupply }));
 
 const collectedData = [ {
-	cableType: "2 x 1mm2",
+	cableType: "2 x 1 mm2",
 	cableLen_m: 10,
 	deviceType: "Teta EcoWent"
 } ];
@@ -16,14 +16,13 @@ window.addEventListener('load', () => {
 		Device.deviceComponent(element, index);
 		Device.deviceButtons(index);
 	});
-	
-	// const firstSegment = document.querySelector('.segmentContainer0');
-	// const firstSegmentCableValue = firstSegment.querySelector('.cableSelect');
-	//
-	// firstSegmentCableValue.options = collectedData[0].cableType;
-	// const firstSegmentInputValue = firstSegment.querySelector('input[name="cableInput"]');
-	// const firstSegmentDeviceValue = firstSegment.querySelector('.deviceSelect');
-	
+
+	const firstSegment = document.querySelector('.segmentContainer0');
+	firstSegment.querySelector('.cableSelect').value = collectedData[0].cableType;
+	firstSegment.querySelector('input[name="cableInput"]').value = collectedData[0].cableLen_m;
+	firstSegment.querySelector('.deviceSelect').value = collectedData[0].deviceType;
+	chooseImg(firstSegment.querySelector('#deviceimage0'), collectedData[0].deviceType);
+
 	picture('device', 'deviceImageContainer', 'segmentContainer0', 'devicePaddingImage', "./Gfx/DeviceColumnPadding.svg");
 
 	displaySystemDataPanel();
@@ -43,7 +42,6 @@ window.addEventListener('load', () => {
 	const powerSupplyElement = document.getElementById('powerSupply');
 	handlePSU(powerSupplyElement);
 	const targetNode = document.querySelector("#installationContainer");
-	// checkboxButtons();
 
 	const config = {
 		childList: true,
@@ -232,7 +230,9 @@ function handleInputAndSelectChange(event, checkedSegments, index, checked) {
 				const img = document.querySelector(`#deviceimage${selectedSegmentIndex}`);
 
 				if( event.target.value === '' ) {
-					img.parentNode.removeChild(img);
+					img.removeAttribute('src');
+					img.removeAttribute('srcset');
+					img.removeAttribute('alt');
 				} else {
 					collectedData[index].deviceType = event.target.value;
 					chooseImg(img, event.target.value);
