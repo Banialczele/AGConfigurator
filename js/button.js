@@ -34,7 +34,6 @@ const button = function(index) {
 function handleCopyNthTimes(e) {
 	//get index of an element from id
 	const index = parseInt(e.target.id.match(/\d+/)[0]);
-	console.log(index);
 	//select segment to copy
 	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
 	const segments = document.querySelectorAll('.installationSegment');
@@ -48,7 +47,6 @@ function handleCopyNthTimes(e) {
 
 	//select parentNode of container to insert data at specific index
 	const installationContainer = segmentContainer.parentNode;
-	console.log(segmentContainer);
 	//button container to insert input to
 	const buttonContainer = segmentContainer.querySelector(`.deviceButtons`);
 	const checkIfInputExists = buttonContainer.querySelector(`#quantity`);
@@ -114,10 +112,10 @@ function handleCopyNthTimes(e) {
 				let updateIndexToCopyCloneTo = indexWhereToCopyDiv + 1 + i;  
 				installationContainer.insertBefore(clone, installationContainer.children[updateIndexToCopyCloneTo]);
 			}
+				checkboxButtons(installationContainer);
 		}
 	});
 	
-	checkboxButtons(installationContainer);
 
 }
 

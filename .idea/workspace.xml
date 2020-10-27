@@ -5,15 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="99083f34-772a-40ce-9bd3-d50d57696d9b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gfx/DviceColumnPadding.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Gfx/DeviceColumnPadding.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnalysisEngine/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/AnalysisEngine/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gfx/DviceColumnPadding.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Gfx/DviceColumnPadding.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gfx/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Gfx/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/installationsegment.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/installationsegment.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/psustyles.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/psustyles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/button.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/button.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/input.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/input.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/picture.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/picture.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -123,6 +124,19 @@
       <workItem from="1602750913536" duration="8939000" />
       <workItem from="1602841670238" duration="14653000" />
       <workItem from="1603013496332" duration="4270000" />
+      <workItem from="1603018174404" duration="1221000" />
+      <workItem from="1603196497254" duration="8371000" />
+      <workItem from="1603236611441" duration="3022000" />
+      <workItem from="1603271360592" duration="3211000" />
+      <workItem from="1603274963786" duration="7527000" />
+      <workItem from="1603296522925" duration="22229000" />
+      <workItem from="1603359022552" duration="3417000" />
+      <workItem from="1603363371343" duration="9873000" />
+      <workItem from="1603379128575" duration="17115000" />
+      <workItem from="1603454249359" duration="599000" />
+      <workItem from="1603480138434" duration="2189000" />
+      <workItem from="1603652073070" duration="140000" />
+      <workItem from="1603714534803" duration="15570000" />
     </task>
     <servers />
   </component>

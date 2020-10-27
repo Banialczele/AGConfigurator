@@ -1,33 +1,21 @@
-.powerSupplySegmentContainer {
-    width: 100%;
-}
-
 .powerSupplyContainer {
-    margin: 0 auto;
-    width: 67%;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 2fr;
-    grid-template-rows: 90px;
+    grid-template-columns: 1fr auto auto 1fr;
+    grid-template-rows: 1fr;
     place-items: center;
     grid-template-areas: 
-        ". psuImage . psuSelect";
+        ". psuImage psuImage psuSelect";
 }
 
 .powerSupplyContainer .psuImageContainer {
     grid-area: psuImage;
-    height: 100%;
-    width: 100%;
-    grid-column: 2 / span 2;
-    display: grid;
-    text-align: center;
-    place-items: end center;  
-} 
+    height: 75px;
+    width: 200px
+}                    
 
-.powerSupplyContainer .psuImageContainer img{
-    height: 80%;
-    place-self: end center;
+.powerSupplyContainer .psuImageContainer img {
+    height: 100%;     
 }
-
 
 .powerSupplyContainer label {
     grid-area: psuSelect;

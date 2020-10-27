@@ -1,20 +1,11 @@
 const powerSupplies = PowerSupplies.map(powerSupply => ({ ...powerSupply }));
 
 const collectedData = [ {
-	cableType: "",
-	cableLen_m: 0,
-	deviceType: ""
+	cableType: "2 x 1mm2",
+	cableLen_m: 10,
+	deviceType: "Teta EcoWent"
 } ];
 const completeData = {};
-
-// window.addEventListener('scroll', () => {
-// 	const buttonDiv = document.querySelector('.buttonDiv');
-// 	if( window.scrollY >= buttonDiv.offsetTop ) {
-// 		buttonDiv.classList.add('sticky');
-// 	} else {
-// 		buttonDiv.classList.remove('sticky');
-// 	}
-// });
 
 window.addEventListener('load', () => {
 	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerManagementInstallationContainer', `powerSupplyContainer`, `powerSupply`);
@@ -25,6 +16,15 @@ window.addEventListener('load', () => {
 		Device.deviceComponent(element, index);
 		Device.deviceButtons(index);
 	});
+	
+	// const firstSegment = document.querySelector('.segmentContainer0');
+	// const firstSegmentCableValue = firstSegment.querySelector('.cableSelect');
+	//
+	// firstSegmentCableValue.options = collectedData[0].cableType;
+	// const firstSegmentInputValue = firstSegment.querySelector('input[name="cableInput"]');
+	// const firstSegmentDeviceValue = firstSegment.querySelector('.deviceSelect');
+	
+	picture('device', 'deviceImageContainer', 'segmentContainer0', 'devicePaddingImage', "./Gfx/DeviceColumnPadding.svg");
 
 	displaySystemDataPanel();
 
@@ -59,8 +59,8 @@ window.addEventListener('load', () => {
 
 function handleDOMChange() {
 	const images = document.querySelectorAll('.cableimage');
-	setupBusImage(images);
 	const segments = document.querySelectorAll('.installationSegment');
+	setupBusImage(images);
 
 	updateInputs(segments);
 	handleCheckboxes();
@@ -343,35 +343,35 @@ function displaySystemInfo(completeData) {
 	// created 3rd div to display only data from system, segment info etc.
 	infoPanelDiv.classList.add('toggle');
 	(infoPanelDiv.querySelector('.isSystemOk')).innerHTML = `isSystemOk: ${isSysOk}`;
-	(infoPanelDiv.querySelector('.requiredSupplyVoltage')).innerHTML = `requiredSupplyVoltage_V: ${sysPower.requiredSupplyVoltage_V}`;
-	(infoPanelDiv.querySelector('.currentConsumption')).innerHTML = `currentConsumption_A: ${sysPower.currentConsumption_A}`;
-	(infoPanelDiv.querySelector('.allDevicesPoweredUp')).innerHTML = `allDevicesPoweredUp: ${sysPower.isEveryDeviceGoodVoltage ? 'tak' : 'nie'}`;
-	(infoPanelDiv.querySelector('.powerConsumption')).innerHTML = `powerConsumption_W: ${sysPower.powerConsumption_W}`;
-	const busInfoList = document.createElement('ul');
-	busInfoList.classList.add('busInfoList');
-	completeData.bus.forEach((element, i) => {
-		if( i === 0 && completeData.bus.length >= 2 && infoPanelDiv.childNodes[1] !== undefined ) {
-			infoPanelDiv.childNodes[1].parentNode.removeChild(infoPanelDiv.childNodes[1]);
-		}
-		const segment = document.createElement('ul');
-		segment.classList.add('segmentInfo');
-		segment.classList.add(`segment${i}`);
-		segment.innerHTML = `Segment${i}:`;
-		const inputVoltage = document.createElement('li');
-		inputVoltage.setAttribute('id', `inputVoltage${i}`);
-		inputVoltage.innerHTML = `inputVoltage_V: ${element.eleStatus.inputVoltage_V}`;
-		const inputCurrent = document.createElement('li');
-		inputCurrent.setAttribute('id', `inputCurrent${i}`);
-		inputCurrent.innerHTML = `inputCurrent_A: ${element.eleStatus.inputCurrent_A}`;
-		const deviceSupplyVoltage = document.createElement('li');
-		deviceSupplyVoltage.setAttribute('id', `deviceSupplyVoltage${i}`);
-		deviceSupplyVoltage.innerHTML = `deviceSupplyVoltage_V: ${element.eleStatus.deviceSupplyVoltage_V}`;
-		segment.append(inputVoltage);
-		segment.append(inputCurrent);
-		segment.append(deviceSupplyVoltage);
-		busInfoList.append(segment);
-	});
-	infoPanelDiv.append(busInfoList);
+	// (infoPanelDiv.querySelector('.requiredSupplyVoltage')).innerHTML = `requiredSupplyVoltage_V: ${sysPower.requiredSupplyVoltage_V}`;
+	// (infoPanelDiv.querySelector('.currentConsumption')).innerHTML = `currentConsumption_A: ${sysPower.currentConsumption_A}`;
+	// (infoPanelDiv.querySelector('.allDevicesPoweredUp')).innerHTML = `allDevicesPoweredUp: ${sysPower.isEveryDeviceGoodVoltage ? 'tak' : 'nie'}`;
+	// (infoPanelDiv.querySelector('.powerConsumption')).innerHTML = `powerConsumption_W: ${sysPower.powerConsumption_W}`;
+	// const busInfoList = document.createElement('ul');
+	// busInfoList.classList.add('busInfoList');
+	// completeData.bus.forEach((element, i) => {
+	// 	if( i === 0 && completeData.bus.length >= 2 && infoPanelDiv.childNodes[1] !== undefined ) {
+	// 		infoPanelDiv.childNodes[1].parentNode.removeChild(infoPanelDiv.childNodes[1]);
+	// 	}
+	// 	const segment = document.createElement('ul');
+	// 	segment.classList.add('segmentInfo');
+	// 	segment.classList.add(`segment${i}`);
+	// 	segment.innerHTML = `Segment${i}:`;
+	// 	const inputVoltage = document.createElement('li');
+	// 	inputVoltage.setAttribute('id', `inputVoltage${i}`);
+	// 	inputVoltage.innerHTML = `inputVoltage_V: ${element.eleStatus.inputVoltage_V}`;
+	// 	const inputCurrent = document.createElement('li');
+	// 	inputCurrent.setAttribute('id', `inputCurrent${i}`);
+	// 	inputCurrent.innerHTML = `inputCurrent_A: ${element.eleStatus.inputCurrent_A}`;
+	// 	const deviceSupplyVoltage = document.createElement('li');
+	// 	deviceSupplyVoltage.setAttribute('id', `deviceSupplyVoltage${i}`);
+	// 	deviceSupplyVoltage.innerHTML = `deviceSupplyVoltage_V: ${element.eleStatus.deviceSupplyVoltage_V}`;
+	// 	segment.append(inputVoltage);
+	// 	segment.append(inputCurrent);
+	// 	segment.append(deviceSupplyVoltage);
+	// 	busInfoList.append(segment);
+	// });
+	// infoPanelDiv.append(busInfoList);
 
 }
 
