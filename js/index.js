@@ -6,41 +6,58 @@ const collectedData = [ {
 	deviceType: "Teta EcoWent"
 } ];
 const completeData = {};
+let sysOk = false;
 
 window.addEventListener('load', () => {
 	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerManagementInstallationContainer', `powerSupplyContainer`, `powerSupply`);
 	picture('psu', `psuImageContainer`, `powerSupplyContainer`, `imagePSU`);
 
-	collectedData.forEach((element, index) => {
-		Cable.cableComponent(element, index);
-		Device.deviceComponent(element, index);
-		Device.deviceButtons(index);
-	});
+	// const dragAndDropContainer = document.getElementById('installationContainer');
+	// dragAndDropContainer.addEventListener('dragenter', dragenter, false);
+	// dragAndDropContainer.addEventListener('dragover', dragover, false);
+	// dragAndDropContainer.addEventListener('drop', function(e) {
+	// 	e.stopPropagation();
+	// 	e.preventDefault();
+	//
+	// 	const dataTransfer = e.dataTransfer;
+	// 	const files = dataTransfer.files;
+	//
+	// 	for( let file of files ) {
+	// 		const blob = new Blob([ file ], { type: "application/json" });
+	// 		const fr = new FileReader();
+	//
+	// 		fr.addEventListener('load', e => {
+	// 			const firstSegment = document.querySelector('.segmentContainer0');
+	// 			firstSegment.parentNode.removeChild(firstSegment);
+	// 			const data = JSON.parse(fr.result);
+	// 			const bus = [...data.bus];
+	// 			generateSegmentsData(bus);
+	// 			const segments = document.querySelectorAll('.installationSegment');
+	// 			segments.forEach((segment,i) => {
+	// 				segment.querySelector('.cableSelect').value = bus[i].cableType;
+	// 				segment.querySelector('input[name="cableInput"]').value = bus[i].cableLen_m;
+	// 				segment.querySelector('.deviceSelect').value = bus[i].deviceType;
+	// 			});
+	// 		});
+	//
+	// 		fr.readAsText(blob);
+	// 	}
+	//
+	// }, false);
 
-	const firstSegment = document.querySelector('.segmentContainer0');
-	firstSegment.querySelector('.cableSelect').value = collectedData[0].cableType;
-	firstSegment.querySelector('input[name="cableInput"]').value = collectedData[0].cableLen_m;
-	firstSegment.querySelector('.deviceSelect').value = collectedData[0].deviceType;
-	chooseImg(firstSegment.querySelector('#deviceimage0'), collectedData[0].deviceType);
-
-	picture('device', 'deviceImageContainer', 'segmentContainer0', 'devicePaddingImage', "./Gfx/DeviceColumnPadding.svg");
-
-	displaySystemDataPanel();
+	generateSegments(collectedData);
+	initializeSegmentData();
 
 	handleButtonEvents();
 
 	const segments = document.querySelectorAll('.installationSegment');
-	const images = document.querySelectorAll('.cableimage');
-
 	//setting up images for wires
-	setupBusImage(images);
-
+	setupBusImage();
 	updateInputs(segments);
+	handlePSU();
 
 	completeData.bus = [ ...collectedData ];
 
-	const powerSupplyElement = document.getElementById('powerSupply');
-	handlePSU(powerSupplyElement);
 	const targetNode = document.querySelector("#installationContainer");
 
 	const config = {
@@ -56,57 +73,89 @@ window.addEventListener('load', () => {
 });
 
 function handleDOMChange() {
-	const images = document.querySelectorAll('.cableimage');
-	const segments = document.querySelectorAll('.installationSegment');
-	setupBusImage(images);
+	setupBusImage();
+	completeData.bus = collectedData;
+	systemInformation();
+}
 
+window.addEventListener('change', () => {
+	handlePSU();
+	const segments = document.querySelectorAll('.installationSegment');
 	updateInputs(segments);
 	handleCheckboxes();
-	
-	const powerSupplyElement = document.getElementById('powerSupply');
-	handlePSU(powerSupplyElement);
+	systemInformation();
+});
 
-	completeData.bus = collectedData;
-	displaySystemInfo(completeData);
+function systemInformation() {
+	const installationContainer = document.querySelector('.installationContainer');
+	const systemStatus = document.querySelector('.systemStatusText');
+	sysOk = isSystemOk(completeData);
+	if(sysOk){
+		installationContainer.classList.remove('sysWrong');
+		installationContainer.classList.add('sysOk')
+	} else {
+		installationContainer.classList.remove('sysOk')
+		installationContainer.classList.add('sysWrong');
+	}
+	sysOk ? systemStatus.innerText = "poprawny" : systemStatus.innerText = "niepoprawny";
 }
 
-//create panel with system information
-function displaySystemDataPanel() {
-	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
-	const systemInfo = document.createElement('div');
-	systemInfo.classList.add('systemInfo');
-	const systemInfoList = document.createElement('ol');
-	systemInfoList.classList.add('systemInfoList');
-
-	const isSystemOk = document.createElement('li');
-	isSystemOk.classList.add('isSystemOk');
-
-	const requiredSupplyVoltage = document.createElement('li');
-	requiredSupplyVoltage.classList.add('requiredSupplyVoltage');
-
-	const currentConsumption = document.createElement('li');
-	currentConsumption.classList.add('currentConsumption');
-
-	const allDevicesPoweredUp = document.createElement('li');
-	allDevicesPoweredUp.classList.add('allDevicesPoweredUp');
-
-	const powerConsumption = document.createElement('li');
-	powerConsumption.classList.add('powerConsumption');
-
-	systemInfoList.append(isSystemOk);
-	systemInfoList.append(requiredSupplyVoltage);
-	systemInfoList.append(currentConsumption);
-	systemInfoList.append(allDevicesPoweredUp);
-	systemInfoList.append(powerConsumption);
-	systemInfo.append(systemInfoList);
-	installationContainer.appendChild(systemInfo);
+function generateSegments(dataArray) {
+	dataArray.forEach((element, index) => {
+		Cable.cableComponent(element, index);
+		Device.deviceComponent(element, index);
+		Device.deviceButtons(index);
+	});
 }
 
-function handlePSU(psuContainer) {
+function initializeSegmentData() {
+	const firstSegment = document.querySelector('.segmentContainer0');
+	firstSegment.querySelector('.cableSelect').value = collectedData[0].cableType;
+	firstSegment.querySelector('input[name="cableInput"]').value = collectedData[0].cableLen_m;
+	firstSegment.querySelector('.deviceSelect').value = collectedData[0].deviceType;
+	chooseImg(firstSegment.querySelector('#deviceimage0'), collectedData[0].deviceType);
+
+}
+
+// function dragenter(e) {
+// 	e.stopPropagation();
+// 	e.preventDefault();
+// }
+//
+// function dragover(e) {
+// 	e.stopPropagation();
+// 	e.preventDefault();
+// }
+
+// function drop(e) {
+// 	e.stopPropagation();
+// 	e.preventDefault();
+//	
+// 	const dataTransfer = e.dataTransfer;
+// 	const files = dataTransfer.files;
+// 	return handleFiles(files);
+// }
+
+// function handleFiles(files) {
+// 	for( let file of files ) {
+// 		const blob = new Blob([ file ], { type: "application/json" });
+// 		const fr = new FileReader();
+//
+// 		fr.addEventListener('load', e => {
+// 			console.log(JSON.parse(fr.result));
+// 			return JSON.parse(fr.result);
+// 		});
+//
+// 		fr.readAsText(blob);
+// 		console.log(file.name);
+//
+// 	}
+// }
+
+function handlePSU() {
+	const psuContainer = document.getElementById('powerSupply');
 	psuContainer.addEventListener('change', e => {
-
 		completeData.supplyType = e.target.value;
-
 		const img = document.getElementById("imagePSU");
 		if( e.target.value === '' ) {
 			const parentNode = img.parentNode.parentNode;
@@ -120,7 +169,9 @@ function handlePSU(psuContainer) {
 	});
 }
 
-function setupBusImage(imageElements) {
+function setupBusImage() {
+	const imageElements = document.querySelectorAll('.cableimage');
+
 	for( let p = 0; p < imageElements.length; p++ ) {
 		if( p >= 0 && p !== imageElements.length - 1 ) {
 			chooseImg(imageElements[p], "bus");
@@ -333,49 +384,6 @@ chooseImg = (img, value) => {
 		}
 	}
 }
-
-function displaySystemInfo(completeData) {
-	const infoPanelDiv = document.querySelector('.systemInfo');
-	const isSysOk = isSystemOk(completeData); //info, czy system jest ok
-	const sysPower = analiseSystem(completeData); //info ile system żre prądu, requiredSupplyVoltage_V, currentConsumption_a,
-																								// isEveryDeviceGoodVoltage_v, powerConsumption_w
-		//inputVoltage_v, inputCurrent_a, deviceSupplyVoltage_v
-	// created 3rd div to display only data from system, segment info etc.
-	infoPanelDiv.classList.add('toggle');
-	(infoPanelDiv.querySelector('.isSystemOk')).innerHTML = `isSystemOk: ${isSysOk}`;
-	// (infoPanelDiv.querySelector('.requiredSupplyVoltage')).innerHTML = `requiredSupplyVoltage_V: ${sysPower.requiredSupplyVoltage_V}`;
-	// (infoPanelDiv.querySelector('.currentConsumption')).innerHTML = `currentConsumption_A: ${sysPower.currentConsumption_A}`;
-	// (infoPanelDiv.querySelector('.allDevicesPoweredUp')).innerHTML = `allDevicesPoweredUp: ${sysPower.isEveryDeviceGoodVoltage ? 'tak' : 'nie'}`;
-	// (infoPanelDiv.querySelector('.powerConsumption')).innerHTML = `powerConsumption_W: ${sysPower.powerConsumption_W}`;
-	// const busInfoList = document.createElement('ul');
-	// busInfoList.classList.add('busInfoList');
-	// completeData.bus.forEach((element, i) => {
-	// 	if( i === 0 && completeData.bus.length >= 2 && infoPanelDiv.childNodes[1] !== undefined ) {
-	// 		infoPanelDiv.childNodes[1].parentNode.removeChild(infoPanelDiv.childNodes[1]);
-	// 	}
-	// 	const segment = document.createElement('ul');
-	// 	segment.classList.add('segmentInfo');
-	// 	segment.classList.add(`segment${i}`);
-	// 	segment.innerHTML = `Segment${i}:`;
-	// 	const inputVoltage = document.createElement('li');
-	// 	inputVoltage.setAttribute('id', `inputVoltage${i}`);
-	// 	inputVoltage.innerHTML = `inputVoltage_V: ${element.eleStatus.inputVoltage_V}`;
-	// 	const inputCurrent = document.createElement('li');
-	// 	inputCurrent.setAttribute('id', `inputCurrent${i}`);
-	// 	inputCurrent.innerHTML = `inputCurrent_A: ${element.eleStatus.inputCurrent_A}`;
-	// 	const deviceSupplyVoltage = document.createElement('li');
-	// 	deviceSupplyVoltage.setAttribute('id', `deviceSupplyVoltage${i}`);
-	// 	deviceSupplyVoltage.innerHTML = `deviceSupplyVoltage_V: ${element.eleStatus.deviceSupplyVoltage_V}`;
-	// 	segment.append(inputVoltage);
-	// 	segment.append(inputCurrent);
-	// 	segment.append(deviceSupplyVoltage);
-	// 	busInfoList.append(segment);
-	// });
-	// infoPanelDiv.append(busInfoList);
-
-}
-
-
 
 
 

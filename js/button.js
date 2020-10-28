@@ -34,6 +34,13 @@ const button = function(index) {
 function handleCopyNthTimes(e) {
 	//get index of an element from id
 	const index = parseInt(e.target.id.match(/\d+/)[0]);
+	
+	//delete check/uncheck checkboxes buttons
+	const buttonDiv = document.querySelector('.buttonDiv');
+	if(buttonDiv) {
+		buttonDiv.parentNode.removeChild(buttonDiv);
+	}
+	
 	//select segment to copy
 	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
 	const segments = document.querySelectorAll('.installationSegment');
@@ -132,12 +139,8 @@ function handleDeleteDevice(e) {
 
 
 function checkboxButtons(installationContainer) {
-	const checkIfButtonsExists = installationContainer.querySelector('.buttonDiv');
-	if(checkIfButtonsExists){
-		installationContainer.removeChild(checkIfButtonsExists);
-	}
-	const buttonContainer = installationContainer;
-
+	const segmentContainer = installationContainer.lastChild;
+	const buttonContainer = segmentContainer.querySelector('.checkboxAndcableContainer');
 	const buttonDiv = document.createElement('div');
 	buttonDiv.className = 'buttonDiv';
 	//creating selectAll and unselectAll buttons for every segment

@@ -18,7 +18,7 @@ const Devices =
 [
 	{type: "Teta EcoWent", power_W: 0.28, current_A: 0.005, minVoltage_V: 12, icon: "EcoWent.svg"},
 	{type: "Teta EcoDet", power_W: 1.15, current_A: 0.007, minVoltage_V: 12, icon: "EcoDet.svg"},
-	{type: "Teta EcoWent + MiniDet", power_W: 1.15, current_A: 0.07, minVoltage_V: 12, icon: "EcoWent_MiniPel.svg"},
+	{type: "Teta EcoWent + MiniDet", power_W: 1.15, current_A: 0.007, minVoltage_V: 12, icon: "EcoWent_MiniPel.svg"},
 	{type: "Teta EcoTerm", power_W: 1.15, current_A: 0.007, minVoltage_V: 12, icon: "EcoTerm.svg"},
 	{type: "Teta EcoH", power_W: 1.7, current_A: 0, minVoltage_V: 15, icon: "EcoH.svg"},
 	{type: "Teta EcoN", power_W: 1.7, current_A: 0, minVoltage_V: 15, icon: "EcoN.svg"},

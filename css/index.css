@@ -17,7 +17,7 @@ body {
   margin: 0;
 }
 
-#quantity {
+#quantity, input[name="cableInput"] {
     width: 80px;
     -moz-appearance: textfield;
 }
@@ -33,22 +33,14 @@ select {
     -webkit-appearance: none; /* Safari and Chrome */
 }
 
-.powerManagementInstallationContainer .systemInfo > * {
-    list-style: none;    
+.systemStatus {
+    text-align: center;
 }
 
-.powerManagementInstallationContainer .systemInfo ul > * {
-    list-style: none;
-    color:white;    
-    text-align: center;     
-    padding: 5px 0;
-    margin: 2px 0;    
+.sysOk {
+    background: #83ff84;
 }
 
-.powerManagementInstallationContainer .systemInfo ul.segmentInfo:nth-child(odd){
-    background: rgba(65,64,66, 0.9);
-}
-
-.powerManagementInstallationContainer .systemInfo ul.segmentInfo:nth-child(even){
-    background: rgba(204,53,51, 0.9);  
+.sysWrong {
+    background: #f38585;
 }
