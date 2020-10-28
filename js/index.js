@@ -92,12 +92,12 @@ function systemInformation() {
 	sysOk = isSystemOk(completeData);
 	if(sysOk){
 		installationContainer.classList.remove('sysWrong');
-		installationContainer.classList.add('sysOk')
+		installationContainer.classList.add('sysOk');
 	} else {
-		installationContainer.classList.remove('sysOk')
+		installationContainer.classList.remove('sysOk');
 		installationContainer.classList.add('sysWrong');
 	}
-	sysOk ? systemStatus.innerText = "poprawny" : systemStatus.innerText = "niepoprawny";
+	sysOk ? systemStatus.innerText = "System: poprawny" : systemStatus.innerText = "System: niepoprawny";
 }
 
 function generateSegments(dataArray) {

@@ -26,7 +26,7 @@
 
 .installationSegment {
     display: grid;
-    grid-template-columns: 1fr auto auto 1fr;
+    grid-template-columns: minmax(200px,1fr) auto auto minmax(200px,1fr);
     grid-template-rows: 150px;
     grid-template-areas: 
     "checkboxAndWire wireImage deviceImage deviceSelect"    
@@ -45,7 +45,7 @@
 .installationSegment .checkboxAndcableContainer input {
     grid-column: 2;
     grid-row: 1;
-    justify-self: center;
+    justify-self: start;
     align-self: start;
     margin-top: 5px;
 }
