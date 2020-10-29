@@ -127,14 +127,31 @@ function handleCopyNthTimes(e) {
 }
 
 function handleDeleteDevice(e) {
-	//get number of element from id
+	const segments = document.querySelectorAll('.installationSegment');
+	const lastSegmentIndex = segments.length - 1;
+	const oneBeforeLast = segments.length - 2;
+		//get number of element from id
 	const index = e.target.id.match(/\d+/)[0];	
 	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
-		
+
+	//change position of buttonDiv to oneBeforeLast segment IF last segment has been deleted.
+	if(segments.length >= 2 && lastSegmentIndex === parseInt(index) ){
+		const lastSegment = document.querySelector(`.segmentContainer${lastSegmentIndex}`);
+		const buttonContainer = lastSegment.querySelector('.buttonDiv');
+		if(buttonContainer) {
+			buttonContainer.parentNode.removeChild(buttonContainer);
+		 	const oneBeforeLastSegment = document.querySelector(`.segmentContainer${oneBeforeLast}`);	
+		 	const oneBeforeLastContainer = oneBeforeLastSegment.querySelector(`.checkboxAndcableContainer`);	
+		 	oneBeforeLastContainer.appendChild(buttonContainer);
+		}
+	}
+
+	const findIndexToDelete = Array.from(segments).findIndex( segment => segment === segmentContainer);
+
 	if( segmentContainer !== null && segmentContainer.parentNode !== null) {
 		segmentContainer.parentNode.removeChild(segmentContainer);
 	}
-	collectedData.splice(index, 1);
+	collectedData.splice(findIndexToDelete, 1);
 }
 
 

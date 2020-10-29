@@ -5,7 +5,10 @@ const collectedData = [ {
 	cableLen_m: 10,
 	deviceType: "Teta EcoWent"
 } ];
-const completeData = {};
+
+const completeData = {
+	supplyType: "24V z podtrzymaniem"
+};
 let sysOk = false;
 
 window.addEventListener('load', () => {
@@ -50,10 +53,9 @@ window.addEventListener('load', () => {
 
 	handleButtonEvents();
 
-	const segments = document.querySelectorAll('.installationSegment');
 	//setting up images for wires
 	setupBusImage();
-	updateInputs(segments);
+
 	handlePSU();
 
 	completeData.bus = [ ...collectedData ];
@@ -70,19 +72,29 @@ window.addEventListener('load', () => {
 	const observer = new MutationObserver(handleDOMChange);
 
 	observer.observe(targetNode, config);
+	systemInformation();
 });
 
 function handleDOMChange() {
 	setupBusImage();
 	completeData.bus = collectedData;
+	handleCheckboxes();
+	
+	const segments = document.querySelectorAll('.installationSegment');
+	segments.forEach((segment, i) => {
+		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
+	});
+	
 	systemInformation();
 }
 
 window.addEventListener('change', () => {
 	handlePSU();
 	const segments = document.querySelectorAll('.installationSegment');
-	updateInputs(segments);
-	handleCheckboxes();
+	segments.forEach((segment, i) => {
+		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
+	});
+	
 	systemInformation();
 });
 
@@ -90,6 +102,7 @@ function systemInformation() {
 	const installationContainer = document.querySelector('.installationContainer');
 	const systemStatus = document.querySelector('.systemStatusText');
 	sysOk = isSystemOk(completeData);
+	console.log(sysOk);
 	if(sysOk){
 		installationContainer.classList.remove('sysWrong');
 		installationContainer.classList.add('sysOk');
@@ -115,6 +128,11 @@ function initializeSegmentData() {
 	firstSegment.querySelector('.deviceSelect').value = collectedData[0].deviceType;
 	chooseImg(firstSegment.querySelector('#deviceimage0'), collectedData[0].deviceType);
 
+	(document.querySelector('.powerSupply')).value = completeData.supplyType;
+	const img = document.getElementById("imagePSU");
+	img.srcset = "./Gfx/CU.svg";
+	img.src = "./Gfx/CU.svg";
+	img.alt = 'Unable to find image'
 }
 
 // function dragenter(e) {
@@ -181,20 +199,11 @@ function setupBusImage() {
 	}
 }
 
-function selectedCheckboxes(segments) {
-	return Array.from(segments).filter((segment, i) => {
-		const checkbox = segment.querySelector('input[type="checkbox"]');
-		return checkbox.checked ? segment : null;
-	});
-}
-
 const checkAllCheckboxes = function() {
 	const checkboxes = document.querySelectorAll('input[name="cableType"]');
 	for( let checkbox of checkboxes ) {
 		checkbox.checked = true;
 	}
-	const segments = document.querySelectorAll('.installationSegment');
-	updateInputs(segments);
 };
 
 const unCheckAllCheckboxes = function() {
@@ -202,33 +211,33 @@ const unCheckAllCheckboxes = function() {
 	for( let checkbox of checkboxes ) {
 		checkbox.checked = false;
 	}
-	handleDOMChange();
-
-	const segments = document.querySelectorAll('.installationSegment');
-	updateInputs(segments);
 };
 
 handleCheckboxes = function() {
 	const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
 	let lastChecked;
 
-	function handleCheck(e) {
+	function handleChange(e) {
 		let inBetween = false;
+
 		if( e.shiftKey && this.checked ) {
 			checkboxes.forEach(checkbox => {
 				if( checkbox === this || checkbox === lastChecked ) {
 					inBetween = !inBetween;
 				}
+
 				if( inBetween ) {
 					checkbox.checked = true;
 				}
 			});
-			handleDOMChange();
 		}
+
 		lastChecked = this;
 	}
 
-	checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+	checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleChange));
+
 }
 
 handleButtonEvents = function() {
@@ -246,14 +255,23 @@ handleButtonEvents = function() {
 	});
 }
 
-function handleInputAndSelectChange(event, checkedSegments, index, checked) {
+function selectedCheckboxes(segmentList) {
+	return Array.from(segmentList).filter(segment => {
+		const checkbox = segment.querySelector('input[type="checkbox"]');
+		return checkbox.checked ? segment : null;
+	});
+}
+
+function handleInputAndSelectChange(event, segments, index) {
+	const checkedSegments = selectedCheckboxes(segments) || [];
+	console.log(checkedSegments);
 	switch( event.target.name ) {
 		case 'cableSelect': {
-			if( checked ) {
-				checkedSegments.forEach(segment => {
+			if( checkedSegments.length > 0 ) {
+				checkedSegments.forEach((segment,i) => {
 					const cableSelect = segment.querySelector(`.cableSelect`);
 					cableSelect.value = event.target.value;
-					collectedData[index].cableType = event.target.value;
+					collectedData[i].cableType = event.target.value;
 				});
 			} else {
 				collectedData[index].cableType = event.target.value;
@@ -261,23 +279,23 @@ function handleInputAndSelectChange(event, checkedSegments, index, checked) {
 			break;
 		}
 		case 'deviceSelect': {
-			if( checked ) {
-				checkedSegments.forEach(segment => {
+			if( checkedSegments.length > 0 ) {
+				checkedSegments.forEach((segment,i) => {
 					const deviceSelect = segment.querySelector(`.deviceSelect`);
 					const img = segment.querySelector(`.deviceimage`);
 					if( event.target.value === '' ) {
 						img.removeAttribute('src');
 						img.removeAttribute('srcset');
 						img.removeAttribute('alt');
-					} else {				
+					} else {
 						chooseImg(img, event.target.value);
 						deviceSelect.value = event.target.value;
-						collectedData[index].deviceType = event.target.value;
+						collectedData[i].deviceType = event.target.value;
 					}
 				});
-			} else if( !checked ) {
+			} else {
 				const segment = event.target.parentNode.parentNode.parentNode;
-				const selectedSegmentIndex = parseInt(segment.id.match(/\d+/)[0]);	
+				const selectedSegmentIndex = parseInt(segment.id.match(/\d+/)[0]);
 				const img = document.querySelector(`#deviceimage${selectedSegmentIndex}`);
 
 				if( event.target.value === '' ) {
@@ -292,11 +310,11 @@ function handleInputAndSelectChange(event, checkedSegments, index, checked) {
 			break;
 		}
 		case 'cableInput': {
-			if( checked ) {
-				checkedSegments.forEach(segment => {
+			if( checkedSegments.length > 0 ) {
+				checkedSegments.forEach((segment,i) => {
 					const cableInput = segment.querySelector('input[name="cableInput"]');
 					cableInput.value = event.target.value;
-					collectedData[index].cableLen_m = parseInt(event.target.value);
+					collectedData[i].cableLen_m = parseInt(event.target.value);
 				});
 			} else {
 				collectedData[index].cableLen_m = parseInt(event.target.value);
@@ -304,14 +322,6 @@ function handleInputAndSelectChange(event, checkedSegments, index, checked) {
 			break;
 		}
 	}
-}
-
-updateInputs = function(segments) {
-	const segmentsChecked = selectedCheckboxes(segments) || [];
-	segments.forEach((segment, i) => {
-		const checkbox = segment.querySelector('input[type="checkbox"]');
-		segment.addEventListener('change', e => handleInputAndSelectChange(e, segmentsChecked, i, checkbox.checked))
-	});
 }
 
 chooseImg = (img, value) => {
