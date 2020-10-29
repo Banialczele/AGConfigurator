@@ -34,17 +34,18 @@ const button = function(index) {
 function handleCopyNthTimes(e) {
 	//get index of an element from id
 	const index = parseInt(e.target.id.match(/\d+/)[0]);
-	
+
 	//select segment to copy
 	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
 	const segments = document.querySelectorAll('.installationSegment');
-	const indexWhereToCopyDiv = Array.from(segments).findIndex( segment => segment === segmentContainer);
-	//get data from segment to insert into copy
+	const indexWhereToCopyDiv = Array.from(segments).findIndex(segment => segment === segmentContainer);
+
+	//data to insert
 	const cableTypeToCopy = (segmentContainer.querySelector(`.cableSelect`)).value;
 	const cableIndexToCopy = (segmentContainer.querySelector(`.cableSelect`)).selectedIndex;
 	const deviceTypeToCopy = (segmentContainer.querySelector(`.deviceSelect`)).value;
 	const deviceIndexToCopy = (segmentContainer.querySelector(`.deviceSelect`)).selectedIndex;
- 	const cableLength = (segmentContainer.querySelector(`.cableContainerInput input`)).value;
+	const cableLength = (segmentContainer.querySelector(`.cableContainerInput input`)).value;
 
 	//select parentNode of container to insert data at specific index
 	const installationContainer = segmentContainer.parentNode;
@@ -131,6 +132,7 @@ function handleDeleteDevice(e) {
 	if( segments.length > 1) {
 		const lastSegmentIndex = segments.length - 1;
 		const oneBeforeLast = segments.length - 2;
+		
 		//get number of element from id
 		const index = e.target.id.match(/\d+/)[0];
 		const segmentContainer = document.querySelector(`.segmentContainer${index}`);

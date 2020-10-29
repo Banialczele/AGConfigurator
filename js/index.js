@@ -54,8 +54,7 @@ window.addEventListener('load', () => {
 	initializeSegmentData();
 
 	handleButtonEvents();
-
-	//setting up images for wires
+	
 	setupBusImage();
 
 	handlePSU();
@@ -86,7 +85,6 @@ function handleDOMChange() {
 	segments.forEach((segment, i) => {
 		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
 	});
-	
 	systemInformation();
 }
 
@@ -96,7 +94,6 @@ window.addEventListener('change', () => {
 	segments.forEach((segment, i) => {
 		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
 	});
-	
 	systemInformation();
 });
 
@@ -104,7 +101,6 @@ function systemInformation() {
 	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
 	const systemStatus = document.querySelector('.systemStatusText');
 	sysOk = isSystemOk(completeData);
-	console.log(sysOk);
 	if(sysOk){
 		installationContainer.classList.remove('sysWrong');
 		installationContainer.classList.add('sysOk');
@@ -269,8 +265,8 @@ function handleInputAndSelectChange(event, segments, index) {
 	switch( event.target.name ) {
 		case 'cableSelect': {
 			if( checkedSegments.length > 0 ) {
-				checkedSegments.forEach((segment,i) => {
-					const indexToUpdate = Array.from(segments).findIndex( checkedSegment => segment === checkedSegment );
+				checkedSegments.forEach((segment) => {
+					const indexToUpdate = Array.from(segments).findIndex( checkedSegment => segment === checkedSegment ); 					
 					const cableSelect = segment.querySelector(`.cableSelect`);
 					cableSelect.value = event.target.value;
 					collectedData[indexToUpdate].cableType = event.target.value;
@@ -282,7 +278,7 @@ function handleInputAndSelectChange(event, segments, index) {
 		}
 		case 'deviceSelect': {
 			if( checkedSegments.length > 0 ) {
-				checkedSegments.forEach((segment,i) => {
+				checkedSegments.forEach((segment) => {
 					const indexToUpdate = Array.from(segments).findIndex( checkedSegment => segment === checkedSegment );
 					const deviceSelect = segment.querySelector(`.deviceSelect`);
 					const img = segment.querySelector(`.deviceimage`);
@@ -314,7 +310,7 @@ function handleInputAndSelectChange(event, segments, index) {
 		}
 		case 'cableInput': {
 			if( checkedSegments.length > 0 ) {
-				checkedSegments.forEach((segment,i) => {
+				checkedSegments.forEach((segment) => {
 					const indexToUpdate = Array.from(segments).findIndex( checkedSegment => segment === checkedSegment );
 					const cableInput = segment.querySelector('input[name="cableInput"]');
 					cableInput.value = event.target.value;
