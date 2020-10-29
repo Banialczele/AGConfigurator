@@ -264,14 +264,14 @@ function selectedCheckboxes(segmentList) {
 
 function handleInputAndSelectChange(event, segments, index) {
 	const checkedSegments = selectedCheckboxes(segments) || [];
-	console.log(checkedSegments);
 	switch( event.target.name ) {
 		case 'cableSelect': {
 			if( checkedSegments.length > 0 ) {
 				checkedSegments.forEach((segment,i) => {
+					const indexToUpdate = Array.from(segments).findIndex( checkedSegment => segment === checkedSegment );
 					const cableSelect = segment.querySelector(`.cableSelect`);
 					cableSelect.value = event.target.value;
-					collectedData[i].cableType = event.target.value;
+					collectedData[indexToUpdate].cableType = event.target.value;
 				});
 			} else {
 				collectedData[index].cableType = event.target.value;
@@ -281,6 +281,7 @@ function handleInputAndSelectChange(event, segments, index) {
 		case 'deviceSelect': {
 			if( checkedSegments.length > 0 ) {
 				checkedSegments.forEach((segment,i) => {
+					const indexToUpdate = Array.from(segments).findIndex( checkedSegment => segment === checkedSegment );
 					const deviceSelect = segment.querySelector(`.deviceSelect`);
 					const img = segment.querySelector(`.deviceimage`);
 					if( event.target.value === '' ) {
@@ -290,7 +291,7 @@ function handleInputAndSelectChange(event, segments, index) {
 					} else {
 						chooseImg(img, event.target.value);
 						deviceSelect.value = event.target.value;
-						collectedData[i].deviceType = event.target.value;
+						collectedData[indexToUpdate].deviceType = event.target.value;
 					}
 				});
 			} else {
@@ -312,9 +313,10 @@ function handleInputAndSelectChange(event, segments, index) {
 		case 'cableInput': {
 			if( checkedSegments.length > 0 ) {
 				checkedSegments.forEach((segment,i) => {
+					const indexToUpdate = Array.from(segments).findIndex( checkedSegment => segment === checkedSegment );
 					const cableInput = segment.querySelector('input[name="cableInput"]');
 					cableInput.value = event.target.value;
-					collectedData[i].cableLen_m = parseInt(event.target.value);
+					collectedData[indexToUpdate].cableLen_m = parseInt(event.target.value);
 				});
 			} else {
 				collectedData[index].cableLen_m = parseInt(event.target.value);
