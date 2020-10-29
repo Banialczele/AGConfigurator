@@ -54,8 +54,8 @@
     place-self: end;
 }
 
-.cableContainerInput input {
-    max-width: 30px;
+.cableContainerInput input{
+    width: 65px;
 }
 
 .installationSegment .cableImageContainer {

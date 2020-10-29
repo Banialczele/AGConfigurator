@@ -10,8 +10,8 @@ body {
 }
 
 /* styles to remove arrows from input element */
-#quantity::-webkit-outer-spin-button,
-#quantity::-webkit-inner-spin-button {
+#quantity, input::-webkit-outer-spin-button,
+#quantity, input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
