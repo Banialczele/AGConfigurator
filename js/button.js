@@ -35,12 +35,6 @@ function handleCopyNthTimes(e) {
 	//get index of an element from id
 	const index = parseInt(e.target.id.match(/\d+/)[0]);
 	
-	//delete check/uncheck checkboxes buttons
-	const buttonDiv = document.querySelector('.buttonDiv');
-	if(buttonDiv) {
-		buttonDiv.parentNode.removeChild(buttonDiv);
-	}
-	
 	//select segment to copy
 	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
 	const segments = document.querySelectorAll('.installationSegment');
@@ -72,6 +66,12 @@ function handleCopyNthTimes(e) {
 
 	input.addEventListener('keypress', (e) => {
 		if( e.key === 'Enter' ) {
+			//delete check/uncheck checkboxes buttons
+			const buttonDiv = document.querySelector('.buttonDiv');
+			if( buttonDiv ) {
+				buttonDiv.parentNode.removeChild(buttonDiv);
+			}
+
 			const inputToRemove = document.getElementById("quantity");
 			inputToRemove.parentNode.removeChild(inputToRemove);
 			for( let i = 0; i < e.target.value; i++ ) {
