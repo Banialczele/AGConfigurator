@@ -4,10 +4,6 @@ const devices = Devices.map(devices => ({ ...devices }));
 const generateOptions = (param, select, targetName) => {
 	for( let i = 0; i < param.length; i++ ) {
 		const option = document.createElement('option');
-		if( i === 0 ) {
-			const blank = new Option(`${targetName}`, '');
-			select.add(blank, undefined);
-		}
 		option.innerHTML = param[i].type;
 		option.value = param[i].type;
 		select.appendChild(option);
@@ -16,7 +12,7 @@ const generateOptions = (param, select, targetName) => {
 
 const select = function(param, labelClass, selectName, segmentName, selectContainer, type) {
 	const selectContainerDiv = document.createElement('div');
-
+	
 	selectContainerDiv.className = selectContainer;
 	const label = document.createElement('label');
 	label.className = labelClass;
@@ -29,6 +25,7 @@ const select = function(param, labelClass, selectName, segmentName, selectContai
 
 	switch( type ) {
 		case 'powerSupply' : {
+			label.innerText = 'Rodzaj zasilania ';
 			generateOptions(param, select, 'Zasilacz');
 			break;
 		}

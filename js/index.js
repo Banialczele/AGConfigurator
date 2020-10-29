@@ -13,8 +13,10 @@ let sysOk = false;
 
 window.addEventListener('load', () => {
 	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerManagementInstallationContainer', `powerSupplyContainer`, `powerSupply`);
-	picture('psu', `psuImageContainer`, `powerSupplyContainer`, `imagePSU`);
 
+	picture('psu', `psuImageContainer`, `powerSupplyContainer`, `imagePSU`);
+ 
+ 	
 	// const dragAndDropContainer = document.getElementById('installationContainer');
 	// dragAndDropContainer.addEventListener('dragenter', dragenter, false);
 	// dragAndDropContainer.addEventListener('dragover', dragover, false);
@@ -99,7 +101,7 @@ window.addEventListener('change', () => {
 });
 
 function systemInformation() {
-	const installationContainer = document.querySelector('.installationContainer');
+	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
 	const systemStatus = document.querySelector('.systemStatusText');
 	sysOk = isSystemOk(completeData);
 	console.log(sysOk);
