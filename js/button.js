@@ -57,7 +57,7 @@ function handleCopyNthTimes(e) {
 	}
 	//create input element to get amount of segments to create
 	const input = document.createElement('input');
-	const num = parseInt(cableLength) || 0;
+	const num = parseFloat(cableLength) || 0;
 
 	input.type = 'Number';
 	input.setAttribute('id', `quantity`);
@@ -129,6 +129,7 @@ function handleCopyNthTimes(e) {
 
 function handleDeleteDevice(e) {
 	const segments = document.querySelectorAll('.installationSegment');
+	// segments.forEach(segment => (document.querySelector('input[type="checkbox"]')).checked = false);
 	if( segments.length > 1) {
 		const lastSegmentIndex = segments.length - 1;
 		const oneBeforeLast = segments.length - 2;
@@ -148,11 +149,16 @@ function handleDeleteDevice(e) {
 				oneBeforeLastContainer.appendChild(buttonContainer);
 			}
 		}
-
 		const findIndexToDelete = Array.from(segments).findIndex(segment => segment === segmentContainer);
-
 		if( segmentContainer !== null && segmentContainer.parentNode !== null ) {
+			const infoPopup = document.querySelector('.popup');
+			console.log(findIndexToDelete);
+			infoPopup.innerText = `Usunięto segment: ${index}`;
+						
 			segmentContainer.parentNode.removeChild(segmentContainer);
+			infoPopup.classList.add('open-active')
+			setTimeout( () =>  { infoPopup.classList.remove('open-active') }, 1500);
+			
 		}
 		collectedData.splice(findIndexToDelete, 1);
 	}

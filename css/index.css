@@ -27,7 +27,7 @@ select {
     text-align: center;
     border-radius: 10px;
     border: 1px;
-    background: lightgray;
+    background: #d3d3d3;
     -moz-appearance: none; /* Firefox */
     -webkit-appearance: none; /* Safari and Chrome */
 }
@@ -42,4 +42,15 @@ select {
 
 .sysWrong {
     background: #f38585;
+}
+
+.popup {
+    max-width: 200px;
+    background: rgba(211,211,211,0.3);
+    padding: 15px 10px;
+    transform: translateY(-500%);
+}
+
+.open-active {
+    transform: translateX(10%) translateY(-80%);
 }

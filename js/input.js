@@ -8,6 +8,7 @@ const input = function(param, cableContainer, cableLabel, inputName, inputContai
 	input.type = `number`;
 	input.name = inputName;
 	input.setAttribute('min', "0");
+	input.setAttribute('step', ".1");
 
 	inputDiv.appendChild(label);
 	inputDiv.appendChild(input);

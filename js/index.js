@@ -15,50 +15,18 @@ window.addEventListener('load', () => {
 	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerManagementInstallationContainer', `powerSupplyContainer`, `powerSupply`);
 
 	picture('psu', `psuImageContainer`, `powerSupplyContainer`, `imagePSU`);
- 
- 	
-	// const dragAndDropContainer = document.getElementById('installationContainer');
-	// dragAndDropContainer.addEventListener('dragenter', dragenter, false);
-	// dragAndDropContainer.addEventListener('dragover', dragover, false);
-	// dragAndDropContainer.addEventListener('drop', function(e) {
-	// 	e.stopPropagation();
-	// 	e.preventDefault();
-	//
-	// 	const dataTransfer = e.dataTransfer;
-	// 	const files = dataTransfer.files;
-	//
-	// 	for( let file of files ) {
-	// 		const blob = new Blob([ file ], { type: "application/json" });
-	// 		const fr = new FileReader();
-	//
-	// 		fr.addEventListener('load', e => {
-	// 			const firstSegment = document.querySelector('.segmentContainer0');
-	// 			firstSegment.parentNode.removeChild(firstSegment);
-	// 			const data = JSON.parse(fr.result);
-	// 			const bus = [...data.bus];
-	// 			generateSegmentsData(bus);
-	// 			const segments = document.querySelectorAll('.installationSegment');
-	// 			segments.forEach((segment,i) => {
-	// 				segment.querySelector('.cableSelect').value = bus[i].cableType;
-	// 				segment.querySelector('input[name="cableInput"]').value = bus[i].cableLen_m;
-	// 				segment.querySelector('.deviceSelect').value = bus[i].deviceType;
-	// 			});
-	// 		});
-	//
-	// 		fr.readAsText(blob);
-	// 	}
-	//
-	// }, false);
+
+	dragAndDrop();
 
 	generateSegments(collectedData);
 	initializeSegmentData();
-
-	handleButtonEvents();
-	
+	handleButtonEvents();	
 	setupBusImage();
-
 	handlePSU();
-
+	const segments = document.querySelectorAll('.installationSegment');
+	segments.forEach((segment, i) => {
+		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
+	});
 	completeData.bus = [ ...collectedData ];
 
 	const targetNode = document.querySelector("#installationContainer");
@@ -71,10 +39,22 @@ window.addEventListener('load', () => {
 	};
 
 	const observer = new MutationObserver(handleDOMChange);
-
+	saveToFileButton();
 	observer.observe(targetNode, config);
 	systemInformation();
 });
+
+function saveToFileButton() {
+	const saveToFile = document.createElement('input');
+	saveToFile.setAttribute('id', 'saveSystemToFile');
+	saveToFile.classList.add('saveFileAnchor');
+	saveToFile.type = 'button';
+	saveToFile.value = 'Zachowaj system';
+	const powerSupplyContainer = document.querySelector('.powerSupplyContainer');
+	
+	powerSupplyContainer.prepend(saveToFile);
+	
+}
 
 function handleDOMChange() {
 	setupBusImage();
@@ -96,6 +76,46 @@ window.addEventListener('change', () => {
 	});
 	systemInformation();
 });
+
+function dragAndDrop() {
+	const dragAndDropContainer = document.querySelector('body');
+	dragAndDropContainer.addEventListener('dragenter', dragenter, false);
+	dragAndDropContainer.addEventListener('dragover', dragover, false);
+	dragAndDropContainer.addEventListener('drop', function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+
+		const dataTransfer = e.dataTransfer;
+		const files = dataTransfer.files;
+	 	
+		for( let file of files ) {
+			const blob = new Blob([ file ], { type: "application/json" });
+			const fr = new FileReader();
+
+			fr.addEventListener('load', e => {
+				const firstSegment = document.querySelector('.segmentContainer0');
+				firstSegment.parentNode.removeChild(firstSegment);
+				const data = JSON.parse(fr.result);
+				const bus = [...data.bus];
+				console.log(bus);
+				
+				generateSegments(bus);	
+				
+				(document.querySelector('.powerSupply')).value = data.supplyType;
+				
+				const segments = document.querySelectorAll('.installationSegment');
+				segments.forEach((segment,i) => {
+					segment.querySelector('.cableSelect').value = bus[i].cableType;
+					segment.querySelector('input[name="cableInput"]').value = bus[i].cableLen_m;
+					segment.querySelector('.deviceSelect').value = bus[i].deviceType;
+				});
+			});
+
+			fr.readAsText(blob);
+		}
+
+	}, false);
+}
 
 function systemInformation() {
 	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
@@ -133,40 +153,15 @@ function initializeSegmentData() {
 	img.alt = 'Unable to find image'
 }
 
-// function dragenter(e) {
-// 	e.stopPropagation();
-// 	e.preventDefault();
-// }
-//
-// function dragover(e) {
-// 	e.stopPropagation();
-// 	e.preventDefault();
-// }
+function dragenter(e) {
+	e.stopPropagation();
+	e.preventDefault();
+}
 
-// function drop(e) {
-// 	e.stopPropagation();
-// 	e.preventDefault();
-//	
-// 	const dataTransfer = e.dataTransfer;
-// 	const files = dataTransfer.files;
-// 	return handleFiles(files);
-// }
-
-// function handleFiles(files) {
-// 	for( let file of files ) {
-// 		const blob = new Blob([ file ], { type: "application/json" });
-// 		const fr = new FileReader();
-//
-// 		fr.addEventListener('load', e => {
-// 			console.log(JSON.parse(fr.result));
-// 			return JSON.parse(fr.result);
-// 		});
-//
-// 		fr.readAsText(blob);
-// 		console.log(file.name);
-//
-// 	}
-// }
+function dragover(e) {
+	e.stopPropagation();
+	e.preventDefault();
+}
 
 function handlePSU() {
 	const psuContainer = document.getElementById('powerSupply');
@@ -249,6 +244,9 @@ handleButtonEvents = function() {
 			checkAllCheckboxes();
 		} else if( e.target.id === 'unCheckAllCheckboxesButton' ) {
 			unCheckAllCheckboxes();
+		} else if ( e.target.id === 'saveSystemToFile') {
+			console.log(collectedData);
+			saveToFile(completeData);
 		}
 	});
 }
@@ -314,10 +312,10 @@ function handleInputAndSelectChange(event, segments, index) {
 					const indexToUpdate = Array.from(segments).findIndex( checkedSegment => segment === checkedSegment );
 					const cableInput = segment.querySelector('input[name="cableInput"]');
 					cableInput.value = event.target.value;
-					collectedData[indexToUpdate].cableLen_m = parseInt(event.target.value);
+					collectedData[indexToUpdate].cableLen_m = parseFloat(event.target.value);
 				});
 			} else {
-				collectedData[index].cableLen_m = parseInt(event.target.value);
+				collectedData[index].cableLen_m = parseFloat(event.target.value);
 			}
 			break;
 		}
