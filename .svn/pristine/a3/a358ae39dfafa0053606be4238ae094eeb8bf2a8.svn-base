@@ -1,0 +1,222 @@
+// test data see adms://s:192.168.0.251/b:archidemes/i:224904
+let ExampleSystem1 =
+{
+	supplyType: "24V bez podtrzymania",
+	bus: 
+	[
+		{cableType: "2 x 1,5 mm2", cableLen_m: 250, deviceType: "Teta EcoWent"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 50, deviceType: "Teta EcoWent"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 50, deviceType: "Teta EcoWent"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 50, deviceType: "Teta EcoWent"}
+	],
+    require:
+    [
+        {deviceSupplyVoltage_V: 23.59, inputCurrent_A: 0.068, inputVoltage_V: 24, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 23.53, inputCurrent_A: 0.051, inputVoltage_V: 23.59, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 23.49, inputCurrent_A: 0.034, inputVoltage_V: 23.53, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 23.47, inputCurrent_A: 0.017, inputVoltage_V: 23.49, isDeviceGoodVoltage: true}
+    ]
+}
+
+let ExampleSystem2 =
+{
+	supplyType: "48V z/bez podtrzymaniem",
+	bus: 
+	[
+		{cableType: "2 x 1,5 mm2", cableLen_m: 250, deviceType: "Teta EcoWent"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 5, deviceType: "Teta EcoDet"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 50, deviceType: "Teta EcoTerm"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 50, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 4 mm2", cableLen_m: 2, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 4 mm2", cableLen_m: 250, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 2,5 mm2", cableLen_m: 1, deviceType: "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType: "Teta EcoDet"},
+        {cableType: "2 x 1,5 mm2", cableLen_m: 0.1, deviceType: "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType:  "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 2,5 mm2", cableLen_m: 1, deviceType:  "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType:  "Teta EcoWent"},
+        {cableType: "2 x 1,5 mm2", cableLen_m: 0.1, deviceType:  "Teta EcoDet"},
+        {cableType: "2 x 4 mm2", cableLen_m: 2, deviceType:  "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 250, deviceType:  "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 2,5 mm2", cableLen_m: 1, deviceType:   "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType:   "Teta EcoDet"},
+        {cableType: "2 x 1,5 mm2", cableLen_m: 0.1, deviceType:   "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType:  "Teta EcoWent + MiniDet"}
+        
+	],
+    require:
+    [
+        {deviceSupplyVoltage_V: 44.084, inputCurrent_A: 0.649, inputVoltage_V: 48.00, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 44.007, inputCurrent_A: 0.638, inputVoltage_V: 44.084, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 43.277, inputCurrent_A: 0.605, inputVoltage_V: 44.007, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 42.588, inputCurrent_A: 0.571, inputVoltage_V: 43.277, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 42.578, inputCurrent_A: 0.518, inputVoltage_V: 42.588, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 42.560, inputCurrent_A: 0.503, inputVoltage_V: 42.578, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.499, inputCurrent_A: 0.467, inputVoltage_V: 42.560, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.493, inputCurrent_A: 0.434, inputVoltage_V: 41.499, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.479, inputCurrent_A: 0.400, inputVoltage_V: 41.493, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.478, inputCurrent_A: 0.365, inputVoltage_V: 41.479, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.466, inputCurrent_A: 0.330, inputVoltage_V: 41.478, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.466, inputCurrent_A: 0.295, inputVoltage_V: 41.478, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.461, inputCurrent_A: 0.260, inputVoltage_V: 41.466, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.452, inputCurrent_A: 0.249, inputVoltage_V: 41.461, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.451, inputCurrent_A: 0.214, inputVoltage_V: 41.451, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 41.448, inputCurrent_A: 0.179, inputVoltage_V: 41.451, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 39.824, inputCurrent_A: 0.144, inputVoltage_V: 41.448, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 39.822, inputCurrent_A: 0.108, inputVoltage_V: 39.824, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 39.818, inputCurrent_A: 0.072, inputVoltage_V: 39.822, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 38.816, inputCurrent_A: 0.036, inputVoltage_V: 39.818, isDeviceGoodVoltage: true}        
+   ]
+}
+
+let ExampleSystem3 =
+{
+	supplyType: "24V bez podtrzymania",
+	bus: 
+	[
+        {cableType: "2 x 1,5 mm2", cableLen_m: 250, deviceType: "Teta EcoWent"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 5, deviceType: "Teta EcoDet"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 50, deviceType: "Teta EcoTerm"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 100, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 4 mm2", cableLen_m: 2, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 500, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 250, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 2,5 mm2", cableLen_m: 1, deviceType: "Teta EcoDet"}
+        
+    ],
+
+    require:
+    [
+        {deviceSupplyVoltage_V: 20.158, inputCurrent_A: 0.637, inputVoltage_V: 24.00, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 20.084, inputCurrent_A: 0.618, inputVoltage_V: 20.158, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 19.416, inputCurrent_A: 0.554, inputVoltage_V: 20.084, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 18.239, inputCurrent_A: 0.487, inputVoltage_V: 19.416, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 18.232, inputCurrent_A: 0.417, inputVoltage_V: 18.239, isDeviceGoodVoltage: true},
+        {deviceSupplyVoltage_V: 11.946, inputCurrent_A: 0.347, inputVoltage_V: 18.232, isDeviceGoodVoltage: false},
+        {deviceSupplyVoltage_V: 9.738, inputCurrent_A: 0.244, inputVoltage_V: 11.946, isDeviceGoodVoltage: false},
+        {deviceSupplyVoltage_V: 9.736, inputCurrent_A: 0.122, inputVoltage_V: 9.738, isDeviceGoodVoltage: false}
+        
+    ]
+}
+
+
+//-----------------------------------------------------------------------------
+// helper functions
+
+function logEleStatus(bus)
+{
+	console.log(bus);
+	console.log("Sections:");
+	for (let i = 0; i < bus.length; i++)
+	{
+		console.log("Section " + i + ":");
+		console.log(bus[i].eleStatus);
+	}
+}
+
+function calculateRelErr_percent (wasCalculated, requireValuje)
+{
+   
+let relateiveErr_percent = (Math.abs(wasCalculated-requireValuje))/requireValuje*100;
+return relateiveErr_percent;
+}
+
+function check (wasCalculated, requireValuje)
+{
+    if (wasCalculated == requireValuje)
+        console.log("PASS");
+    else
+        console.log("FAIL");   
+}
+
+function isGoodCalculateBusSection(bus, require, lambda_percent)
+{
+    for (let num = 0; num < bus.length; num++)
+	{
+    
+    let inputVoltageErr_perc = calculateRelErr_percent(bus[num].eleStatus.inputVoltage_V, require[num].inputVoltage_V);
+    let deviceSupplyVoltageErr_perc = calculateRelErr_percent(bus[num].eleStatus.deviceSupplyVoltage_V, require[num].deviceSupplyVoltage_V);
+    let inputCurrentErr_perc = calculateRelErr_percent(bus[num].eleStatus.inputCurrent_A, require[num].inputCurrent_A);
+        
+    if ((inputVoltageErr_perc < lambda_percent) && 
+        (deviceSupplyVoltageErr_perc < lambda_percent) && 
+        (inputCurrentErr_perc < lambda_percent) &&
+        (bus[num].eleStatus.isDeviceGoodVoltage == require[num].isDeviceGoodVoltage)
+        )          
+        
+        {
+		  console.log("Good");
+        }
+    else
+	   {
+		console.log("Wrong", "Section number:", num);
+        console.log("Require:", require[num]);
+        console.log("It was calculate:", bus[num].eleStatus);
+	   }    
+    }
+}
+
+//-----------------------------------------------------------------------------
+// tests
+function runTests()
+{
+	console.log("run tests");
+	//console.log(ExampleSystem1);
+	//console.log(isSystemOk(ExampleSystem1));
+	
+	console.log(getDeviceCurrent(getObjByType(Devices, "Teta EcoDet"), 20));
+	console.log(getDeviceCurrent(getObjByType(Devices, "Teta EcoDet"), 10));
+	console.log(getDeviceCurrent(getObjByType(Devices, "Teta EcoDet"), 30));
+	
+	console.log(getBusSectionVoltageDrop_V(ExampleSystem1.bus[1], 1));
+	
+	let sectEleStatus = {
+		inputVoltage_V: 20,		
+		inputCurrent_A: 0,
+		deviceSupplyVoltage_V: 20
+	};
+	
+	console.log(getBusSectionEleStatus(ExampleSystem1.bus[1], sectEleStatus));
+	console.log(getBusEleStatus(ExampleSystem1.bus, 20));
+    
+    
+    
+    
+	logEleStatus(ExampleSystem1.bus);
+	console.log(ExampleSystem1.bus[1].eleStatus.inputVoltage_V);
+	
+	console.log(getBusEleStatus(ExampleSystem1.bus, 6));
+	logEleStatus(ExampleSystem1.bus);
+	
+	console.log(analiseSystem(ExampleSystem1));
+	
+	console.log(isSystemOk(ExampleSystem1));
+		
+	console.log(analiseSystem(ExampleSystem2));
+	//logEleStatus(ExampleSystem2.bus);
+  
+    
+    console.log("---------------------------------------------");
+    console.log("Tests ExampleSystem1");
+    console.log("---------------------------------------------");
+    isGoodCalculateBusSection(ExampleSystem1.bus, ExampleSystem1.require, 1);
+    check(isSystemOk(ExampleSystem1), true);
+    console.log("----------------END TESTs -----ExampleSystem1 ------------------");
+    
+    console.log("---------------------------------------------");
+    console.log("Tests ExampleSystem2");
+    console.log("---------------------------------------------");
+    isGoodCalculateBusSection(ExampleSystem2.bus, ExampleSystem2.require, 5);
+    check(isSystemOk(ExampleSystem2), true);
+    console.log("----------------END TESTS -----ExampleSystem2 ------------------");
+    console.log("---------------------------------------------");
+    console.log("Tests ExampleSystem3");
+    console.log("---------------------------------------------");
+    check(isSystemOk(ExampleSystem3), false);
+    isGoodCalculateBusSection(ExampleSystem3.bus, ExampleSystem3.require, 5);
+    console.log(getBusEleStatus(ExampleSystem3.bus, 12));
+    console.log("----------------END TESTS -----ExampleSystem3------------------");
+    
+    
+}

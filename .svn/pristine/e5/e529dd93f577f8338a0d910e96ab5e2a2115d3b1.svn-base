@@ -1,0 +1,34 @@
+.powerSupplySegmentContainer {
+    width: 100%;
+}
+
+.powerSupplyContainer {
+    margin: 0 auto;
+    width: 65%;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr;
+    grid-template-rows: 90px;
+    place-items: center;
+    grid-template-areas: 
+        ". psuImage . psuSelect";
+	background: linear-gradient(135deg, rgb(200,200,200) 0%, rgb(155,235,226) 100%);
+}
+
+.powerSupplyContainer .psuImageContainer {
+    grid-area: psuImage;
+    height: 100%;
+    width: 100%;
+    grid-column: 2 / span 2;
+    display: grid;
+    place-items: end center; 
+	background: linear-gradient(135deg, rgb(200,200,200) 0%, rgb(255,195,226) 100%);
+}                    
+
+.powerSupplyContainer .psuImageContainer img{
+    height: 80%;
+}
+
+
+.powerSupplyContainer label {
+    grid-area: psuSelect;
+}

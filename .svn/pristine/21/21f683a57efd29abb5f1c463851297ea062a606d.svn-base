@@ -1,0 +1,147 @@
+.powerManagementInstallationContainer {
+    margin: 40px auto;
+    min-width: 650px;
+    max-width: 50%;
+    display: grid;
+    height: auto;
+    min-height: 250px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 75px 1fr;
+    grid-template-areas: 
+        "powerSupply"
+        "installation";
+}
+
+.powerManagementInstallationContainer .powerSupplyContainer {
+    grid-area: powerSupply;
+}
+.powerManagementInstallationContainer .installationContainer {
+    grid-area: installation;
+}
+.powerManagementInstallationContainer .systemInfo{                                                                          
+    grid-area: installationInfo;
+}
+
+.installationSegment {
+    display: grid;
+    grid-template-columns: minmax(200px,1fr) auto auto minmax(200px,1fr);
+    grid-template-rows: 150px;
+    grid-template-areas: 
+    "checkboxAndWire wireImage deviceImage deviceSelect"    
+    ;
+}
+
+.installationSegment .checkboxAndcableContainer {
+    grid-area: checkboxAndWire;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+.installationSegment .checkboxAndcableContainer input {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+    align-self: start;
+    margin-top: 5px;
+}
+
+.installationSegment .checkboxAndcableContainer .cableContainer {
+    grid-column: 2;
+    grid-row: 1;
+    place-self: end;
+}
+
+.cableContainerInput input {
+    max-width: 30px;
+}
+
+.installationSegment .cableImageContainer {
+    grid-area: wireImage;
+}
+
+.installationSegment .cableImageContainer .cableimage {
+    justify-self: end;
+    height: 150px;
+}
+
+.installationSegment .deviceImageContainer {
+    height: 225px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.installationSegment .deviceImageContainer #devicePaddingImage {
+    height: 75px;
+}
+
+.installationSegment .deviceImageContainer .deviceimage {
+    height: 150px;
+}
+
+.installationSegment .deviceContainer {
+    grid-area: deviceSelect;
+    display: grid;
+    grid-template-columns: 1fr 1fr;    
+    grid-template-rows: 1fr 1fr;
+}
+
+.installationSegment .deviceContainer .deviceLabel {
+    grid-row: 2;
+    grid-column: 1;
+    justify-self: center;
+    align-self: start;
+    margin: 10px 0;
+}
+
+.installationSegment .deviceContainer .deviceButtons {
+    grid-row: 2;
+    grid-column: 1;
+    justify-self: center;
+    align-self: end;
+}
+
+.installationSegment .deviceContainer .deviceButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+.installationSegment:nth-last-child(1){
+    padding-bottom: 100px;
+}
+
+.installationContainer .buttonDiv {
+    width: 130px;
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.installationContainer .buttonDiv > input {
+    width: 100%;
+}
+
+@media (max-width: 1700px) {
+    .buttonDiv {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-left: 30px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .installationSegment {
+        margin-left: auto;
+    }
+    .buttonDiv {
+        margin-left: 2px;
+    }
+}
+
+
+
+
