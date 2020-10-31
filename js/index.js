@@ -16,17 +16,19 @@ window.addEventListener('load', () => {
 
 	picture('psu', `psuImageContainer`, `powerSupplyContainer`, `imagePSU`);
 
-	dragAndDrop();
+	handleDragAndDrop();
 
 	generateSegments(collectedData);
 	initializeSegmentData();
-	handleButtonEvents();	
+	handleButtonEvents();
 	setupBusImage();
 	handlePSU();
+
 	const segments = document.querySelectorAll('.installationSegment');
 	segments.forEach((segment, i) => {
 		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
 	});
+
 	completeData.bus = [ ...collectedData ];
 
 	const targetNode = document.querySelector("#installationContainer");
@@ -35,36 +37,24 @@ window.addEventListener('load', () => {
 		childList: true,
 		subtree: true,
 		attributes: false,
-		characterData: true,
+		characterData: false,
 	};
 
 	const observer = new MutationObserver(handleDOMChange);
-	saveToFileButton();
 	observer.observe(targetNode, config);
+	saveToFileButton();
 	systemInformation();
 });
-
-function saveToFileButton() {
-	const saveToFile = document.createElement('input');
-	saveToFile.setAttribute('id', 'saveSystemToFile');
-	saveToFile.classList.add('saveFileAnchor');
-	saveToFile.type = 'button';
-	saveToFile.value = 'Zachowaj system';
-	const powerSupplyContainer = document.querySelector('.powerSupplyContainer');
-	
-	powerSupplyContainer.prepend(saveToFile);
-	
-}
 
 function handleDOMChange() {
 	setupBusImage();
 	completeData.bus = collectedData;
 	handleCheckboxes();
-	
 	const segments = document.querySelectorAll('.installationSegment');
 	segments.forEach((segment, i) => {
 		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
 	});
+	droppedFileGenerateData();
 	systemInformation();
 }
 
@@ -77,51 +67,78 @@ window.addEventListener('change', () => {
 	systemInformation();
 });
 
-function dragAndDrop() {
+function droppedFileGenerateData() {
+	const segments = document.querySelectorAll('.installationSegment');
+	completeData.supplyType = (document.querySelector('.powerSupply')).value;
+	segments.forEach((segment) => {
+		completeData.bus.push({
+														cableType: segment.querySelector('.cableSelect').value,
+														cableLen_m: segment.querySelector('input[name="cableInput"]').value,
+														deviceType: segment.querySelector('.deviceSelect').value
+													});
+	});
+}
+
+function saveToFileButton() {
+	const saveToFile = document.createElement('input');
+	saveToFile.setAttribute('id', 'saveSystemToFile');
+	saveToFile.classList.add('saveFileAnchor');
+	saveToFile.type = 'button';
+	saveToFile.value = 'Zachowaj system';
+	const powerSupplyContainer = document.querySelector('.powerSupplyContainer');
+
+	powerSupplyContainer.prepend(saveToFile);
+}
+
+function handleDroppedFile(e) {
+	console.log(e.target);
+	e.stopPropagation();
+	e.preventDefault();
+
+	const dataTransfer = e.dataTransfer;
+	const files = dataTransfer.files;
+
+	for( let file of files ) {
+		const blob = new Blob([ file ], { type: "application/json" });
+		const fr = new FileReader();
+
+		fr.addEventListener('load', e => {
+			const firstSegment = document.querySelector('.segmentContainer0');
+			firstSegment.parentNode.removeChild(firstSegment);
+			const data = JSON.parse(fr.result);
+			
+			const bus = [ ...data.bus ];
+
+			generateSegments(bus);
+
+			(document.querySelector('.powerSupply')).value = data.supplyType;
+
+			const segments = document.querySelectorAll('.installationSegment');
+			segments.forEach((segment, i) => {
+				segment.querySelector('.cableSelect').value = bus[i].cableType;
+				segment.querySelector('input[name="cableInput"]').value = bus[i].cableLen_m;
+				segment.querySelector('.deviceSelect').value = bus[i].deviceType;
+				chooseImg(segment.querySelector(`#deviceimage${i}`), bus[i].deviceType);
+			});
+			systemInformation();
+		});
+
+		fr.readAsText(blob);
+	}
+}
+
+function handleDragAndDrop() {
 	const dragAndDropContainer = document.querySelector('body');
 	dragAndDropContainer.addEventListener('dragenter', dragenter, false);
 	dragAndDropContainer.addEventListener('dragover', dragover, false);
-	dragAndDropContainer.addEventListener('drop', function(e) {
-		e.stopPropagation();
-		e.preventDefault();
-
-		const dataTransfer = e.dataTransfer;
-		const files = dataTransfer.files;
-	 	
-		for( let file of files ) {
-			const blob = new Blob([ file ], { type: "application/json" });
-			const fr = new FileReader();
-
-			fr.addEventListener('load', e => {
-				const firstSegment = document.querySelector('.segmentContainer0');
-				firstSegment.parentNode.removeChild(firstSegment);
-				const data = JSON.parse(fr.result);
-				const bus = [...data.bus];
-				console.log(bus);
-				
-				generateSegments(bus);	
-				
-				(document.querySelector('.powerSupply')).value = data.supplyType;
-				
-				const segments = document.querySelectorAll('.installationSegment');
-				segments.forEach((segment,i) => {
-					segment.querySelector('.cableSelect').value = bus[i].cableType;
-					segment.querySelector('input[name="cableInput"]').value = bus[i].cableLen_m;
-					segment.querySelector('.deviceSelect').value = bus[i].deviceType;
-				});
-			});
-
-			fr.readAsText(blob);
-		}
-
-	}, false);
+	dragAndDropContainer.addEventListener('drop', handleDroppedFile, false);
 }
 
 function systemInformation() {
 	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
 	const systemStatus = document.querySelector('.systemStatusText');
 	sysOk = isSystemOk(completeData);
-	if(sysOk){
+	if( sysOk ) {
 		installationContainer.classList.remove('sysWrong');
 		installationContainer.classList.add('sysOk');
 	} else {

@@ -22,7 +22,7 @@ const picture = function(type, imageContainer, containerName, imageId, src = '')
 		}
 		case "device" : {			
 			const container = document.querySelector(`#${containerName}`);
-			const checkIfExists = document.querySelector(`.${imageContainer}`);
+			const checkIfExists = container.querySelector(`.${imageContainer}`); 			
 			if( !checkIfExists ) {
 				newImage.setAttribute('id', `${type}${imageId}`);
 				const imageSection = document.createElement('div');
@@ -39,7 +39,5 @@ const picture = function(type, imageContainer, containerName, imageId, src = '')
 
 			break;
 		}
-
 	}
-
 }
