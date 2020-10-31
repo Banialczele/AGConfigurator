@@ -56,3 +56,10 @@ select {
 .open-active {
     transform: translateX(10%) translateY(-80%);
 }
+
+.sticky {	
+    position: fixed;		
+    top: 50px;	
+    left: 20px;	
+    z-index: 9999;	
+}

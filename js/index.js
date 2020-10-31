@@ -12,6 +12,18 @@ const completeData = {
 
 let sysOk = false;
 let droppedFile = false;
+
+window.addEventListener('scroll', () => {	
+	const buttonDiv = document.querySelector('.popup');
+	if( window.scrollY >= buttonDiv.offsetTop ) {
+		console.log('siema');	
+		buttonDiv.classList.add('sticky');
+	} else {	
+		buttonDiv.classList.remove('sticky');
+	}	
+});	
+
+
 window.addEventListener('load', () => {
 	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerManagementInstallationContainer', `powerSupplyContainer`, `powerSupply`);
 

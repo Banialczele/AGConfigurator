@@ -157,7 +157,7 @@ function handleDeleteDevice(e) {
 						
 			segmentContainer.parentNode.removeChild(segmentContainer);
 			infoPopup.classList.add('open-active')
-			setTimeout( () =>  { infoPopup.classList.remove('open-active') }, 1500);
+			setTimeout( () =>  { infoPopup.classList.remove('open-active') }, 5000);
 			
 		}
 		collectedData.splice(findIndexToDelete, 1);
