@@ -91,23 +91,24 @@ function saveToFileButton() {
 }
 
 function handleDroppedFile(e) {
-	console.log(e.target);
 	e.stopPropagation();
 	e.preventDefault();
 
 	const dataTransfer = e.dataTransfer;
 	const files = dataTransfer.files;
-
+	
 	for( let file of files ) {
 		const blob = new Blob([ file ], { type: "application/json" });
 		const fr = new FileReader();
 
 		fr.addEventListener('load', e => {
-			const firstSegment = document.querySelector('.segmentContainer0');
-			firstSegment.parentNode.removeChild(firstSegment);
+			// const installationContainer = document.querySelector('.installationContainer');
+			// const firstSegment = installationContainer.firstElementChild;
+			const installationContainer = document.querySelector('.installationContainer');
+			Array.from(installationContainer.children).forEach(child => child.parentNode.removeChild(child));
 			const data = JSON.parse(fr.result);
 			
-			const bus = [ ...data.bus ];
+			const bus = [ ...data.bus ];               	
 
 			generateSegments(bus);
 
@@ -121,6 +122,7 @@ function handleDroppedFile(e) {
 				chooseImg(segment.querySelector(`#deviceimage${i}`), bus[i].deviceType);
 			});
 			systemInformation();
+
 		});
 
 		fr.readAsText(blob);
