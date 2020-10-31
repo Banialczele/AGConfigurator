@@ -9,8 +9,9 @@ const collectedData = [ {
 const completeData = {
 	supplyType: "24V z podtrzymaniem"
 };
-let sysOk = false;
 
+let sysOk = false;
+let droppedFile = false;
 window.addEventListener('load', () => {
 	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerManagementInstallationContainer', `powerSupplyContainer`, `powerSupply`);
 
@@ -54,8 +55,10 @@ function handleDOMChange() {
 	segments.forEach((segment, i) => {
 		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
 	});
-	droppedFileGenerateData();
-	systemInformation();
+	if(!droppedFile){
+			systemInformation();	
+	}
+
 }
 
 window.addEventListener('change', () => {
@@ -64,20 +67,9 @@ window.addEventListener('change', () => {
 	segments.forEach((segment, i) => {
 		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
 	});
+	console.log(completeData);
 	systemInformation();
 });
-
-function droppedFileGenerateData() {
-	const segments = document.querySelectorAll('.installationSegment');
-	completeData.supplyType = (document.querySelector('.powerSupply')).value;
-	segments.forEach((segment) => {
-		completeData.bus.push({
-														cableType: segment.querySelector('.cableSelect').value,
-														cableLen_m: segment.querySelector('input[name="cableInput"]').value,
-														deviceType: segment.querySelector('.deviceSelect').value
-													});
-	});
-}
 
 function saveToFileButton() {
 	const saveToFile = document.createElement('input');
@@ -116,13 +108,18 @@ function handleDroppedFile(e) {
 
 			const segments = document.querySelectorAll('.installationSegment');
 			segments.forEach((segment, i) => {
+				completeData.bus.push({
+																cableType: bus[i].cableType,
+																cableLen_m: bus[i].cableLen_m,
+																deviceType: bus[i].deviceType
+															});
 				segment.querySelector('.cableSelect').value = bus[i].cableType;
 				segment.querySelector('input[name="cableInput"]').value = bus[i].cableLen_m;
 				segment.querySelector('.deviceSelect').value = bus[i].deviceType;
 				chooseImg(segment.querySelector(`#deviceimage${i}`), bus[i].deviceType);
 			});
+			droppedFile = true;
 			systemInformation();
-
 		});
 
 		fr.readAsText(blob);
@@ -137,6 +134,7 @@ function handleDragAndDrop() {
 }
 
 function systemInformation() {
+	console.log(completeData);
 	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
 	const systemStatus = document.querySelector('.systemStatusText');
 	sysOk = isSystemOk(completeData);
