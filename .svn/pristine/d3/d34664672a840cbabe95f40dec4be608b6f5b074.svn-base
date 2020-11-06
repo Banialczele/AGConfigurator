@@ -128,31 +128,39 @@ function handleCopyNthTimes(e) {
 }
 
 function handleDeleteDevice(e) {
-	console.log(collectedData);
 	const segments = document.querySelectorAll('.installationSegment');
-	if( segments.length > 1) {     	
+	// segments.forEach(segment => (document.querySelector('input[type="checkbox"]')).checked = false);
+	if( segments.length > 1) {
+		const lastSegmentIndex = segments.length - 1;
+		const oneBeforeLast = segments.length - 2;
+		
 		//get number of element from id
 		const index = e.target.id.match(/\d+/)[0];
 		const segmentContainer = document.querySelector(`.segmentContainer${index}`);
-		
+
+		//change position of buttonDiv to oneBeforeLast segment IF last segment has been deleted.
+		if( segments.length >= 2 && lastSegmentIndex === parseInt(index) ) {
+			const lastSegment = document.querySelector(`.segmentContainer${lastSegmentIndex}`);
+			const buttonContainer = lastSegment.querySelector('.buttonDiv');
+			if( buttonContainer ) {
+				buttonContainer.parentNode.removeChild(buttonContainer);
+				const oneBeforeLastSegment = document.querySelector(`.segmentContainer${oneBeforeLast}`);
+				const oneBeforeLastContainer = oneBeforeLastSegment.querySelector(`.checkboxAndcableContainer`);
+				oneBeforeLastContainer.appendChild(buttonContainer);
+			}
+		}
 		const findIndexToDelete = Array.from(segments).findIndex(segment => segment === segmentContainer);
-		collectedData.splice(findIndexToDelete, 1);
-		console.log(collectedData);
 		if( segmentContainer !== null && segmentContainer.parentNode !== null ) {
 			const infoPopup = document.querySelector('.popup');
-			
+			console.log(findIndexToDelete);
 			infoPopup.innerText = `Usunięto segment: ${index}`;
 						
 			segmentContainer.parentNode.removeChild(segmentContainer);
 			infoPopup.classList.add('open-active')
-			setTimeout( () =>  { infoPopup.classList.remove('open-active') }, 3000); 			
+			setTimeout( () =>  { infoPopup.classList.remove('open-active') }, 5000);
+			
 		}
-	} else {
-			const infoPopup = document.querySelector('.popup');
-			infoPopup.innerText = `Nie można usunąć pierwszego segmentu`;
-						
-			infoPopup.classList.add('open-active')
-			setTimeout( () =>  { infoPopup.classList.remove('open-active') }, 3000); 
+		collectedData.splice(findIndexToDelete, 1);
 	}
 }
 

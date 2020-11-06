@@ -2,9 +2,8 @@
 // return: true if is OK, false if 
 function isSystemOk(system)
 {
-	// console.log(system.supplyType);
-	// console.table(system.bus);
-	// console.log(analiseSystem(system) !== null);
+	console.log(system.supplyType);
+	console.table(system.bus);
 	return (analiseSystem(system) != null);
 }
 
