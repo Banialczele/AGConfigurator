@@ -67,8 +67,8 @@ function handleDOMChange(mutations) {
 			changes.addedNodes[0].addEventListener('change', e => handleInputAndSelectChange(e, segments));
 			changes.addedNodes[0].dataset.listener = 'true';
 		}
-	}
-
+	}     
+	    	
 	setupBusImage();
 	completeData.bus = collectedData;
 	handleCheckboxes();
@@ -318,10 +318,10 @@ function handleInputAndSelectChange(event, segments) {
 					cableSelect.value = event.target.value;
 					collectedData[indexToUpdate].cableType = event.target.value;
 				});
+			} else if( checkedSegments.length === 0 ) {
+				const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
+				collectedData[findIndex].cableType = event.target.value;
 			}
-			const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
-			collectedData[findIndex].cableType = event.target.value;
-
 			break;
 		}
 
@@ -336,13 +336,13 @@ function handleInputAndSelectChange(event, segments) {
 					deviceSelect.value = event.target.value;
 					collectedData[indexToUpdate].deviceType = event.target.value;
 				});
+			} else if( checkedSegments.length === 0 ) {
+				const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
+				const img = event.currentTarget.querySelector(`.deviceimage`);
+
+				collectedData[findIndex].deviceType = event.target.value;
+				chooseImg(img, event.target.value);
 			}
-			const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
-			const img = event.currentTarget.querySelector(`.deviceimage`);
-
-			collectedData[findIndex].deviceType = event.target.value;
-			chooseImg(img, event.target.value);
-
 			break;
 		}
 
@@ -355,10 +355,10 @@ function handleInputAndSelectChange(event, segments) {
 					collectedData[indexToUpdate].cableLen_m = parseFloat(event.target.value);
 				});
 
+			} else if( checkedSegments.length === 0 ) {
+				const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
+				collectedData[findIndex].cableLen_m = parseFloat(event.target.value);
 			}
-			const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
-			collectedData[findIndex].cableLen_m = parseFloat(event.target.value);
-
 			break;
 		}
 	}
