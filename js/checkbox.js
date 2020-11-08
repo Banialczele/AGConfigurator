@@ -4,7 +4,8 @@ const checkbox = function (param, installationContainerName, segmentName, checkb
 	const checkboxDiv = document.createElement('div');
 	input.setAttribute('id', `checkbox${i}`);
 	segmentDiv.className = segmentName;
-	segmentDiv.classList.add('installationSegment');	
+	segmentDiv.classList.add('installationSegment');
+	segmentDiv.setAttribute('data-listener', 'false');
 	segmentDiv.setAttribute('id', segmentName );
 	checkboxDiv.className = checkboxContainer;
 	const div = document.querySelector(`.${installationContainerName}`);

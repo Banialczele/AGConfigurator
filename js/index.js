@@ -11,7 +11,6 @@ const completeData = {
 };
 
 let sysOk = false;
-let droppedFile = false;
 
 window.addEventListener('scroll', () => {
 	const buttonDiv = document.querySelector('.popup');
@@ -33,13 +32,14 @@ window.addEventListener('load', () => {
 	generateSegments(collectedData);
 	initializeSegmentData();
 	handleButtonEvents();
+	handleCheckboxes();
 	// handleFileEvents();
 	setupBusImage();
 	handlePSU();
 
 	const segments = document.querySelectorAll('.installationSegment');
 	segments.forEach((segment, i) => {
-		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i))
+		segment.addEventListener('change', e => handleInputAndSelectChange(e, segments, i));
 	});
 
 	completeData.bus = [ ...collectedData ];
@@ -48,7 +48,7 @@ window.addEventListener('load', () => {
 
 	const config = {
 		childList: true,
-		subtree: true,
+		subtree: false,
 		attributes: false,
 		characterData: false,
 	};
@@ -60,22 +60,24 @@ window.addEventListener('load', () => {
 });
 
 function handleDOMChange(mutations) {
-	console.log(mutations);
+	document.querySelector('#segmentContainer0').dataset.listener = 'true';
 	const segments = document.querySelectorAll('.installationSegment');
+	for( let changes of mutations ) {
+		if( changes.removedNodes.length === 0 && changes.addedNodes.length > 0 && changes.addedNodes[0].dataset.listener === 'false' ) {
+			changes.addedNodes[0].addEventListener('change', e => handleInputAndSelectChange(e, segments));
+			changes.addedNodes[0].dataset.listener = 'true';
+		}
+	}
+	
 	setupBusImage();
 	completeData.bus = collectedData;
 	handleCheckboxes();
 	systemInformation();
 	handlePSU();
-	console.log(segments);
-	console.log(collectedData);
-	segments.forEach((segment, i) => {
-		segment.addEventListener('change', e => {
-			handleInputAndSelectChange(e, segments, i);
-		}, false)
-	});
 	systemInformation();
 }
+
+
 
 function fileButtons() {
 	const fileButtonsDiv = document.createElement('div');
@@ -109,54 +111,54 @@ function fileButtons() {
 	powerSupplyContainer.prepend(fileButtonsDiv);
 }
 
-function handleDroppedFile(e) {
-	console.log('dsg');
-	e.stopPropagation();
-	e.preventDefault();
-
-	const dataTransfer = e.dataTransfer;
-	const files = dataTransfer.files;
-
-	for( let file of files ) {
-		const blob = new Blob([ file ], { type: "application/json" });
-		const fr = new FileReader();
-
-		fr.addEventListener('load', () => {
-			const installationContainer = document.querySelector('.installationContainer');
-			Array.from(installationContainer.children).forEach(child => child.parentNode.removeChild(child));
-			const data = JSON.parse(fr.result);
-
-			const bus = [ ...data.bus ];
-
-			generateSegments(bus);
-
-			(document.querySelector('.powerSupply')).value = data.supplyType;
-
-			const segments = document.querySelectorAll('.installationSegment');
-			segments.forEach((segment, i) => {
-				completeData.bus.push({
-																cableType: bus[i].cableType,
-																cableLen_m: bus[i].cableLen_m,
-																deviceType: bus[i].deviceType
-															});
-				segment.querySelector('.cableSelect').value = bus[i].cableType;
-				segment.querySelector('input[name="cableInput"]').value = bus[i].cableLen_m;
-				segment.querySelector('.deviceSelect').value = bus[i].deviceType;
-				chooseImg(segment.querySelector(`#deviceimage${i}`), bus[i].deviceType);
-			});
-			droppedFile = true;
-			systemInformation();
-		});
-		fr.readAsText(blob);
-	}
-}
-
-function handleDragAndDrop() {
-	const dragAndDropContainer = document.querySelector('body');
-	dragAndDropContainer.addEventListener('dragenter', dragenter);
-	dragAndDropContainer.addEventListener('dragover', dragover);
-	dragAndDropContainer.addEventListener('drop', handleDroppedFile);
-}
+// function handleDroppedFile(e) {
+// 	console.log('dsg');
+// 	e.stopPropagation();
+// 	e.preventDefault();
+//
+// 	const dataTransfer = e.dataTransfer;
+// 	const files = dataTransfer.files;
+//
+// 	for( let file of files ) {
+// 		const blob = new Blob([ file ], { type: "application/json" });
+// 		const fr = new FileReader();
+//
+// 		fr.addEventListener('load', () => {
+// 			const installationContainer = document.querySelector('.installationContainer');
+// 			Array.from(installationContainer.children).forEach(child => child.parentNode.removeChild(child));
+// 			const data = JSON.parse(fr.result);
+//
+// 			const bus = [ ...data.bus ];
+//
+// 			generateSegments(bus);
+//
+// 			(document.querySelector('.powerSupply')).value = data.supplyType;
+//
+// 			const segments = document.querySelectorAll('.installationSegment');
+// 			segments.forEach((segment, i) => {
+// 				completeData.bus.push({
+// 																cableType: bus[i].cableType,
+// 																cableLen_m: bus[i].cableLen_m,
+// 																deviceType: bus[i].deviceType
+// 															});
+// 				segment.querySelector('.cableSelect').value = bus[i].cableType;
+// 				segment.querySelector('input[name="cableInput"]').value = bus[i].cableLen_m;
+// 				segment.querySelector('.deviceSelect').value = bus[i].deviceType;
+// 				chooseImg(segment.querySelector(`#deviceimage${i}`), bus[i].deviceType);
+// 			});
+// 			droppedFile = true;
+// 			systemInformation();
+// 		});
+// 		fr.readAsText(blob);
+// 	}
+// }
+//
+// function handleDragAndDrop() {
+// 	const dragAndDropContainer = document.querySelector('body');
+// 	dragAndDropContainer.addEventListener('dragenter', dragenter);
+// 	dragAndDropContainer.addEventListener('dragover', dragover);
+// 	dragAndDropContainer.addEventListener('drop', handleDroppedFile);
+// }
 
 function systemInformation() {
 	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
@@ -194,15 +196,15 @@ function initializeSegmentData() {
 	img.alt = 'Unable to find image'
 }
 
-function dragenter(e) {
-	e.stopPropagation();
-	e.preventDefault();
-}
-
-function dragover(e) {
-	e.stopPropagation();
-	e.preventDefault();
-}
+// function dragenter(e) {
+// 	e.stopPropagation();
+// 	e.preventDefault();
+// }
+//
+// function dragover(e) {
+// 	e.stopPropagation();
+// 	e.preventDefault();
+// }
 
 function handlePSU() {
 	const psuContainer = document.getElementById('powerSupply');
@@ -223,7 +225,6 @@ function handlePSU() {
 
 function setupBusImage() {
 	const imageElements = document.querySelectorAll('.cableimage');
-
 	for( let p = 0; p < imageElements.length; p++ ) {
 		if( p >= 0 && p !== imageElements.length - 1 ) {
 			chooseImg(imageElements[p], "bus");
@@ -260,35 +261,31 @@ function handleCheckboxes() {
 				if( checkbox === this || checkbox === lastChecked ) {
 					inBetween = !inBetween;
 				}
-
 				if( inBetween ) {
 					checkbox.checked = true;
 				}
 			});
 		}
-
 		lastChecked = this;
 	}
 
 	checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleChange));
-
 }
 
-function readFromFile() {
-	const element = document.getElementById('file-input');
-	element.click();
-}
-
-function handleFileEvents() {
-	const powerSupplyContainer = document.querySelector('.powerSupplyContainer');
-	powerSupplyContainer.addEventListener('click', function(e) {
-		if( e.target.id === 'saveSystemToFile' ) {
-			saveToFile(completeData);
-		} else if( e.target.id === 'readSystemFromFile' ) {
-			readFromFile(e);
-		}
-	});
-}
+// function readFromFile() {
+// 	const element = document.getElementById('file-input');
+// 	element.click();
+// }
+// function handleFileEvents() {
+// 	const powerSupplyContainer = document.querySelector('.powerSupplyContainer');
+// 	powerSupplyContainer.addEventListener('click', function(e) {
+// 		if( e.target.id === 'saveSystemToFile' ) {
+// 			saveToFile(completeData);
+// 		} else if( e.target.id === 'readSystemFromFile' ) {
+// 			readFromFile(e);
+// 		}
+// 	});
+// }
 
 function handleButtonEvents() {
 	const installationSegment = document.getElementById('powerManagementInstallationContainer');
@@ -312,9 +309,8 @@ function selectedCheckboxes(segmentList) {
 	});
 }
 
-function handleInputAndSelectChange(event, segments, index) {  
+function handleInputAndSelectChange(event, segments) {
 	const checkedSegments = selectedCheckboxes(segments) || [];
-	console.log('fired');
 	switch( event.target.name ) {
 		case 'cableSelect': {
 			if( checkedSegments.length > 0 ) {
@@ -325,7 +321,8 @@ function handleInputAndSelectChange(event, segments, index) {
 					collectedData[indexToUpdate].cableType = event.target.value;
 				});
 			} else if( checkedSegments.length === 0 ) {
-				collectedData[index].cableType = event.target.value;
+				const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
+				collectedData[findIndex].cableType = event.target.value;
 			}
 			break;
 		}
@@ -341,14 +338,12 @@ function handleInputAndSelectChange(event, segments, index) {
 					deviceSelect.value = event.target.value;
 					collectedData[indexToUpdate].deviceType = event.target.value;
 				});
-
 			} else if( checkedSegments.length === 0 ) {
-				console.log(event);
-				console.log(index);
-				// console.log(event.currentTarget);
-				// const img = document.querySelector(`#deviceimage${index}`);
-				// collectedData[index].deviceType = event.target.value;
-				// chooseImg(img, event.target.value);
+				const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
+				const img = event.currentTarget.querySelector(`.deviceimage`);
+
+				collectedData[findIndex].deviceType = event.target.value;
+				chooseImg(img, event.target.value);
 			}
 			break;
 		}
@@ -363,8 +358,8 @@ function handleInputAndSelectChange(event, segments, index) {
 				});
 
 			} else if( checkedSegments.length === 0 ) {
-
-				// collectedData[indexToUpdate].cableLen_m = parseFloat(event.target.value);
+				const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
+				collectedData[findIndex].cableLen_m = parseFloat(event.target.value);
 			}
 			break;
 		}

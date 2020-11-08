@@ -92,7 +92,7 @@ function handleCopyNthTimes(e) {
 				
 				//adding new segment at specific index ( not at the end of array )
 				collectedData.splice(index + 1, 0, newSegment);
-				let clone = segmentContainer.cloneNode(true);
+				const clone = segmentContainer.cloneNode(true);
 
 				const checkboxNewId = clone.querySelector('input[type="checkbox"]');
 				checkboxNewId.setAttribute('id', `checkbox${newIndex}`);
@@ -117,7 +117,7 @@ function handleCopyNthTimes(e) {
 				const deviceSelect = clone.querySelector('select[name="deviceSelect"]');
 				deviceSelect.selectedIndex = deviceIndexToCopy;
 				deviceSelect.selectedOptions = cableSelect.options[deviceTypeToCopy];
-				let updateIndexToCopyCloneTo = indexWhereToCopyDiv + 1 + i;  
+				let updateIndexToCopyCloneTo = indexWhereToCopyDiv + 1 + i;
 				installationContainer.insertBefore(clone, installationContainer.children[updateIndexToCopyCloneTo]);
 			}
 				checkboxButtons(installationContainer);
@@ -128,7 +128,6 @@ function handleCopyNthTimes(e) {
 }
 
 function handleDeleteDevice(e) {
-	console.log(collectedData);
 	const segments = document.querySelectorAll('.installationSegment');
 	if( segments.length > 1) {     	
 		//get number of element from id
@@ -137,7 +136,6 @@ function handleDeleteDevice(e) {
 		
 		const findIndexToDelete = Array.from(segments).findIndex(segment => segment === segmentContainer);
 		collectedData.splice(findIndexToDelete, 1);
-		console.log(collectedData);
 		if( segmentContainer !== null && segmentContainer.parentNode !== null ) {
 			const infoPopup = document.querySelector('.popup');
 			
