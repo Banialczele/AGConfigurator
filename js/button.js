@@ -34,7 +34,6 @@ const button = function(index) {
 function handleCopyNthTimes(e) {
 	//get index of an element from id
 	const index = parseInt(e.target.id.match(/\d+/)[0]);
-	console.log(e.target);
 	//select segment to copy
 	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
 	const segments = document.querySelectorAll('.installationSegment');
@@ -111,9 +110,7 @@ function handleCopyNthTimes(e) {
 			
 
 				const cloneCopyButton = clone.querySelector(`.deviceButtons #Skopiuj${index}`);
-				console.log(cloneCopyButton);
 				const cloneDeleteButton = clone.querySelector(`.deviceButtons #Usun${index}`);
-				console.log(cloneDeleteButton);
 				cloneCopyButton.setAttribute('id', `Skopiuj${newIndex}`);
 				cloneDeleteButton.setAttribute('id', `Usun${newIndex}`);
 
@@ -122,7 +119,9 @@ function handleCopyNthTimes(e) {
 				deviceSelect.selectedOptions = cableSelect.options[deviceTypeToCopy];
 				let updateIndexToCopyCloneTo = indexWhereToCopyDiv + 1 + i;
 				installationContainer.insertBefore(clone, installationContainer.children[updateIndexToCopyCloneTo]);
-			}
+			}	
+			
+				console.log(installationContainer);
 				checkboxButtons(installationContainer);
 		}
 	});

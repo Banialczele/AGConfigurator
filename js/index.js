@@ -73,7 +73,6 @@ function handleDOMChange(mutations) {
 		const checkboxesContainer = document.querySelector('.checkboxesContainer');
 		checkboxesContainer.parentNode.removeChild(checkboxesContainer);
 	}
-	 console.log(Cable.usedIndexes);
 	setupBusImage();
 	completeData.bus = collectedData;
 	handleCheckboxes();
@@ -149,18 +148,18 @@ function handleDroppedFile(e) {
 				segment.querySelector('.cableSelect').value = bus[i].cableType;
 				segment.querySelector('input[name="cableInput"]').value = bus[i].cableLen_m;
 				segment.querySelector('.deviceSelect').value = bus[i].deviceType;
-				if(i !== 0) {
-						segment.querySelector('#Skopiuj0').setAttribute('id', `Skopiuj${i}`);
-						segment.querySelector('#Usun0').setAttribute('id', `Usun${i}`);
-				}	
+				if( i !== 0 ) {
+					segment.querySelector('#Skopiuj0').setAttribute('id', `Skopiuj${i}`);
+					segment.querySelector('#Usun0').setAttribute('id', `Usun${i}`);
+				}
 				chooseImg(segment.querySelector(`#deviceimage${i}`), bus[i].deviceType);
 			});
 			const firstSegment = document.querySelector('.segmentContainer0');
 			firstSegment.addEventListener('change', e => handleInputAndSelectChange(e));
 			collectedData.push(...completeData.bus);
+			checkboxButtons(installationContainer);
+			systemInformation();
 		});
-		checkboxButtons(installationContainer);
-		systemInformation();
 		fr.readAsText(blob);
 	}
 }
@@ -311,8 +310,6 @@ function handleFileEvents() {
 function handleButtonEvents() {
 	const installationSegment = document.getElementById('powerManagementInstallationContainer');
 	installationSegment.addEventListener('click', e => {
-		console.log(e);
-		console.log(e.currentTarget);
 		if( e.target.id.includes("Skopiuj") ) {
 			handleCopyNthTimes(e);
 		} else if( e.target.id.includes("Usun") ) {
