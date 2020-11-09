@@ -166,7 +166,6 @@ function systemInformation() {
 	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
 	const systemStatus = document.querySelector('.systemStatusText');
 	const sysOk = isSystemOk(completeData);
-
 	if( sysOk ) {
 		installationContainer.classList.remove('sysWrong');
 		installationContainer.classList.add('sysOk');
