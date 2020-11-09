@@ -10,14 +10,17 @@ const completeData = {
 	supplyType: "24V z podtrzymaniem"
 };
 
+let sysOk = false;
+
 window.addEventListener('scroll', () => {
 	const buttonDiv = document.querySelector('.popup');
-	if( window.scrollY >= buttonDiv.offsetTop ) {
+	if( window.scrollY > buttonDiv.offsetTop ) {
 		buttonDiv.classList.add('sticky');
 	} else {
 		buttonDiv.classList.remove('sticky');
 	}
-});
+});	
+
 
 window.addEventListener('load', () => {
 	select(powerSupplies, 'powerSupplyLabel', 'powerSupply', 'powerManagementInstallationContainer', `powerSupplyContainer`, `powerSupply`);
@@ -35,7 +38,7 @@ window.addEventListener('load', () => {
 	handlePSU();
 
 	const segments = document.querySelectorAll('.installationSegment');
-	segments.forEach((segment) => {
+	segments.forEach((segment, i) => {
 		segment.addEventListener('change', e => handleInputAndSelectChange(e));
 	});
 
@@ -57,21 +60,13 @@ window.addEventListener('load', () => {
 });
 
 function handleDOMChange(mutations) {
-	if( document.querySelector('.segmentContainer0') ) {
-		document.querySelector('.segmentContainer0').dataset.listener = 'true';
-	}
+	document.querySelector('#segmentContainer0').dataset.listener = 'true';
 
 	for( let changes of mutations ) {
 		if( changes.removedNodes.length === 0 && changes.addedNodes.length > 0 && changes.addedNodes[0].dataset.listener === 'false' ) {
 			changes.addedNodes[0].addEventListener('change', e => handleInputAndSelectChange(e));
 			changes.addedNodes[0].dataset.listener = 'true';
 		}
-	}
-
-	const segments = document.querySelectorAll('.installationSegment');
-	if( segments.length === 1 ) {
-		const checkboxesContainer = document.querySelector('.checkboxesContainer');
-		checkboxesContainer.parentNode.removeChild(checkboxesContainer);
 	}
 
 	setupBusImage();
@@ -169,17 +164,11 @@ function systemInformation() {
 	if( sysOk ) {
 		installationContainer.classList.remove('sysWrong');
 		installationContainer.classList.add('sysOk');
-		systemStatus.innerText = `System: poprawny`;
-		const powerConsumption = document.getElementById('powerConsumption');
-		powerConsumption.innerText = `Zapotrzebowanie na moc przez elementy magistrali: ${Math.ceil(analiseSystem(completeData).powerConsumption_W)} W`;
-
 	} else {
 		installationContainer.classList.remove('sysOk');
 		installationContainer.classList.add('sysWrong');
-		systemStatus.innerText = "System: niepoprawny";
-		const powerConsumption = document.getElementById('powerConsumption');
-		powerConsumption.parentNode.removeChild(powerConsumption);
 	}
+	sysOk ? systemStatus.innerText = "System: poprawny" : systemStatus.innerText = "System: niepoprawny";
 }
 
 function generateSegments(dataArray) {
@@ -319,13 +308,12 @@ function selectedCheckboxes(segmentList) {
 }
 
 function handleInputAndSelectChange(event) {
-	const segments = document.querySelectorAll('.installationSegment');
-	const checkedSegments = selectedCheckboxes(segments);
-
 	switch( event.target.name ) {
 		case 'cableSelect': {
+			const segments = document.querySelectorAll('.installationSegment');
 			const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
 			collectedData[findIndex].cableType = event.target.value;
+			const checkedSegments = selectedCheckboxes(segments);
 			if( checkedSegments ) {
 				checkedSegments.forEach((segment) => {
 					const indexToUpdate = Array.from(segments).findIndex(checkedSegment => segment === checkedSegment);
@@ -338,11 +326,13 @@ function handleInputAndSelectChange(event) {
 		}
 
 		case 'deviceSelect': {
+			const segments = document.querySelectorAll('.installationSegment');
 			const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
 			const img = event.currentTarget.querySelector(`.deviceimage`);
 
 			collectedData[findIndex].deviceType = event.target.value;
 			chooseImg(img, event.target.value);
+			const checkedSegments = selectedCheckboxes(segments);
 
 			if( checkedSegments ) {
 				checkedSegments.forEach((segment) => {
@@ -359,8 +349,10 @@ function handleInputAndSelectChange(event) {
 		}
 
 		case 'cableInput': {
+			const segments = document.querySelectorAll('.installationSegment');
 			const findIndex = Array.from(segments).findIndex(segment => segment === event.currentTarget);
 			collectedData[findIndex].cableLen_m = parseFloat(event.target.value);
+			const checkedSegments = selectedCheckboxes(segments);
 			if( checkedSegments ) {
 				checkedSegments.forEach((segment) => {
 					const indexToUpdate = Array.from(segments).findIndex(checkedSegment => segment === checkedSegment);

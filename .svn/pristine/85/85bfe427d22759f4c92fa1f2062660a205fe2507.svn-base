@@ -13,7 +13,7 @@ body {
 
 .powerManagementContainer {
     width: 100%;
-    margin: 0 auto;
+    margin: 40px auto;
 }
 
 /* styles to remove arrows from input element */
@@ -40,7 +40,6 @@ select {
 }
 
 .systemStatus {
-    margin-top: 40px;
     text-align: center;
 }
 

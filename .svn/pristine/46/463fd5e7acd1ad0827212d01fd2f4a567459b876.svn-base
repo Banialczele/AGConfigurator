@@ -10,6 +10,8 @@ const completeData = {
 	supplyType: "24V z podtrzymaniem"
 };
 
+let sysOk = false;
+
 window.addEventListener('scroll', () => {
 	const buttonDiv = document.querySelector('.popup');
 	if( window.scrollY >= buttonDiv.offsetTop ) {
@@ -35,7 +37,7 @@ window.addEventListener('load', () => {
 	handlePSU();
 
 	const segments = document.querySelectorAll('.installationSegment');
-	segments.forEach((segment) => {
+	segments.forEach((segment, i) => {
 		segment.addEventListener('change', e => handleInputAndSelectChange(e));
 	});
 
@@ -169,17 +171,11 @@ function systemInformation() {
 	if( sysOk ) {
 		installationContainer.classList.remove('sysWrong');
 		installationContainer.classList.add('sysOk');
-		systemStatus.innerText = `System: poprawny`;
-		const powerConsumption = document.getElementById('powerConsumption');
-		powerConsumption.innerText = `Zapotrzebowanie na moc przez elementy magistrali: ${Math.ceil(analiseSystem(completeData).powerConsumption_W)} W`;
-
 	} else {
 		installationContainer.classList.remove('sysOk');
 		installationContainer.classList.add('sysWrong');
-		systemStatus.innerText = "System: niepoprawny";
-		const powerConsumption = document.getElementById('powerConsumption');
-		powerConsumption.parentNode.removeChild(powerConsumption);
 	}
+	sysOk ? systemStatus.innerText = "System: poprawny" : systemStatus.innerText = "System: niepoprawny";
 }
 
 function generateSegments(dataArray) {
