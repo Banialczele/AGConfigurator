@@ -114,7 +114,6 @@ function fileButtons() {
 function handleDroppedFile(e) {
 	e.stopPropagation();
 	e.preventDefault();
- 	console.log(e);
 	const dataTransfer = e.dataTransfer;
 	const files = e.target.files || dataTransfer.files;
 	const installationContainer = document.querySelector('.installationContainer');
@@ -293,9 +292,7 @@ function handleCheckboxes() {
 function readFromFile() {
 	const element = document.getElementById('file-input');
 	element.addEventListener('change', e => handleDroppedFile(e));
-		element.click();
-
-	console.log(element.files);
+	element.click();
 }
 
 function handleFileEvents() {
