@@ -1,0 +1,148 @@
+.powerManagementInstallationContainer {
+    margin: 0 auto;
+    min-width: 650px;
+    max-width: 50%;
+    display: grid;
+    height: auto;
+    min-height: 250px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 75px 1fr;
+    grid-template-areas: 
+        "powerSupply"                               
+        "installation";
+}
+
+.powerManagementInstallationContainer .powerSupplyContainer {
+    grid-area: powerSupply;
+}
+.powerManagementInstallationContainer .installationContainer {
+    grid-area: installation;
+}
+
+.installationSegment {
+    display: grid;
+    grid-template-columns: minmax(200px,1fr) auto auto minmax(200px,1fr);
+    grid-template-rows: 150px;
+    grid-template-areas: 
+    "checkboxAndWire wireImage deviceImage deviceSelect"
+    ;
+}
+
+.installationSegment .checkboxAndcableContainer {
+    grid-area: checkboxAndWire;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+.installationSegment .checkboxAndcableContainer input {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+    align-self: start;
+    margin-top: 5px;
+}
+
+.installationSegment .checkboxAndcableContainer .cableContainer {
+    grid-column: 2;
+    grid-row: 1;
+    place-self: end;
+}
+
+.cableContainerInput input{
+    max-width: 70%
+}
+
+.installationSegment .cableImageContainer {
+    grid-area: wireImage;
+}
+
+.installationSegment .cableImageContainer .cableimage {
+    justify-self: end;
+    height: 150px;
+}
+
+.installationSegment .deviceImageContainer {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.installationSegment .deviceImageContainer #devicePaddingImage {
+    height: 75px;
+}
+
+.installationSegment .deviceImageContainer .deviceimage {
+    height: 150px;
+}
+
+.installationSegment .deviceContainer {
+    grid-area: deviceSelect;
+    display: grid;
+    grid-template-columns: 1fr 1fr;    
+    grid-template-rows: 1fr 1fr;
+}
+
+.installationSegment .deviceContainer .deviceLabel {
+    grid-row: 2;
+    grid-column: 1;
+    justify-self: center;
+    align-self: start;
+    margin: 10px 0;
+}
+
+.installationSegment .deviceContainer .deviceButtons {
+    grid-row: 2;
+    grid-column: 1; 
+    justify-self: center;
+    align-self: end;
+    display: flex;
+    flex-direction: row;     
+}
+
+.copyButton img {
+    pointer-events: none;
+}
+
+.deviceQuantity {
+    width: 45px;
+}
+
+.configurationPanel {
+    margin-top: 10px;
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    grid-area: 2 / span 4;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    grid-template-rows: 60px;
+    grid-template-areas: "checkbox label adjustCables systemButtons";
+}
+
+.configurationPanel #checkCheckboxes {
+    grid-area: checkbox;
+    place-self: center end;
+}
+
+.configurationPanel label {
+    grid-area: label;
+    place-self: center start;
+}
+
+.configurationPanel #matchCablesToSystem {
+    grid-area: adjustCables;
+    place-self: center;
+}
+
+.configurationPanel .fileDiv {
+    grid-area: systemButtons;
+    place-self: center;
+}
+
+.copyButton, .deleteButton {
+    background: none;
+    border: none;
+}

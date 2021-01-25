@@ -1,0 +1,187 @@
+const button = function(index) {
+	const segmentContainer = document.querySelector(`#segmentContainer${index}`);
+	const deviceContainer = document.querySelector(`#segmentContainer${index} .deviceContainer`);
+	const deviceButtons = document.querySelector(`#segmentContainer${index} .deviceContainer .deviceButtons`);
+	let deviceButtonContainer;
+	if( deviceContainer.contains(deviceButtons) ) {
+		deviceButtonContainer = document.querySelector(`#segmentContainer${index} .deviceContainer .deviceButtons`);
+		const firstElementToDelete = document.getElementById(`Skopiuj${index}`);
+		const secondElementToDelete = document.getElementById(`Usun${index}`);
+		firstElementToDelete.parentNode.removeChild(firstElementToDelete);
+		secondElementToDelete.parentNode.removeChild(secondElementToDelete);
+	} else {
+		deviceButtonContainer = document.createElement('div');
+		deviceButtonContainer.setAttribute('id', `#deviceButtons`);
+		deviceButtonContainer.className = `deviceButtons`;
+	}
+ 	
+	const copyButton = document.createElement('button');
+	copyButton.innerHTML = '<img src="./Icons/copy16.png" alt="Unable to find image"/>';
+	copyButton.className = "copyButton";
+	const deleteButton = document.createElement('button');
+	deleteButton.innerHTML = `<img src="./Icons/remove.png" alt="Unable to find image" />`;
+
+	copyButton.setAttribute('id', `Skopiuj0`);
+	deleteButton.setAttribute('id', `Usun0`);
+
+	deviceButtonContainer.appendChild(copyButton);
+	deviceButtonContainer.appendChild(deleteButton);
+	deviceContainer.appendChild(deviceButtonContainer);
+	segmentContainer.appendChild(deviceContainer);
+};
+
+function handleCopyNthTimes(e) {
+	//get index of an element from id
+	const index = parseInt(e.target.id.match(/\d+/)[0]);
+	//select segment to copy
+	const segmentContainer = document.querySelector(`.segmentContainer${index}`);
+	const segments = document.querySelectorAll('.installationSegment');
+	const indexWhereToCopyDiv = Array.from(segments).findIndex(segment => segment === segmentContainer);
+
+	//data to insert
+	const cableTypeToCopy = (segmentContainer.querySelector(`.cableSelect`)).value;
+	const cableIndexToCopy = (segmentContainer.querySelector(`.cableSelect`)).selectedIndex;
+	const deviceTypeToCopy = (segmentContainer.querySelector(`.deviceSelect`)).value;
+	const deviceIndexToCopy = (segmentContainer.querySelector(`.deviceSelect`)).selectedIndex;
+	const cableLength = (segmentContainer.querySelector(`.cableContainerInput input`)).value;
+
+	//select parentNode of container to insert data at specific index
+	const installationContainer = segmentContainer.parentNode;
+	//button container to insert input to
+	const buttonContainer = segmentContainer.querySelector(`.deviceButtons`);
+
+	segments.forEach(segment => {
+		const checkIfInputExists = segment.querySelector('#quantity');
+		if( checkIfInputExists ) {
+			const buttons = segment.querySelector('.deviceButtons');
+			buttons.removeChild(checkIfInputExists);
+		}
+	});
+	
+	//create input element to get amount of segments to create
+	const input = document.createElement('input');
+	const num = parseFloat(cableLength) || 0;
+
+	input.type = 'Number';
+	input.setAttribute('id', `quantity`);
+	input.setAttribute('min', 0);
+
+	let newIndex = 0;
+	buttonContainer.insertBefore(input, buttonContainer.lastChild);
+
+	input.addEventListener('keypress', (e) => {
+		if( e.key === 'Enter' ) {
+			//delete check/uncheck checkboxes buttons
+			const buttonDiv = document.querySelector('.buttonDiv');
+			if( buttonDiv ) {
+				buttonDiv.parentNode.removeChild(buttonDiv);
+			}
+
+			const inputToRemove = document.getElementById("quantity");
+			inputToRemove.parentNode.removeChild(inputToRemove);
+			for( let i = 0; i < e.target.value; i++ ) {
+				//generating unique index for segment.
+				while( newIndex === Cable.usedIndexes[newIndex] ) {
+					newIndex++;
+					if( newIndex !== Cable.usedIndexes[newIndex] ) {
+						Cable.usedIndexes.push(newIndex);
+						break;
+					}
+				}
+				const newSegment = {
+					cableType: `${cableTypeToCopy}`,
+					cableLen_m: num,
+					deviceType: `${deviceTypeToCopy}`
+				};
+				
+				//adding new segment at specific index ( not at the end of array )
+				collectedData.splice(index + 1, 0, newSegment);
+				const clone = segmentContainer.cloneNode(true);
+
+				const checkboxNewId = clone.querySelector('input[type="checkbox"]');
+				checkboxNewId.setAttribute('id', `checkbox${newIndex}`);
+				clone.id = `segmentContainer${newIndex}`;
+				clone.className = `segmentContainer${newIndex}`;
+				clone.classList.add("installationSegment");
+
+				const cableSelect = clone.querySelector('select[name="cableSelect"]');
+				cableSelect.selectedIndex = cableIndexToCopy;
+				cableSelect.selectedOptions = cableSelect.options[cableTypeToCopy];
+				clone.dataset.listener = 'false';
+				const cloneDeviceImage = clone.querySelector('.deviceimage');
+				const cloneCableImage = clone.querySelector('.cableimage');
+				cloneDeviceImage.setAttribute('id', `deviceimage${newIndex}`);
+				cloneCableImage.setAttribute('id', `cableimage${newIndex}`);
+			
+
+				const cloneCopyButton = clone.querySelector(`.deviceButtons #Skopiuj${index}`);
+				const cloneDeleteButton = clone.querySelector(`.deviceButtons #Usun${index}`);
+				cloneCopyButton.setAttribute('id', `Skopiuj${newIndex}`);
+				cloneDeleteButton.setAttribute('id', `Usun${newIndex}`);
+
+				const deviceSelect = clone.querySelector('select[name="deviceSelect"]');
+				deviceSelect.selectedIndex = deviceIndexToCopy;
+				deviceSelect.selectedOptions = cableSelect.options[deviceTypeToCopy];
+				let updateIndexToCopyCloneTo = indexWhereToCopyDiv + 1 + i;
+				installationContainer.insertBefore(clone, installationContainer.children[updateIndexToCopyCloneTo]);
+			}		
+		}
+	});
+}
+
+function handleDeleteDevice(e) {
+	const segments = document.querySelectorAll('.installationSegment');
+	if( segments.length > 1) {     	
+		//get number of element from id
+		const index = e.target.id.match(/\d+/)[0];
+		const segmentContainer = document.querySelector(`.segmentContainer${index}`);
+		
+		const findIndexToDelete = Array.from(segments).findIndex(segment => segment === segmentContainer);
+		collectedData.splice(findIndexToDelete, 1);
+		if( segmentContainer !== null && segmentContainer.parentNode !== null ) {
+			const infoPopup = document.querySelector('.popup');
+			
+			infoPopup.innerText = `Usunięto segment: ${index}`;
+						
+			segmentContainer.parentNode.removeChild(segmentContainer);
+			infoPopup.classList.add('open-active')
+			setTimeout( () =>  { infoPopup.classList.remove('open-active') }, 3000); 			
+		}
+	} else {
+			const infoPopup = document.querySelector('.popup');
+			infoPopup.innerText = `Nie można usunąć pierwszego segmentu`;
+						
+			infoPopup.classList.add('open-active')
+			setTimeout( () =>  { infoPopup.classList.remove('open-active') }, 3000); 
+	}
+}
+
+function checkboxButtons(installationContainer) {
+	const buttonDiv = document.createElement('div');
+	const checkboxesContainer = document.createElement('div');
+	buttonDiv.className = 'buttonDiv';
+	checkboxesContainer.className = 'checkboxesContainer';
+	
+	const checkCheckboxes = document.createElement('input');
+	checkCheckboxes.type = 'checkbox';
+	checkCheckboxes.setAttribute('id', 'checkCheckboxes');
+	checkCheckboxes.setAttribute('name', 'checkCheckboxes');
+	const checkCheckboxesLabel = document.createElement('label');
+	
+	checkCheckboxesLabel.innerHTML = 'Zaznacz wszystkie';
+	checkCheckboxesLabel.setAttribute('for', 'checkCheckboxes');
+	checkCheckboxesLabel.setAttribute('id', 'checkCheckboxesLabel');
+	
+	const matchSystemCables = document.createElement('input');
+	matchSystemCables.setAttribute('id', 'matchCablesToSystem');
+	matchSystemCables.type = "button";
+	matchSystemCables.value = "Dobierz kabel";
+
+	buttonDiv.prepend(matchSystemCables);
+	buttonDiv.prepend(checkCheckboxesLabel);
+	buttonDiv.prepend(checkCheckboxes);
+	checkboxesContainer.appendChild(buttonDiv);
+
+	installationContainer.appendChild(checkboxesContainer);
+}
+

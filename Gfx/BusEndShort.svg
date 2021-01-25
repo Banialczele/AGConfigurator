@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.2" width="15mm" height="30mm" viewBox="8000 12500 1500 3000" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:presentation="http://sun.com/xmlns/staroffice/presentation" xmlns:smil="http://www.w3.org/2001/SMIL20/" xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0" xml:space="preserve">
+<svg version="1.2" width="15mm" height="30mm" viewBox="8000 14000 1500 3000" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:presentation="http://sun.com/xmlns/staroffice/presentation" xmlns:smil="http://www.w3.org/2001/SMIL20/" xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0" xml:space="preserve">
  <defs class="ClipPathGroup">
   <clipPath id="presentation_clip_path" clipPathUnits="userSpaceOnUse">
-   <rect x="8000" y="12500" width="1500" height="3000"/>
+   <rect x="8000" y="14000" width="1500" height="3000"/>
   </clipPath>
   <clipPath id="presentation_clip_path_shrink" clipPathUnits="userSpaceOnUse">
-   <rect x="8001" y="12503" width="1497" height="2994"/>
+   <rect x="8001" y="14003" width="1497" height="2994"/>
   </clipPath>
  </defs>
  <defs class="TextShapeIndex">
@@ -52,19 +52,21 @@
      <g class="Page">
       <g class="com.sun.star.drawing.CustomShape">
        <g id="id3">
-        <rect class="BoundingBox" stroke="none" fill="none" x="8000" y="12500" width="1501" height="3001"/>
+        <rect class="BoundingBox" stroke="none" fill="none" x="8000" y="14000" width="1501" height="3001"/>
        </g>
       </g>
-      <g class="com.sun.star.drawing.CustomShape">
-       <g id="id4">
-        <rect class="BoundingBox" stroke="none" fill="none" x="9000" y="14480" width="501" height="41"/>
-        <path fill="rgb(0,0,0)" stroke="none" d="M 9250,14520 L 9000,14520 9000,14480 9500,14480 9500,14520 9250,14520 Z"/>
+      <g class="Group">
+       <g class="com.sun.star.drawing.CustomShape">
+        <g id="id4">
+         <rect class="BoundingBox" stroke="none" fill="none" x="9000" y="15480" width="501" height="41"/>
+         <path fill="rgb(0,0,0)" stroke="none" d="M 9250,15520 L 9000,15520 9000,15480 9500,15480 9500,15520 9250,15520 Z"/>
+        </g>
        </g>
-      </g>
-      <g class="com.sun.star.drawing.CustomShape">
-       <g id="id5">
-        <rect class="BoundingBox" stroke="none" fill="none" x="8980" y="12500" width="41" height="2021"/>
-        <path fill="rgb(0,0,0)" stroke="none" d="M 8980,13510 L 8980,12500 9020,12500 9020,14520 8980,14520 8980,13510 Z"/>
+       <g class="com.sun.star.drawing.CustomShape">
+        <g id="id5">
+         <rect class="BoundingBox" stroke="none" fill="none" x="8980" y="14000" width="41" height="1521"/>
+         <path fill="rgb(0,0,0)" stroke="none" d="M 8980,14760 L 8980,14000 9020,14000 9020,15520 8980,15520 8980,14760 Z"/>
+        </g>
        </g>
       </g>
      </g>
