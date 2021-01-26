@@ -278,7 +278,7 @@ function readFromFile() {
 function matchCablesToSystem() {
 	const installationContainer = document.querySelector('.installationContainer');
 	while( installationContainer.firstChild ) {
-		installationContainer.removeChild(installationContainer.lastChild);
+		installationContainer.removeChild(installationContainer.firstChild);
 	}
 	const matchedSystem = matchSystemCables(completeData);
 	generateSegments(matchedSystem.bus);
@@ -291,8 +291,9 @@ function matchCablesToSystem() {
 		segment.querySelector('.deviceSelect').value = matchedSystem.bus[i].deviceType;
 		chooseImg(segment.querySelector(`#deviceimage${i}`), matchedSystem.bus[i].deviceType);
 	});
-	// const systemContainer = document.querySelector('.powerManagementContainer');
-
+	completeData.supplyType = matchedSystem.supplyType;
+	collectedData.pop();
+	collectedData.push(...matchedSystem.bus);
 }
 
 function handleButtonEvents() {

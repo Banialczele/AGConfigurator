@@ -92,10 +92,14 @@
 
 .copyButton img {
     pointer-events: none;
+    width: 16px;
+    height: 16px;
 }
 
 .deleteButton img {
     pointer-events: none;
+    width: 16px;
+    height: 16px;
 }
 
 .deviceQuantity {
@@ -103,7 +107,7 @@
 }
 
 .configurationPanel {
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     grid-template-rows: 60px;
@@ -112,6 +116,8 @@
     left: 0;
     right: 0;
     bottom: 0;
+    max-width: 1980px;
+    margin: 0 auto;
 }
 
 .configurationPanel .masterCheckboxWithLabel {

@@ -1,19 +1,11 @@
 const button = function(index) {
 	const segmentContainer = document.querySelector(`#segmentContainer${index}`);
-	const deviceContainer = document.querySelector(`#segmentContainer${index} .deviceContainer`);
-	const deviceButtons = document.querySelector(`#segmentContainer${index} .deviceContainer .deviceButtons`);
+	const deviceContainer = segmentContainer.querySelector(`.deviceContainer`);
 	let deviceButtonContainer;
-	if( deviceContainer.contains(deviceButtons) ) {
-		deviceButtonContainer = document.querySelector(`#segmentContainer${index} .deviceContainer .deviceButtons`);
-		const firstElementToDelete = document.getElementById(`Skopiuj${index}`);
-		const secondElementToDelete = document.getElementById(`Usun${index}`);
-		firstElementToDelete.parentNode.removeChild(firstElementToDelete);
-		secondElementToDelete.parentNode.removeChild(secondElementToDelete);
-	} else {
-		deviceButtonContainer = document.createElement('div');
-		deviceButtonContainer.setAttribute('id', `#deviceButtons`);
-		deviceButtonContainer.className = `deviceButtons`;
-	}
+
+	deviceButtonContainer = document.createElement('div');
+	deviceButtonContainer.setAttribute('id', `#deviceButtons`);
+	deviceButtonContainer.className = `deviceButtons`;
 
 	const copyButton = document.createElement('button');
 	copyButton.innerHTML = '<img src="./Icons/copy16.png" alt="Unable to find image"/>';
@@ -25,14 +17,14 @@ const button = function(index) {
 	const input = document.createElement('input');
 
 	input.type = 'Number';
-	input.setAttribute('id', `quantity0`);
+	input.setAttribute('id', `quantity${index}`);
 	input.className = 'deviceQuantity';
 	input.setAttribute('name', `deviceQuantity`);
 	input.value = 1;
 	input.setAttribute('min', 0);
 
-	copyButton.setAttribute('id', `Skopiuj0`);
-	deleteButton.setAttribute('id', `Usun0`);
+	copyButton.setAttribute('id', `Skopiuj${index}`);
+	deleteButton.setAttribute('id', `Usun${index}`);
 
 	deviceButtonContainer.appendChild(copyButton);
 	deviceButtonContainer.appendChild(input);
@@ -42,7 +34,8 @@ const button = function(index) {
 };
 
 function handleCopyNthTimes(e, amountToCopy) {
-	e.preventDefault();
+	console.log(e.target);
+	e.preventDefault();  
 	//get index of an element from id
 	const index = parseInt(e.target.id.match(/\d+/)[0]);
 	//select segment to copy
