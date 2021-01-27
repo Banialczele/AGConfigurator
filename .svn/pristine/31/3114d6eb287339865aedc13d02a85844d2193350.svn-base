@@ -34,6 +34,7 @@ const button = function(index) {
 };
 
 function handleCopyNthTimes(e, amountToCopy) {
+	console.log(e.target);
 	e.preventDefault();  
 	//get index of an element from id
 	const index = parseInt(e.target.id.match(/\d+/)[0]);
@@ -79,13 +80,12 @@ function handleCopyNthTimes(e, amountToCopy) {
 		//adding new segment at specific index ( not at the end of array )
 		collectedData.splice(index + 1, 0, newSegment);
 		const clone = segmentContainer.cloneNode(true);
-		
-		//delete configurationPanel from segment
+			//delete configurationPanel from segment
 		const configurationPanel = clone.querySelector('.configurationPanel');
 		if( configurationPanel ) {
 			configurationPanel.parentNode.removeChild(configurationPanel);
 		}
-
+		
 		const deviceQuantity = clone.querySelector(`#quantity${index}`);
 		deviceQuantity.setAttribute('id', `quantity${newIndex}`);
 		deviceQuantity.value = 1;
@@ -99,13 +99,12 @@ function handleCopyNthTimes(e, amountToCopy) {
 		const cableSelect = clone.querySelector('select[name="cableSelect"]');
 		cableSelect.selectedIndex = cableIndexToCopy;
 		cableSelect.selectedOptions = cableSelect.options[cableTypeToCopy];
-		
+		clone.dataset.listener = 'false';
 		const cloneDeviceImage = clone.querySelector('.deviceimage');
 		const cloneCableImage = clone.querySelector('.cableimage');
 		cloneDeviceImage.setAttribute('id', `deviceimage${newIndex}`);
 		cloneCableImage.setAttribute('id', `cableimage${newIndex}`);
 
-		clone.dataset.listener = 'false';
 
 		const cloneCopyButton = clone.querySelector(`.deviceButtons #Skopiuj${index}`);
 		const cloneDeleteButton = clone.querySelector(`.deviceButtons #Usun${index}`);
@@ -140,7 +139,7 @@ function handleDeleteDevice(e) {
 		}
 	} else {
 			const infoPopup = document.querySelector('.popup');
-			infoPopup.innerText = `Nie można usunąć jedynego segmentu`;
+			infoPopup.innerText = `Nie można usunąć pierwszego segmentu`;
 						
 			infoPopup.classList.add('open-active')
 			setTimeout( () =>  { infoPopup.classList.remove('open-active') }, 3000); 
