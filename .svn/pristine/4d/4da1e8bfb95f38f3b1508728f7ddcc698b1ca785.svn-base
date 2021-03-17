@@ -238,8 +238,6 @@ function generateSegments(item, index) {
 }
 
 function initializeSegmentData(i) {
-	const powerSupply = document.querySelector('.powerSupply');
-	powerSupply.value = systemData.supplyType;
 	const segment = document.querySelector(`.segmentContainer${i}`);
 	segment.querySelector('.cableSelect').value = systemData.bus[i].cableType;
 	segment.querySelector('input[name="cableInput"]').value = systemData.bus[i].cableLen_m;
@@ -314,12 +312,14 @@ function matchCablesToSystem() {
 	while( installationContainer.firstChild ) {
 		installationContainer.removeChild(installationContainer.firstChild);
 	}
-	systemData.bus = [];
+	systemData.bus.length = 0;
 	systemData.supplyType = matchSystemCables(systemData).supplyType;
-	systemData.bus = matchSystemCables(systemData).bus;
+	systemData.bus.push(...matchSystemCables(systemData).bus);
 
 	systemData.bus.forEach((item, index) => generateSegments(item, index));
-	
+
+	const powerSupply = document.querySelector('.powerSupply');
+	powerSupply.value = systemData.supplyType;
 	const segments = document.querySelectorAll('.installationSegment');
 	segments.forEach((segment, i) => {
 		initializeSegmentData(i);

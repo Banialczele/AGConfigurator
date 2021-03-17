@@ -5,8 +5,10 @@
 	<meta charset="utf-8" >
 	<title >Power Management</title >
 	<link href="./css/index.css" rel="stylesheet" type="text/css" />
+	<!--<link href="./css/index1.css" rel="stylesheet" type="text/css" />-->
 	<link href="./css/psustyles.css" rel="stylesheet" type="text/css" />
 	<link href="./css/installationsegment.css" rel="stylesheet" type="text/css" />
+	<!--<link href="./css/installationsegment1.css" rel="stylesheet" type="text/css" />-->
 	<script src="./AnalysisEngine/models.js" type="text/javascript" ></script >
 	<script src="./js/cable.js" type="text/javascript" ></script >
 	<script src="./js/device.js" type="text/javascript" ></script >

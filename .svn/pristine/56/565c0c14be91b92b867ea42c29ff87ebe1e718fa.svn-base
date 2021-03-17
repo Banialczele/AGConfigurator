@@ -6,7 +6,7 @@ const generateOptions = (param, select) => {
 		const option = document.createElement('option');
 		option.innerHTML = param[i].type;
 		option.value = param[i].type;
-		param[i].isBig ? option.setAttribute('data-isBig', `${param[i].isBig = true}`) : '';
+		param[i].isBig ? option.setAttribute('data-isBig', `${param[i].isBig = true} `) : '';
 		select.appendChild(option);
 	}
 }
@@ -26,7 +26,7 @@ const select = function(param, segmentName, type) {
 			select.setAttribute('name', 'powerSupply');
 			select.setAttribute('id', 'powerSupply');
 
-			// label.innerText = chooseText(usedText.typZasilacza);
+			label.innerText = 'Rodzaj zasilania ';
 			label.appendChild(select);
 			containerDiv.appendChild(label);
 			div.appendChild(containerDiv);
@@ -52,6 +52,7 @@ const select = function(param, segmentName, type) {
 
 		case 'device' : {
 			containerDiv.className = 'deviceContainer';
+
 			label.className = `deviceLabel`;
 			label.setAttribute('for', 'deviceSelect');
 			select.className = 'deviceSelect';

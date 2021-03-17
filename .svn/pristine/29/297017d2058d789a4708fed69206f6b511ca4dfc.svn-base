@@ -26,7 +26,7 @@ const select = function(param, segmentName, type) {
 			select.setAttribute('name', 'powerSupply');
 			select.setAttribute('id', 'powerSupply');
 
-			// label.innerText = chooseText(usedText.typZasilacza);
+			label.innerText = chooseText(usedText.typZasilacza);
 			label.appendChild(select);
 			containerDiv.appendChild(label);
 			div.appendChild(containerDiv);

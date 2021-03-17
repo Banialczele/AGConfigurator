@@ -16,8 +16,6 @@
 .powerManagementInstallationContainer .powerSupplyContainer {
     grid-area: powerSupply;
     border-radius: 15px;
-    
-    background: rgb(230,230,230);
 }
 .powerManagementInstallationContainer .installationContainer {
     grid-area: installation;     
