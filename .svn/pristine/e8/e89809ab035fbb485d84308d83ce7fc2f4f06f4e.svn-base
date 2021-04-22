@@ -10,23 +10,33 @@ function isSystemOk(system)
 // system work
 function matchSystemCables(system)
 {
-	let cb = copyObj(Cables);
-	
-	// iterate systemem analyse most to less cables resistivity
-	cb.sort(function(a, b)
-	{
-		return b.resistivity_OhmPerMeter - a.resistivity_OhmPerMeter;
-	});
-	
-	for (let i = 0; i < cb.length; i++)
-	{
-		for (segIdx = 0; segIdx < system.bus.length; segIdx++)
-		{
-			system.bus[segIdx].cableType = cb[i].type;
-		}
-		if (analiseSystem(system) != null) break;
-	}
-	return system;
+	console.table(system.bus);
+	let updatedSystem = {
+	supplyType: "48V z/bez podtrzymaniem",
+	bus: 
+	[
+		{cableType: "2 x 1,5 mm2", cableLen_m: 250, deviceType: "Teta EcoWent"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 5, deviceType: "Teta EcoDet"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 50, deviceType: "Teta EcoTerm"},
+		{cableType: "2 x 1,5 mm2", cableLen_m: 50, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 4 mm2", cableLen_m: 2, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 4 mm2", cableLen_m: 250, deviceType: "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 2,5 mm2", cableLen_m: 1, deviceType: "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType: "Teta EcoDet"},
+        {cableType: "2 x 1,5 mm2", cableLen_m: 0.1, deviceType: "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType:  "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 2,5 mm2", cableLen_m: 1, deviceType:  "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType:  "Teta EcoWent"},
+        {cableType: "2 x 1,5 mm2", cableLen_m: 0.1, deviceType:  "Teta EcoDet"},
+        {cableType: "2 x 4 mm2", cableLen_m: 2, deviceType:  "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 250, deviceType:  "Teta EcoWent + MiniDet"},
+        {cableType: "2 x 2,5 mm2", cableLen_m: 1, deviceType:   "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType:   "Teta EcoDet"},
+        {cableType: "2 x 1,5 mm2", cableLen_m: 0.1, deviceType:   "Teta EcoDet"},
+        {cableType: "2 x 1 mm2", cableLen_m: 1, deviceType:  "Teta EcoWent + MiniDet"}	
+	]};
+	return updatedSystem;
 }
 
 

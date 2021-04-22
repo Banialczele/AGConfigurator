@@ -60,13 +60,9 @@ select {
     -webkit-appearance: none; /* Safari and Chrome */
 }
 
-select.deviceSelect {
+select.powerSupply, select.deviceSelect {
     width: 160px;
 }
-
-select.powerSupply {
-    width: auto;
-} 
 
 p {
     margin: 0;

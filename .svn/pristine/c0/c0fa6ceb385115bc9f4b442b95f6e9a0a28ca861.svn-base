@@ -1,0 +1,18 @@
+function saveToFile(dataToSave) {
+	const date = new Date();
+	const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
+	const anchor = document.createElement('a');
+	anchor.style = 'display:none';
+	const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
+	if( fileName === null ) return;
+	const dataAsString = JSON.stringify(dataToSave);
+	const blob = new Blob([ dataAsString ], { type: "text/javascript" });
+	anchor.href = window.URL.createObjectURL(blob);
+	anchor.download = `${fileName}.json`;
+	anchor.click();
+}
+
+function getMonth(date) {
+	const month = new Date().getMonth() + 1;
+	return month < 10 ? `0${month}` : month;
+}
