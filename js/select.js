@@ -1,8 +1,8 @@
 const cables = Cables.map(cables => ({ ...cables }));
-const devices = Devices.map(devices => ({ ...devices }));
+const devices = NewDevices.map(devices => ({ ...devices }));
 
 const generateOptions = (param, select) => {
-	for( let i = 0; i < param.length; i++ ) {
+	for (let i = 0; i < param.length; i++) {
 		const option = document.createElement('option');
 		option.innerHTML = param[i].type;
 		option.value = param[i].type;
@@ -10,15 +10,14 @@ const generateOptions = (param, select) => {
 		select.appendChild(option);
 	}
 }
-
-const select = function(param, segmentName, type) {
+function select(param, segmentName, type, id, containerName) {
 	const label = document.createElement('label');
 	const select = document.createElement('select');
 	const div = document.querySelector(`.${segmentName}`);
 	const containerDiv = document.createElement('div');
 
-	switch( type ) {
-		case 'powerSupply' : {
+	switch (type) {
+		case 'powerSupply': {
 			containerDiv.className = `powerSupplyContainer`;
 			label.className = `powerSupplyLabel`;
 			label.setAttribute('for', 'powerSupply');
@@ -26,45 +25,138 @@ const select = function(param, segmentName, type) {
 			select.setAttribute('name', 'powerSupply');
 			select.setAttribute('id', 'powerSupply');
 
-			// label.innerText = chooseText(usedText.typZasilacza);
 			label.appendChild(select);
 			containerDiv.appendChild(label);
 			div.appendChild(containerDiv);
 			generateOptions(param, select);
 			break;
 		}
-		case 'cable' : {
-			containerDiv.className = 'cableContainer';
-			const segment = div.querySelector(`.${segmentName} .checkboxAndcableContainer`);
-			label.className = `cableLabel`;
-			label.setAttribute('for', 'cableSelect');
-			select.className = 'cableSelect';
-			select.setAttribute('name', 'cableSelect');
-			select.setAttribute('id', 'cableSelect');
 
+		case 'cable': {
+			label.className = `cableLabel`;
+			label.setAttribute('for', 'cableLabel');
+			select.className = 'cableSelect';
+			select.setAttribute('name', 'cableLabel');
+			select.setAttribute('id', 'cableSelect');
 			label.appendChild(select);
-			containerDiv.appendChild(label);
-			segment.appendChild(containerDiv);
-			div.appendChild(segment);
+			div.appendChild(label);
 			generateOptions(cables, select);
+
 			break;
 		}
 
-		case 'device' : {
-			containerDiv.className = 'deviceContainer';
+		case 'elementalCable': {
+			label.className = `elementalCableLabel`;
+			label.setAttribute('for', 'elementalCableLabel');
+			select.className = 'elementalCable';
+			select.setAttribute('name', 'elementalCableLabel');
+			select.setAttribute('id', 'elementalCable');
+			label.appendChild(select);
+			div.appendChild(label);
+			generateOptions(cables, select);
+
+			break;
+		}
+
+		case 'device': {
 			label.className = `deviceLabel`;
-			label.setAttribute('for', 'deviceSelect');
+			label.setAttribute('for', 'deviceLabel');
 			select.className = 'deviceSelect';
-			select.setAttribute('name', 'deviceSelect');
+			select.setAttribute('name', 'deviceLabel');
 			select.setAttribute('id', 'deviceSelect');
+			label.appendChild(select);
+			div.appendChild(label);
+			generateOptions(devices, select);
+			break;
+		}
+
+		case 'elementalDevice': {
+			label.className = `elementalDeviceLabel`;
+			label.setAttribute('for', 'elementalDeviceLabel');
+			select.className = 'elementalDevice';
+			select.setAttribute('name', 'elementalDeviceLabel');
+			select.setAttribute('id', 'elementalDevice');
 
 			label.appendChild(select);
-			containerDiv.appendChild(label);
-			div.appendChild(containerDiv);
+			div.appendChild(label);
 			generateOptions(devices, select);
 			break;
 		}
 	}
+}
 
+function createInstallationSegment(index) {
+	const checkIfUsed = Cable.usedIndexes.includes(index);
+	if (!checkIfUsed) {
+		const installationSegment = document.createElement('div');
+		installationSegment.className = `installationSegment`;
+		installationSegment.setAttribute('id', `installationSegment${index}`);
 
+		const installationDeviceImage = document.createElement('div');
+		installationDeviceImage.className = `installationDeviceContainer`;
+
+		const installationBusImage = document.createElement('div');
+		installationBusImage.className = `installationBusImage`;
+
+		const installationSirenImage = document.createElement('div');
+		installationSirenImage.className = `installationSirenContainer`;
+
+		const installationContainer = document.querySelector('.installationContainer');
+		
+		installationContainer.appendChild(installationSegment);
+		installationSegment.appendChild(installationSirenImage);
+		installationSegment.appendChild(installationBusImage);
+		installationSegment.appendChild(installationDeviceImage);
+
+		picture('device', `deviceImageContainer`, `installationDeviceContainer`, `image${index}`, index);
+		picture('siren', `sirenImageContainer`, `installationSirenContainer`, `image${index}`, index);
+		picture('cable', `cableImageContainer`, `installationBusImage`, `image${index}`, index);
+	}
+}
+
+//creating right panel containers
+function createSegmentList(index) {
+	const checkIfUsed = Cable.usedIndexes.includes(index);
+	if (!checkIfUsed) {
+		const segment = document.createElement('div');
+		segment.className = `segmentContainer`;
+		segment.setAttribute('id', `segment${index}`);
+
+		const deviceType = document.createElement('div');
+		const devicePara = document.createElement(`p`);
+		devicePara.innerHTML = `Urządzenie`
+		deviceType.className = `deviceType${index} deviceName`;
+		deviceType.setAttribute('id', `deviceType${index}`);
+
+		const cableDiameter = document.createElement('div');
+		const cablePara = document.createElement(`p`);
+		cablePara.innerHTML = `Przekrój kabla`
+		cableDiameter.className = `cableDiameter${index} cableDim`;
+		cableDiameter.setAttribute('id', `cableDiameter${index}`);
+
+		const cableLength = document.createElement('div');
+		const lengthPara = document.createElement(`p`);
+		lengthPara.innerHTML = `Długość kabla`
+		cableLength.className = `cableLength${index} cableLen`;
+		cableLength.setAttribute('id', `cableLength${index}`);
+
+		const deviceImageContainer = document.createElement('div');
+		deviceImageContainer.className = `deviceImageContainer`;
+		deviceImageContainer.setAttribute('id', `deviceImageContainer${index}`);
+
+		const deviceImage = document.createElement(`img`);
+		deviceImage.className = `deviceImage${index} deviceImg`;
+		deviceImageContainer.appendChild(deviceImage);
+
+		const segmentListContainer = document.querySelector('.segmentListContainer');
+
+		deviceType.appendChild(devicePara);
+		segment.appendChild(deviceType);
+		cableDiameter.appendChild(cablePara);
+		segment.appendChild(cableDiameter);
+		cableLength.appendChild(lengthPara);
+		segment.appendChild(cableLength);
+		segment.appendChild(deviceImageContainer);
+		segmentListContainer.appendChild(segment);
+	}
 }

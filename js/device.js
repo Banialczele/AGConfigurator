@@ -1,10 +1,6 @@
 const Device = {
 	deviceComponent: function(device, index) {
-		picture('device', `deviceImageContainer`, `segmentContainer${index}`, `image${index}`);
-		select(null,  `segmentContainer${index}`,'device');
+		//device select for list of devices.
+		select(null,  `deviceType${index}`,'device', index, `segment${index}`);
 	},
-	deviceButtons: function(index) {
-		button(index);
-	}
 }
-

@@ -35,33 +35,46 @@ function readFromFile() {
 
 function fileButtons() {
 	const fileButtonsDiv = document.createElement('div');
-	const saveToFile = document.createElement('input');
-	const fileInput = document.createElement('input');
+	const saveToFile = document.createElement('button');
 	const readFromFile = document.createElement('button');
-
-	fileInput.setAttribute('id', "file-input");
-	fileInput.type = "file";
-	fileInput.name = "name";
-	fileInput.setAttribute("style", "display: none;");
+	const saveToFileImage = document.createElement(`img`);
+	const readFromFileImage = document.createElement(`img`);
+	const fileContainer = document.querySelector(`.fileButtons`);
 
 	saveToFile.setAttribute('id', 'saveSystemToFile');
+	saveToFile.className = `saveSystemToFile`;
+
 	readFromFile.setAttribute('id', 'readSystemFromFile');
 	readFromFile.setAttribute('type', 'file');
 
-	saveToFile.classList.add('saveFileAnchor');
+	saveToFileImage.className = `saveToFileImage`;
+	saveToFileImage.setAttribute('alt', 'unable to find image');
+	readFromFileImage.setAttribute('alt', 'unable to find image');
+	readFromFileImage.className = `readFromFileImage`;
+
+	saveToFile.classList.add('saveFile');
 	readFromFile.classList.add('readFile');
 	fileButtonsDiv.classList.add('fileDiv');
 
 	saveToFile.type = 'button';
-	saveToFile.value = chooseText(usedText.zachowajSystem);
+	saveToFile.innerText = chooseText(usedText.zachowajSystem);
 
 	readFromFile.innerText = chooseText(usedText.wczytajSystem);
 	const powerSupplyContainer = document.querySelector('.configurationPanel');
 
-	fileButtonsDiv.append(fileInput);
+	// fileButtonsDiv.append(fileInput);
 	fileButtonsDiv.append(saveToFile);
+	fileButtonsDiv.append(saveToFileImage);
 	fileButtonsDiv.append(readFromFile);
-	powerSupplyContainer.prepend(fileButtonsDiv);
+	fileButtonsDiv.append(readFromFileImage);
+	fileContainer.appendChild(fileButtonsDiv);
+}
+
+function addImageToFiles() {
+	const saveToFileImage = document.querySelector(`.saveToFileImage`);
+	const readFromFileImage = document.querySelector(`.readFromFileImage`);
+	saveToFileImage.src = `./SVG/save.svg`;
+	readFromFileImage.src = `./SVG/load.svg`;
 }
 
 function handleDroppedFile(e) {

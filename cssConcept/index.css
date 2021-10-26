@@ -1,0 +1,398 @@
+html, body {
+    overflow: hidden;
+    font-family: 'Spartan';
+    background: #F4F3F4;
+    height: 100vh;
+    margin: 0;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+}
+
+#markAsRed {
+    color: red;
+    background: none;
+}
+
+header #header {
+    padding: 15px 5px;
+}
+
+#header {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    margin-top: 5px;
+    background: #FBFBFB;
+}
+
+#headerContainer {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    height: 100%;
+    gap: 0;
+    place-items: center start;
+    margin: 0 30px;
+}
+
+#header #headerContainer p#configuratorRevision {
+    font-size: 10px;
+}
+
+.languageVersions {
+    display: flex;
+    height: inherit;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.languageVersions>a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(65, 64, 66);
+    height: 75%;
+    width: 20%;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.languageVersions>a:not(:last-child) {
+    margin-right: 10px;
+}
+
+.languageVersions>a:hover {
+    background: rgba(65, 64, 66, 0.6);
+    cursor: pointer;
+}
+
+#logoImgContainer {
+    align-self: center;
+    text-align: end;
+    height: inherit;
+}
+
+#logoImgContainer img {
+    width: 50%;
+    height: 100%;
+}
+
+h2, p {
+    margin: 0;
+    padding: 0;
+}
+
+#appContainer {
+    display: grid;
+    margin: 0 auto;
+    width: 100vw;
+    padding: 40px 0;
+    height: 95%;
+    grid-template-columns: 1fr 2fr 150px 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    row-gap: 25px;
+    grid-template-areas: 
+    "defaultData mainSchema counterDiv UIInterface" 
+    "systemStatus mainSchema counterDiv UIInterface" 
+    "systemFiles mainSchema counterDiv UIInterface"
+    ". mainSchema counterDiv UIInterface";
+    place-items: stretch center;
+}
+
+#appContainer>div {
+    box-shadow: 0 0 25px 10px rgba(65, 64, 66, 0.15);
+}
+
+#appContainer .counter {
+    box-shadow: none;
+}
+
+.panelStyle {
+    background: rgb(255, 255, 255);
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+.hightlighted {
+    color: red;
+    font-weight: bolder;
+}
+
+.counter {
+    grid-area: counterDiv;
+    margin: 0 25px;
+    /* background: red; */
+    display: flex;
+    text-align: center;
+    align-items: center;
+    height: 100% ;
+}
+
+.counter .inputContainer {
+    width: 100%;
+}
+
+.counter .inputContainer input {
+    width: 50%;
+    height: 50px;
+}
+
+h3 {
+    margin: 0;
+    width: 100%;
+    font-size: 19px;
+}
+
+.panelInfo {
+    background: rgba(248, 248, 248, 0.8);
+    border-radius: 5px;
+    padding: 10px 5px;
+    margin: 15px 10px;
+    height: 42px;
+}
+
+.leftPanelsStyles {
+    height: 100%;
+    width: 90%;
+}
+
+.deviceQuantityInput #deviceQuantity {
+    width: 30px;
+    height: 20px;
+    padding: 0;
+    text-align: center;
+    margin-right: 5px;
+}
+
+.deviceQuantityInput #deviceQuantity::-webkit-outer-spin-button, .deviceQuantityInput #deviceQuantity::-webkit-inner-spin-button, #wireDistance::-webkit-outer-spin-button, #wireDistance::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.deviceQuantityInput #deviceQuantity[type=number] {
+    -moz-appearance: textfield;
+}
+
+.data {
+    grid-area: defaultData;
+    padding-bottom: 45px;
+}
+
+.data>div:not(:first-child) {
+    width: 100%;
+}
+
+.defaultData {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.defaultData>div:not(:first-child) {
+    margin: 5px 10px;
+    padding-top: 5px;
+}
+
+.systemStatus {
+    grid-area: systemStatus;
+    place-self: center;
+    min-height: 245px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "panelInfo" "powerConsumption" "adjustCable";
+}
+
+.systemStatus .status {
+    width: 85%;
+    max-width: 250px;
+    height: 65px;
+    border-radius: 5px;
+    margin: 15px 10px;
+    place-self: center start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.systemStatus .sysWrong {
+    background: rgb(232, 53, 53);
+}
+
+.systemStatus .sysOk {
+    background: rgb(0, 194, 3);
+}
+
+.systemStatus .adjustCable {
+    grid-area: adjustCable;
+    color: white;
+    border-radius: 5px;
+    place-self: center start;
+    margin-left: 5px;
+    width: 100%;
+    height: 50px;
+}
+
+.systemStatus #matchCablesToSystem {
+    width: 85%;
+    max-width: 250px;
+    background: rgb(65, 64, 66);
+}
+
+.systemStatus #matchCablesToSystem:hover {
+    background: rgba(65, 64, 66, 0.6);
+    cursor: pointer;
+}
+
+.systemStatus .status .statusText {
+    font-weight: bolder;
+    color: white;
+    font-size: 25px;
+}
+
+.systemStatus .status #powerConsumption {
+    font-weight: bold;
+    color: white;
+    font-size: 14px;
+}
+
+.systemFiles {
+    grid-area: systemFiles;
+    max-height: 175px;
+    place-self: center;
+}
+
+.systemFiles .fileButtons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 15px 10px;
+}
+
+.systemFiles .fileDiv {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: minmax(85%, 250px);
+    grid-template-areas: "saveButton saveImage" "loadButton loadImage";
+    row-gap: 15px;
+}
+
+.systemFiles .fileDiv .saveSystemToFile {
+    grid-area: saveButton;
+}
+
+.systemFiles .fileDiv .saveToFileImage {
+    grid-area: saveImage;
+}
+
+.systemFiles .fileDiv .readSystemFromFile {
+    grid-area: loadButton;
+}
+
+.systemFiles .fileDiv .readFromFileImage {
+    grid-area: loadImage;
+}
+
+.systemFiles .fileDiv button {
+    background: white;
+    color: black;
+    border: 1px solid rgba(116, 113, 113, 0.911);
+}
+
+.systemFiles .fileDiv button:hover {
+    background: rgb(190, 190, 190);
+}
+
+.fileDiv img {
+    height: 28px;
+    width: 28x;
+}
+
+.powerManagementInstallationContainer {
+    grid-area: mainSchema;
+    height: 100%;
+    width: 85%;
+}
+
+.segmentConfiguration {
+    grid-area: UIInterface;
+}
+
+select {
+    width: 180px;
+}
+
+input#deviceQuantity, input#wireDistance {
+    width: 30px;
+}
+
+input .segmentListCableLength {
+    width: 180px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* select {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 0 1em 0 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+    outline: none;
+    display: grid;
+}
+
+.elementalDevice, .powerSupply, .elementalCable, .deviceSelect, .cableSelect {
+    width: 75%;
+    border: 1px solid black;
+    border-radius: 0.25em;
+    padding: 0.15em 0.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1.1;
+    background-color: #fff;
+    /* background-color: linear-gradient(to top, #f9f9f9, #fff, 33%); 
+}
+*/
+
+.elementalDevice:after, .powerSupply:after, .elementalCable:after, .deviceSelect:after, .cableSelect:after {
+    content: "";
+    width: 0.8em;
+    height: 0.5em;
+    background-color: #777;
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+}
+
+select::-ms-expand {
+    display: none;
+}

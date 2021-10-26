@@ -1,0 +1,66 @@
+.segmentConfiguration {
+    display: grid;
+    width: 100%;
+    margin-right: 20px;
+    grid-template-areas: "panelInfo panelInfo" "device device";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 80px 1fr;
+}
+
+.segmentConfiguration .panelInfo {
+    grid-area: panelInfo;
+}
+
+.segmentConfiguration .segmentListContainer {
+    grid-area: device;
+    display: grid;
+    grid-auto-rows: 33.3%;
+    place-items: center;
+}
+
+.segmentConfiguration .segmentContainer {
+    display: grid;
+    height: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "deviceImage device" "deviceImage deviceCableDim" "deviceImage deviceCableLength";
+    row-gap: 15px;
+    width: 95%;
+    background: rgb(255, 249, 249);
+    overflow: hidden;
+    padding: 25px 20px;
+}
+
+.segmentContainer > div {
+    padding: 2px 0;
+    width: 100%;
+}
+
+.segmentContainer .deviceName {
+    grid-area: device;
+}
+
+.segmentContainer .cableDim {
+    grid-area: deviceCableDim;
+}
+
+.segmentContainer .cableLen {
+    grid-area: deviceCableLength;
+}
+
+.segmentContainer .deviceImageContainer {
+    grid-area: deviceImage;
+}
+
+.segmentConfiguration .segmentListContainer {
+    overflow: auto;
+}
+
+.segmentConfiguration .segmentListContainer .midsegment {
+    background: red;
+}
+
+.counterBox {
+    text-align: center;
+    font-size: 35px;
+    color: rgba(32, 32, 32, 0.664);
+}

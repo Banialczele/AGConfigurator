@@ -1,55 +1,137 @@
 <!DOCTYPE html>
-<html lang="pl" >
+<html lang="pl">
 
-<head >
-	<meta charset="utf-8" >
-	<title >Power Management</title >
-	<link href="./css/index.css" rel="stylesheet" type="text/css" />
-	<link href="./css/psustyles.css" rel="stylesheet" type="text/css" />
-	<link href="./css/installationsegment.css" rel="stylesheet" type="text/css" />
-	<script src="./AnalysisEngine/models.js" type="text/javascript" ></script >
-	<script src="./js/cable.js" type="text/javascript" ></script >
-	<script src="./js/device.js" type="text/javascript" ></script >
-	<script src="./js/button.js" type="text/javascript" ></script >
-	<script src="./js/select.js" type="text/javascript" ></script >
-	<script src="./js/picture.js" type="text/javascript" ></script >
-	<script src="./js/input.js" type="text/javascript" ></script >
-	<script src="./js/checkbox.js" type="text/javascript" ></script >
-	<script src="js/index.js" type="text/javascript" ></script >
-	<script src="js/handlers.js" type="text/javascript" ></script >
-	<script src="./js/file.js" type="text/javascript" ></script >
-	<script src="./AnalysisEngine/analysisEngine.js" ></script >
-</head >
+<head>
+	<meta charset="utf-8">
+	<title>Power Management</title>
+	<!-- <link href="./css/index.css" rel="stylesheet" type="text/css"></link>
+	<link href="./css/psustyles.css" rel="stylesheet" type="text/css"></link>
+	<link href="./css/installationsegment.css" rel="stylesheet" type="text/css"></link> -->
+	<link href="./cssConcept/index.css" rel="stylesheet" type="text/css">
+	</link>
+	<link href="./cssConcept/informationPanels.css" rel="stylesheet" type="text/css">
+	</link>
+	<link href="./cssConcept/panelDetails.css" rel="stylesheet" type="text/css">
+	</link>
+	<link href="./cssConcept/systemSchema.css" rel="stylesheet" type="text/css">
+	</link>
+	<link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
+	</link>
 
-<body id="body" >
-	<header id="header" >
-		<div id="headerContainer" >
-			<h2 >
-				Konfigurator Systemów Teta
-			</h2 >
-			<img alt="Unable to find image" id="headerImage" src="./Icons/agLogo.png" />
-		</div >
-		<p >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta ac elit quis rutrum.</p >
+</head>
 
-	</header >
+<body id="body">
+	<header>
+		<div id="header">
+			<div id="headerContainer">
+				<h2 id="configuratorInfo"></h2>
+				<p id="configuratorRevision">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta
+					acelitquis rutrum.</p>
+			</div>
+			<div class="languageVersions">
+				<a href="index.html?lang=pl">Wersja polska </a>
+				<a href="index.html?lang=en">English version</a>
+				<a href="index.html?licenses">Licenses </a>
+			</div>
+			<div id="logoImgContainer">
+				<img alt="Unable to find image" id="headerImage" src="./Icons/agLogo.png" />
+			</div>
+		</div>
+	</header>
 
-	<div class="systemStatus" >
-		<div class="systemInfo">
-			<div class="sys">
-				<p class="systemStatusDescription">System: </p>
-				<img class="systemStatusText" id="systemStatusText" src="" alt="Unable to find image">
-			</div>			
-			<p id="powerConsumption" ></p >
-			<p class="popup sticky" ></p >
-		</div >
-		<div class="languageVersions" >
-			<a href="index.html?lang=en" >English version</a >
-			<a href="index.html?lang=pl" >Wersja polska </a >
-			<a href="index.html?licenses" >Licenses </a >
-		</div >
-	</div >
-	<div class="powerManagementInstallationContainer" id="powerManagementInstallationContainer" >
-	</div >
-</body >
+	<div id="appContainer">
+		<div class="panelStyle leftPanelsStyles data">
+			<div class="defaultData">
+				<div class="panelInfo">
+					<h3>Dane podstawowe</h3>
+				</div>
+				<div class="detectorQuantity">
+					Ilość czujników
+					<div class="deviceQuantityInput">
+						<label for="deviceQuantity"></label>
+						<input type="number" name="deviceQuantity" id="deviceQuantity">szt.
+					</div>
+				</div>
+				<div class="deviceType">
+					Rodzaj urządzenia
+					<div class="deviceTypeSelect"></div>
+				</div>
+				<div class="supplyType">
+					Rodzaj zasilania
+					<div class="supplyTypeSelect"></div>
+				</div>
+				<div class="wireType">
+					Przekrój kabla
+					<div class="wireTypeSelect"></div>
+				</div>
+				<div class="wireLength">
+					<p>Odległość do zasilacza</p>		
+					<div class="wireLengthInput">
+						<label for="wireDistance"></label>
+						<input type="number" name="wireDistance" id="wireDistance">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="systemStatus panelStyle leftPanelsStyles">
+			<div class="panelInfo">
+				<h3>Status systemu</h3>
+			</div>
+			<div class="status">
+				<p id="statusText" class="statusText"></p>
+				<p id="powerConsumption"></p>
+			</div>
+			<div class="adjustCable"></div>
+		</div>
+		<div class="systemFiles panelStyle leftPanelsStyles">
+			<div class="panelInfo">
+				<h3>Plik</h3>
+			</div>
+			<div class="fileButtons"></div>
+		</div>
+		<div class="powerManagementInstallationContainer panelStyle" id="powerManagementInstallationContainer">
+			<div class="panelInfo">
+				<h3>Podgląd systemu</h3>
+			</div>
+			<div class="installationView">
+				
+				<div></div>
+			</div>
+			<div class="installation">
+				<div class="powerSupplyImage">
+				</div>
+				<div class="installationContainer">
+				</div>
+			</div>
+		</div>
+		<div class="counter">
+			<div class="inputContainer">
+				<input type="number" class="counterBox" />
+			</div>
+		</div>
+		<div class="segmentConfiguration panelStyle">
+			<div class="panelInfo">
+				<h3>Lista segmentów</h3>
+			</div>
+			<div class="segmentListContainer">
+			</div>
+		</div>
+	</div>
 
-</html >
+	<script src="./AnalysisEngine/models.js"></script>
+	<script src="./js/cable.js" type="text/javascript"></script>
+	<!-- <script src="./js/ControlUnit.js" type="text/javascript"></script> -->
+	<script src="./js/device.js" type="text/javascript"></script>
+	<!-- <script src="./js/bus.js" type="text/javascript"></script> -->
+	<script src="./js/button.js" type="text/javascript"></script>
+	<script src="./js/select.js" type="text/javascript"></script>
+	<script src="./js/picture.js" type="text/javascript"></script>
+	<script src="./js/input.js" type="text/javascript"></script>
+	<script src="./js/checkbox.js" type="text/javascript"></script>
+	<script src="js/index.js" type="text/javascript"></script>
+	<script src="js/handlers.js" type="text/javascript"></script>
+	<script src="./js/file.js" type="text/javascript"></script>
+	<script src="./AnalysisEngine/analysisEngine.js" type="text/javascript"></script>
+</body>
+
+</html>

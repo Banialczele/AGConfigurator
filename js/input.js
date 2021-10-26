@@ -7,13 +7,12 @@ const input = function(param, cableContainer, cableLabel, inputName, inputContai
 	const input = document.createElement('input');
 	input.type = `number`;
 	input.name = inputName;
-	input.className = 'cableLength';
+	input.className = 'segmentListCableLength';
 	input.setAttribute('min', "0");
 	input.setAttribute('step', ".1");
 
 	inputDiv.appendChild(label);
 	inputDiv.appendChild(input);
-	input.after(" m");
+	// input.after(" m");
 	cableDiv.appendChild(inputDiv);
 }
-                                 	
