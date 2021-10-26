@@ -1,6 +1,7 @@
 *.git
 *.idea
-
+*.svn
+*.vscode
 .idea/*
 
 node_modules/
