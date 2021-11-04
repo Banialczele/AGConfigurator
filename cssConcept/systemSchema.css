@@ -83,7 +83,20 @@
     grid-template-rows: 1fr 1fr;
     height: 225px;
     width: auto;
+    position: relative;
 }
+
+.installationSegment input.deviceCounter {
+    width: 45px;
+    height: 30px;
+    font-size: 25px;
+    text-align: center;
+    border: none;
+    position: absolute;
+    top: 25px;
+    left: 15px;
+}
+
 
 .installationSegment .installationSirenContainer .sirenImageContainer {
     grid-row: 1 / span 2;

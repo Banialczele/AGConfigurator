@@ -1,10 +1,25 @@
-.segmentConfiguration {
-    display: grid;
+
+.systemConfiguration {
     width: 100%;
-    margin-right: 20px;
-    grid-template-areas: "panelInfo panelInfo" "device device";
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px; 
+}
+
+.systemConfiguration > div {
+    transition: all .8s;
+}
+
+.systemConfiguration .segmentConfiguration {
+    display: grid;
+    grid-template-areas: 
+    "panelInfo panelInfo" 
+    "device device"
+    ;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 80px 1fr;
+    min-width: 0;
+    min-height: 0;
 }
 
 .segmentConfiguration .panelInfo {
@@ -16,17 +31,23 @@
     display: grid;
     grid-auto-rows: 33.3%;
     place-items: center;
+    min-width: 0;
+    overflow: auto;
+}
+
+.systemConfiguration .configureManySegments {
+    align-self: flex-end;
+    width: 100%;
+    flex-grow: 0;
 }
 
 .segmentConfiguration .segmentContainer {
     display: grid;
-    height: auto;
     grid-template-columns: 1fr 1fr;
     grid-template-areas: "deviceImage device" "deviceImage deviceCableDim" "deviceImage deviceCableLength";
     row-gap: 15px;
     width: 95%;
     background: rgb(255, 249, 249);
-    overflow: hidden;
     padding: 25px 20px;
 }
 
@@ -51,9 +72,9 @@
     grid-area: deviceImage;
 }
 
-.segmentConfiguration .segmentListContainer {
+/* .segmentConfiguration .segmentListContainer {
     overflow: auto;
-}
+} */
 
 .segmentConfiguration .segmentListContainer .midsegment {
     background: red;
@@ -63,4 +84,63 @@
     text-align: center;
     font-size: 35px;
     color: rgba(32, 32, 32, 0.664);
+}
+
+.systemConfiguration .panelInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrowContainer {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    margin-right: 15px;
+}
+
+.configureManySegmentsArrow {    
+    border: 1px solid black;
+    border-left: 0px;
+    border-bottom: 0px;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-45deg);
+    position: absolute;
+    bottom: -5px;
+}
+
+.systemConfiguration .active .panelInfo, .panelInfo:hover {
+    background: rgba(207,207,207,1);
+    cursor: pointer;
+}
+
+.active .configureManySegmentsArrow{
+    transform: rotate(135deg);
+}
+
+.systemConfiguration .segmentConfiguration.active {
+    flex-grow: 2;
+}
+
+.systemConfiguration .configureManySegments.active {
+    flex-grow: 2;
+}
+
+.systemConfiguration .segmentListContainer {
+    display: none;
+}
+
+.systemConfiguration .container {
+    display: none;
+} 
+
+.systemConfiguration .active .segmentListContainer {
+    display: grid;
+}
+
+.systemConfiguration .active .container {
+    display: grid;
+    /* height: 100%; */
 }

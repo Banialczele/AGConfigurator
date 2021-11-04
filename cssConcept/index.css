@@ -100,7 +100,7 @@ h2, p {
     width: 100vw;
     padding: 40px 0;
     height: 95%;
-    grid-template-columns: 1fr 2fr 150px 1fr;
+    grid-template-columns: 1fr 2fr 150px minmax(0, 1fr);
     grid-template-rows: 1fr 1fr 1fr 1fr;
     row-gap: 25px;
     grid-template-areas: 
@@ -331,7 +331,7 @@ input[type=number] {
     width: 85%;
 }
 
-.segmentConfiguration {
+.systemConfiguration {
     grid-area: UIInterface;
 }
 
@@ -357,33 +357,6 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-
-/* select {
-    appearance: none;
-    background-color: transparent;
-    border: none;
-    padding: 0 1em 0 0;
-    margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    cursor: inherit;
-    line-height: inherit;
-    outline: none;
-    display: grid;
-}
-
-.elementalDevice, .powerSupply, .elementalCable, .deviceSelect, .cableSelect {
-    width: 75%;
-    border: 1px solid black;
-    border-radius: 0.25em;
-    padding: 0.15em 0.5em;
-    font-size: 1rem;
-    cursor: pointer;
-    line-height: 1.1;
-    background-color: #fff;
-    /* background-color: linear-gradient(to top, #f9f9f9, #fff, 33%); 
-}
-*/
 
 .elementalDevice:after, .powerSupply:after, .elementalCable:after, .deviceSelect:after, .cableSelect:after {
     content: "";

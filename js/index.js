@@ -91,7 +91,7 @@ window.addEventListener('load', () => {
 		handleFileButtons();
 
 		adjustCableButton();
-
+		clickSegmentAndDisplay();
 		const targetNode = document.querySelector("#appContainer");
 
 		const config = {
@@ -126,6 +126,11 @@ window.addEventListener('load', () => {
 
 });
 
+function clickSegmentAndDisplay() {
+	const systemConfigurator = document.querySelector(`.systemConfiguration`).children;
+	Array.from(systemConfigurator).forEach((child, i) => child.querySelector(`.panelInfo`).addEventListener('click', e => e.target.closest(`.panelStyle`).classList.toggle(`active`)));
+}
+
 function highlightTeta() {
 	let text = document.getElementById(`configuratorInfo`);
 	const highlightedText = text.innerHTML.replace(/Teta/, "<span class=hightlighted>Teta</span>");
@@ -147,14 +152,13 @@ function findMiddleSegment() {
 function highlightMid(entries) {
 	const middleIdToDisplay = document.querySelector(`.counterBox`);
 	const segmentListContainer = Array.from(document.querySelectorAll(`.segmentContainer`));
-	console.log(middleIdToDisplay);
 	entries.forEach(entry => {
-		if(entry.isIntersecting){
+		if (entry.isIntersecting) {
 			const index = segmentListContainer.indexOf(entry.target)
 			middleIdToDisplay.value = index;
 		}
 		entry.target.classList.toggle('midsegment', entry.isIntersecting);
-		
+
 	});
 
 }
@@ -261,16 +265,16 @@ function generateSegments(item, index) {
 
 function initializeSegmentData(system) {
 	// if (systemData.bus.length === 1) {
-		document.querySelector('.powerSupply').value = systemData.supplyType;
+	document.querySelector('.powerSupply').value = systemData.supplyType;
 
-		document.querySelector(`.elementalCableLabel`).value = system.bus[0].cableType;
-		document.querySelector('.cableLabel').value = system.bus[0].cableType;
+	document.querySelector(`.elementalCableLabel`).value = system.bus[0].cableType;
+	document.querySelector('.cableLabel').value = system.bus[0].cableType;
 
-		document.querySelector('.deviceSelect').value = system.bus[0].deviceName;
-		document.querySelector(`.elementalDevice`).value = system.bus[0].deviceName;
+	document.querySelector('.deviceSelect').value = system.bus[0].deviceName;
+	document.querySelector(`.elementalDevice`).value = system.bus[0].deviceName;
 
-		document.querySelector('#wireDistance').value = systemData.bus[0].cableLen_m;
-		document.querySelector('.segmentListCableLength').value = systemData.bus[0].cableLen_m;
+	document.querySelector('#wireDistance').value = systemData.bus[0].cableLen_m;
+	document.querySelector('.segmentListCableLength').value = systemData.bus[0].cableLen_m;
 	// }
 }
 

@@ -100,9 +100,18 @@ function createInstallationSegment(index) {
 
 		const installationSirenImage = document.createElement('div');
 		installationSirenImage.className = `installationSirenContainer`;
+		const installationCounter = document.createElement(`div`);
+		installationCounter.className = `deviceCounterContainer`;
+		const input = document.createElement(`input`);
+		input.setAttribute('id',  `deviceCounter${index}`);
+		input.setAttribute('type',  `number`);
+		input.className = `deviceCounter`;
+		input.value = `${index + 1}`;
 
 		const installationContainer = document.querySelector('.installationContainer');
 		
+		installationCounter.appendChild(input);
+		installationSirenImage.appendChild(installationCounter);
 		installationContainer.appendChild(installationSegment);
 		installationSegment.appendChild(installationSirenImage);
 		installationSegment.appendChild(installationBusImage);
