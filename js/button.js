@@ -12,14 +12,13 @@ function dataToCopy(data) {
 }
 
 function insertDataToSegment(index, data, i) {
-	console.log()
 	const newSegment = {
 		cableType: `${data.cableType}`,
 		cableLen_m: data.cableLength,
 		deviceName: `${data.deviceName}`
 	};
 	const segmentContainer = document.querySelector(`.segmentContainer`);
-	const segmentListContainer = document.querySelector(`.segmentListContainer   `);
+	const segmentListContainer = document.querySelector(`.segmentListContainer`);
 	const clone = segmentContainer.cloneNode(true);
 
 	clone.id = `segment${index}`;
@@ -28,12 +27,13 @@ function insertDataToSegment(index, data, i) {
 	const deviceType = clone.querySelector(`.deviceType${0}`);
 	deviceType.id = `deviceType${index}`;
 	deviceType.className = `deviceType${index}`;
-	deviceType.querySelector(`.deviceSelect`).value = systemData.bus[0].deviceName;
+	const deviceSelect = deviceType.querySelector(`.deviceSelect`);
+	deviceSelect.dataset.indexofdevice = index;
+	// deviceSelect.value = systemData.bus[0].deviceName;
 
 	const cableDim = clone.querySelector(`.cableDiameter${0}`);
 	cableDim.id = `cableDiameter${index}`;
 	cableDim.className = `cableDiameter${index}`;
-	cableDim.querySelector(`.cableSelect`).value = systemData.bus[0].cableType;
 
 	const cableLen = clone.querySelector(`.cableLength${0}`);
 	cableLen.id = `cableLength${index}`;

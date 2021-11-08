@@ -39,6 +39,9 @@
     align-self: flex-end;
     width: 100%;
     flex-grow: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
 }
 
 .segmentConfiguration .segmentContainer {
@@ -94,8 +97,8 @@
 }
 
 .arrowContainer {
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     position: relative;
     margin-right: 15px;
 }
@@ -118,6 +121,7 @@
 
 .active .configureManySegmentsArrow{
     transform: rotate(135deg);
+    bottom: 0;
 }
 
 .systemConfiguration .segmentConfiguration.active {
@@ -128,11 +132,39 @@
     flex-grow: 2;
 }
 
+.systemConfiguration .configureManySegments.active .configureMany {
+    display: block;
+}
+
+.systemConfiguration .configureManySegments.active .configureMany form.changesForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 15px;
+}
+
+.rangeOfChanges {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.systemConfiguration .configureManySegments.active .configureMany > div {
+    transition: all .8s;
+}
+
+.systemConfiguration .configureManySegments.active .configureMany .rangeOfChanges {
+    text-align: center;
+}
+
 .systemConfiguration .segmentListContainer {
     display: none;
 }
 
-.systemConfiguration .container {
+.systemConfiguration .configureMany {
     display: none;
 } 
 
@@ -140,7 +172,3 @@
     display: grid;
 }
 
-.systemConfiguration .active .container {
-    display: grid;
-    /* height: 100%; */
-}
