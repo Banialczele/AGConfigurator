@@ -100,14 +100,14 @@ h2, p {
     width: 100vw;
     padding: 40px 0;
     height: 95%;
-    grid-template-columns: minmax(275px, 320px) 2fr 150px minmax(0, 1fr);
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: minmax(275px, 320px) 2fr 1fr;
+    grid-template-rows: minmax(auto, 350px) 275px 1fr;
     row-gap: 25px;
     grid-template-areas: 
-    "defaultData mainSchema counterDiv UIInterface" 
-    "systemStatus mainSchema counterDiv UIInterface" 
-    "systemFiles mainSchema counterDiv UIInterface"
-    ". mainSchema counterDiv UIInterface";
+    "defaultData mainSchema UIInterface" 
+    "systemStatus mainSchema UIInterface" 
+    "systemFiles mainSchema UIInterface"
+    ". mainSchema UIInterface";
     place-items: stretch center;
 }
 
@@ -164,7 +164,6 @@ h3 {
 }
 
 .leftPanelsStyles {
-    height: 100%;
     width: 90%;
 }
 
@@ -201,7 +200,6 @@ input[type=number] {
 .defaultData {
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
 .defaultData>div:not(:first-child) {
@@ -212,10 +210,10 @@ input[type=number] {
 .systemStatus {
     grid-area: systemStatus;
     place-self: center;
-    min-height: 245px;
+    max-height: 275px;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 2fr 2fr;
     grid-template-areas: "panelInfo" "powerConsumption" "adjustCable";
 }
 
@@ -277,7 +275,7 @@ input[type=number] {
     grid-area: systemFiles;
     max-height: 165px;
     height: 165px;
-    place-self: center;
+    place-self: start center;
 }
 
 .systemFiles .fileButtons {
@@ -369,4 +367,8 @@ input[type=number] {
 
 select::-ms-expand {
     display: none;
+}
+
+.deviceImg {
+    background: none !important;
 }

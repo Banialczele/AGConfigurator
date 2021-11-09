@@ -97,7 +97,6 @@ window.addEventListener('load', () => {
 		//getting and setting system		
 		getSystem(setSystem(systemData));
 		initializeSegmentData(systemData);
-
 		systemInformation();
 
 		// segmentListEvents();		
@@ -111,14 +110,30 @@ window.addEventListener('load', () => {
 		addSelectsAndInputToConfigureMany();
 		submitChanges();
 		clickBusSegment();
+		setupImagesForSegments();
 	}
 });
+
+function setupImagesForSegments() {
+	const segmentList = Array.from(document.querySelectorAll(`.segmentContainer`));
+	segmentList.forEach((segment, i) => {
+		//imageContainer
+		const segmentImage = segment.querySelector(`.deviceImg`);
+		try {
+			segmentImage.src = `./PNG/${systemData.bus[i].deviceName}.png`;
+			segmentImage.alt = `Unable to find image`
+		} catch (e) {
+			segmentImage.src = ``;
+			segmentImage.alt = `Unable to find image`
+		}
+	});
+}
 
 function findClickedSegment(e) {
 	const segment = e.target.parentNode;
 	const busSegments = Array.from(document.querySelectorAll(`.installationSegment`));
 	const segmentContainers = Array.from(document.querySelectorAll(`.segmentContainer`));
-	if(segment.classList.contains(`installationSegment`)){  
+	if (segment.classList.contains(`installationSegment`)) {
 		const index = busSegments.indexOf(segment);
 		segmentContainers[index].scrollIntoView(true);
 	}
@@ -153,57 +168,50 @@ function submitChanges() {
 		if (e.preventDefault) {
 			e.preventDefault();
 		}
-
 		const input = document.getElementById(`range`).value;
 		const arrayOfInputRanges = input.replace(/\s/g, "").split(`,`);
 		const regex = /(\d+-\d+|\d+)/g;
-		const checkIfRegExp = regex.test(input);
-
+		const checkIfRegExp = input.match(regex);
 		const deviceSelect = document.getElementById(`changeManyDevices`).value;
 		const wireSelect = document.getElementById(`changeManyCables`).value;
 		const wireInput = parseInt(document.getElementById(`manyCablesInputChange`).value);
-		if (!checkIfRegExp) {
-			alert(`wrong input`);
-			return false;
-		} else if (checkIfRegExp) {
-			arrayOfInputRanges.forEach((element) => {
-				if (element.indexOf(`-`) > -1) {
-					//splitting array and sorting data.
-					const splitRange = element.split(`-`).sort();
-					for (let i = splitRange[0]; i <= splitRange[splitRange.length - 1]; i++) {
-						if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
-							systemData.bus[i].deviceName = deviceSelect;
-							systemData.bus[i].cableType = wireSelect;
-							systemData.bus[i].cableLen_m = wireInput;
-						} else if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput === oldInputValue) {
-							systemData.bus[i].deviceName = deviceSelect;
-							systemData.bus[i].cableType = wireSelect;
-						} else if (deviceSelect !== oldInputValue && wireSelect === oldCableSelectValue && wireInput !== oldInputValue) {
-							systemData.bus[i].deviceName = deviceSelect;
-							systemData.bus[i].cableLen_m = wireInput;
-						} else if (deviceSelect === oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
-							systemData.bus[i].cableType = wireSelect;
-							systemData.bus[i].cableLen_m = wireInput;
-						}
-					}
-				} else if (element.indexOf(`-`) === -1) {
+		arrayOfInputRanges.forEach((element) => {
+			if (element.indexOf(`-`) > -1) {
+				//splitting array and sorting data.
+				const splitRange = element.split(`-`).sort();
+				for (let i = splitRange[0]; i <= splitRange[splitRange.length - 1]; i++) {
 					if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
-						systemData.bus[element].deviceName = deviceSelect;
-						systemData.bus[element].cableType = wireSelect;
-						systemData.bus[element].cableLen_m = wireInput;
+						systemData.bus[i].deviceName = deviceSelect;
+						systemData.bus[i].cableType = wireSelect;
+						systemData.bus[i].cableLen_m = wireInput;
 					} else if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput === oldInputValue) {
-						systemData.bus[element].deviceName = deviceSelect;
-						systemData.bus[element].cableType = wireSelect;
+						systemData.bus[i].deviceName = deviceSelect;
+						systemData.bus[i].cableType = wireSelect;
 					} else if (deviceSelect !== oldInputValue && wireSelect === oldCableSelectValue && wireInput !== oldInputValue) {
-						systemData.bus[element].deviceName = deviceSelect;
-						systemData.bus[element].cableLen_m = wireInput;
+						systemData.bus[i].deviceName = deviceSelect;
+						systemData.bus[i].cableLen_m = wireInput;
 					} else if (deviceSelect === oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
-						systemData.bus[element].cableType = wireSelect;
-						systemData.bus[element].cableLen_m = wireInput;
+						systemData.bus[i].cableType = wireSelect;
+						systemData.bus[i].cableLen_m = wireInput;
 					}
 				}
-			});
-		}
+			} else if (element.indexOf(`-`) === -1) {
+				if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
+					systemData.bus[element].deviceName = deviceSelect;
+					systemData.bus[element].cableType = wireSelect;
+					systemData.bus[element].cableLen_m = wireInput;
+				} else if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput === oldInputValue) {
+					systemData.bus[element].deviceName = deviceSelect;
+					systemData.bus[element].cableType = wireSelect;
+				} else if (deviceSelect !== oldInputValue && wireSelect === oldCableSelectValue && wireInput !== oldInputValue) {
+					systemData.bus[element].deviceName = deviceSelect;
+					systemData.bus[element].cableLen_m = wireInput;
+				} else if (deviceSelect === oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
+					systemData.bus[element].cableType = wireSelect;
+					systemData.bus[element].cableLen_m = wireInput;
+				}
+			}
+		});
 		updateSystem();
 		return false;
 	});
@@ -239,13 +247,8 @@ function findMiddleSegment() {
 }
 
 function highlightMid(entries) {
-	const middleIdToDisplay = document.querySelector(`.counterBox`);
 	const segmentListContainer = Array.from(document.querySelectorAll(`.segmentContainer`));
 	entries.forEach(entry => {
-		if (entry.isIntersecting) {
-			const index = segmentListContainer.indexOf(entry.target)
-			middleIdToDisplay.value = index + 1;
-		}
 		entry.target.classList.toggle('midsegment', entry.isIntersecting);
 	});
 }
@@ -277,6 +280,8 @@ function segmentListEvents() {
 			const i = e.target.dataset.indexofdevice;
 			systemData.bus[i].deviceName = e.target.value;
 			setupBusImage();
+			setupImagesForSegments();
+
 		}
 		if (e.target.classList.contains(`cableSelect`)) {
 			systemData.bus[i].cableType = e.target.value
@@ -371,34 +376,6 @@ function matchCablesToSystem() {
 		installationContainer.removeChild(installationContainer.firstChild);
 	}
 	getSystem(setSystem(matchSystemCables(systemData)));
-}
-
-//set images for right panel segments
-function setupSegmentImage() {
-	// const segments = document.querySelectorAll('.segmentContainer');
-	// segments.forEach( (segment,i) => {
-	// 	const imageForSegment = segment.querySelector(`.deviceImg`);
-	// chooseBusImage(imageForSegment, `siren`, systemData.bus[i].deviceName, `sirenImage` );
-	// });
-	// 	const imageElements = document.querySelectorAll('.cableimage');
-	// 	segments.forEach((segment, i) => {
-	// 		const deviceImage = segment.querySelector(`.deviceImg`);
-	// 		chooseImg(deviceImage, `Teta EcoWent`, `deviceImage`);
-	// 	});
-	// segments.forEach((segment, i) => {
-	// 	const selectedOptionIndex = segment.querySelector('.deviceSelect').selectedIndex;
-	// 	const isDeviceBig = segment.querySelector('.deviceSelect').options[selectedOptionIndex].dataset.isbig || 'false';
-	// 	if (isDeviceBig === "true") {
-	// 		segment.classList.add('segmentBig');
-	// 	} else if (isDeviceBig !== "true" && segment.classList.contains('segmentBig')) {
-	// 		segment.classList.remove('segmentBig');
-	// 	}
-	// 	if (!(segments[i + 1])) {
-	// 		isDeviceBig === 'false' ? chooseImg(imageElements[i], "busEndShort", 'busImage') : chooseImg(imageElements[i], "busEndLong", 'busImage');
-	// 	} else {
-	// 		isDeviceBig === 'false' ? chooseImg(imageElements[i], "busShort", 'busImage') : chooseImg(imageElements[i], "busLong", 'busImage');
-	// 	}
-	// });
 }
 
 function checkLang() {
