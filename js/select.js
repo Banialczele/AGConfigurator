@@ -68,6 +68,8 @@ function select(segmentName, type, index) {
 			select.setAttribute('id', 'deviceLabel');
 			label.appendChild(select);
 			div.appendChild(label);
+			devices.pop();
+			devices.pop();
 			generateOptions(devices, select);
 			break;
 		}
@@ -81,6 +83,8 @@ function select(segmentName, type, index) {
 
 			label.appendChild(select);
 			div.appendChild(label);
+			devices.pop();
+			devices.pop();
 			generateOptions(devices, select);
 			break;
 		}
@@ -105,6 +109,8 @@ function select(segmentName, type, index) {
 			select.setAttribute('id', 'changeManyDevices');
 			label.appendChild(select);
 			div.appendChild(label);
+			devices.pop();
+			devices.pop();
 			generateOptions(devices, select);
 			break;
 		}
