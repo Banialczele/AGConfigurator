@@ -52,6 +52,8 @@ const usedText = {
 	}
 }
 
+const usedIndexes = [];
+
 window.addEventListener('load', () => {
 	checkLang();
 	const installationContainer = document.querySelector(`.installationContainer`);
@@ -64,11 +66,7 @@ window.addEventListener('load', () => {
 	if (systemStatus && systemContainer) {
 		systemContainer.appendChild(installationContainer);
 		//creating select inputs for elemental data
-		select(`wireTypeSelect`, `elementalCable`);
-		select(`deviceTypeSelect`, 'elementalDevice');
-		select(`supplyTypeSelect`, `supplyType`);
-
-		picture('psu', `powerSupplyImage`, `powerSupplyImage`, `imagePSU`, null);
+		getSystem(setSystem(systemData));
 
 		adjustSystemCables();
 
@@ -95,7 +93,6 @@ window.addEventListener('load', () => {
 		const observer = new MutationObserver(findMiddleSegment);
 		observer.observe(targetNode, config);
 		//getting and setting system		
-		getSystem(setSystem(systemData));
 		initializeSegmentData(systemData);
 		systemInformation();
 
@@ -107,217 +104,34 @@ window.addEventListener('load', () => {
 		segmentListEvents();
 		findMiddleSegment();
 		elementalDataEvents();
-		addSelectsAndInputToConfigureMany();
 		submitChanges();
 		clickBusSegment();
 		setupImagesForSegments();
 	}
 });
 
-function setupImagesForSegments() {
-	const segmentList = Array.from(document.querySelectorAll(`.segmentContainer`));
-	segmentList.forEach((segment, i) => {
-		//imageContainer
-		const segmentImage = segment.querySelector(`.deviceImg`);
-		try {
-			segmentImage.src = `./PNG/${systemData.bus[i].deviceName}.png`;
-			segmentImage.alt = `Unable to find image`
-		} catch (e) {
-			segmentImage.src = ``;
-			segmentImage.alt = `Unable to find image`
-		}
-	});
-}
+function createFundamentalData() {
+	select(`wireTypeSelect`, `elementalCable`);
+	select(`deviceTypeSelect`, 'elementalDevice');
+	select(`supplyTypeSelect`, `supplyType`);
 
-function findClickedSegment(e) {
-	const segment = e.target.parentNode;
-	const busSegments = Array.from(document.querySelectorAll(`.installationSegment`));
-	const segmentContainers = Array.from(document.querySelectorAll(`.segmentContainer`));
-	if (segment.classList.contains(`installationSegment`)) {
-		const index = busSegments.indexOf(segment);
-		segmentContainers[index].scrollIntoView(true);
-	}
-}
-
-function clickBusSegment() {
-	const busElements = document.querySelector(`.installationContainer`);
-	busElements.addEventListener('click', findClickedSegment);
-}
-
-//segmentListCableLength
-function updateSystem() {
-	setupBusImage();
-	const segmentContainers = document.querySelectorAll(`.segmentContainer`);
-	segmentContainers.forEach((segment, i) => {
-		const device = segment.querySelector(`.deviceSelect`);
-		const cable = segment.querySelector(`.cableSelect`);
-		const wireLen = segment.querySelector(`.segmentListCableLength`);
-		device.value = systemData.bus[i].deviceName;
-		cable.value = systemData.bus[i].cableType;
-		wireLen.value = systemData.bus[i].cableLen_m;
-	});
-}
-
-function submitChanges() {
-	const submitFormButton = document.querySelector(`.changesForm`);
-
-	const oldDeviceSelectValue = document.getElementById(`changeManyDevices`).value;
-	const oldCableSelectValue = document.getElementById(`changeManyCables`).value;
-	const oldInputValue = document.getElementById(`manyCablesInputChange`).value;
-	submitFormButton.addEventListener('submit', e => {
-		if (e.preventDefault) {
-			e.preventDefault();
-		}
-		const input = document.getElementById(`range`).value;
-		const arrayOfInputRanges = input.replace(/\s/g, "").split(`,`);
-		const regex = /(\d+-\d+|\d+)/g;
-		const checkIfRegExp = input.match(regex);
-		const deviceSelect = document.getElementById(`changeManyDevices`).value;
-		const wireSelect = document.getElementById(`changeManyCables`).value;
-		const wireInput = parseInt(document.getElementById(`manyCablesInputChange`).value);
-		arrayOfInputRanges.forEach((element) => {
-			if (element.indexOf(`-`) > -1) {
-				//splitting array and sorting data.
-				const splitRange = element.split(`-`).sort();
-				for (let i = splitRange[0]; i <= splitRange[splitRange.length - 1]; i++) {
-					if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
-						systemData.bus[i].deviceName = deviceSelect;
-						systemData.bus[i].cableType = wireSelect;
-						systemData.bus[i].cableLen_m = wireInput;
-					} else if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput === oldInputValue) {
-						systemData.bus[i].deviceName = deviceSelect;
-						systemData.bus[i].cableType = wireSelect;
-					} else if (deviceSelect !== oldInputValue && wireSelect === oldCableSelectValue && wireInput !== oldInputValue) {
-						systemData.bus[i].deviceName = deviceSelect;
-						systemData.bus[i].cableLen_m = wireInput;
-					} else if (deviceSelect === oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
-						systemData.bus[i].cableType = wireSelect;
-						systemData.bus[i].cableLen_m = wireInput;
-					}
-				}
-			} else if (element.indexOf(`-`) === -1) {
-				if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
-					systemData.bus[element].deviceName = deviceSelect;
-					systemData.bus[element].cableType = wireSelect;
-					systemData.bus[element].cableLen_m = wireInput;
-				} else if (deviceSelect !== oldInputValue && wireSelect !== oldCableSelectValue && wireInput === oldInputValue) {
-					systemData.bus[element].deviceName = deviceSelect;
-					systemData.bus[element].cableType = wireSelect;
-				} else if (deviceSelect !== oldInputValue && wireSelect === oldCableSelectValue && wireInput !== oldInputValue) {
-					systemData.bus[element].deviceName = deviceSelect;
-					systemData.bus[element].cableLen_m = wireInput;
-				} else if (deviceSelect === oldInputValue && wireSelect !== oldCableSelectValue && wireInput !== oldInputValue) {
-					systemData.bus[element].cableType = wireSelect;
-					systemData.bus[element].cableLen_m = wireInput;
-				}
-			}
-		});
-		updateSystem();
-		return false;
-	});
-}
-
-function clickSegmentAndDisplay() {
-	const systemConfigurator = document.querySelector(`.systemConfiguration`).children;
-	Array.from(systemConfigurator).forEach((child, i) => child.querySelector(`.panelInfo`).addEventListener('click', e => e.target.closest(`.panelStyle`).classList.toggle(`active`)));
-}
-
-function highlightTeta() {
-	let text = document.getElementById(`configuratorInfo`);
-	const highlightedText = text.innerHTML.replace(/Teta/, "<span class=hightlighted>Teta</span>");
-	text.innerHTML = highlightedText;
-}
-
-function addSelectsAndInputToConfigureMany() {
-	select(`changeManyWiresType`, `changeManyCablesType`);
-	select(`changeManyDevices`, `changeManyDevicesType`);
-	input('.changeManyWiresLength', `manyCablesInputChange`, 'cableInput', `changeManyCableLength`);
-}
-
-function findMiddleSegment() {
-	const segmentListContainer = document.querySelector(`.segmentListContainer`);
-	let options = {
-		root: segmentListContainer,
-		rootMargin: `-50% 0%`,
-		treshold: 1
-	}
-	const observer = new IntersectionObserver(highlightMid, options);
-	const listOfElementsToObserve = document.querySelectorAll(`.segmentContainer`);
-	listOfElementsToObserve.forEach(element => observer.observe(element));
-}
-
-function highlightMid(entries) {
-	const segmentListContainer = Array.from(document.querySelectorAll(`.segmentContainer`));
-	entries.forEach(entry => {
-		entry.target.classList.toggle('midsegment', entry.isIntersecting);
-	});
-}
-
-function elementalDataEvents() {
-	const elementalDeviceSelect = document.querySelector('.elementalDeviceLabel');
-	const powerSupply = document.querySelector('.powerSupply');
-	const elementalCableLabel = document.querySelector('.elementalCableLabel');
-	const elementalWireLength = document.querySelector('#wireDistance');
-	const deviceQuantity = document.querySelector('#deviceQuantity');
-
-	elementalDeviceSelect.addEventListener(`change`, e => handleBasicDataChange(e, e.target.name));
-	powerSupply.addEventListener(`change`, e => handleBasicDataChange(e, e.target.name));
-	elementalCableLabel.addEventListener(`change`, e => handleBasicDataChange(e, e.target.name));
-	elementalWireLength.addEventListener('change', e => handleBasicDataChange(e, e.target.name));
-	// elementalWireLength.addEventListener('keyup', e => (e.key === `Enter` || e.keyCode === 13) ? handleBasicDataChange(e, e.target.name) : '');
-
-	deviceQuantity.addEventListener('keyup', e => {
-		if (e.key === 'Enter' || e.keyCode === 13) {
-			handleCopyNthTimes(e, e.target.value);
-		}
-	});
-}
-
-function segmentListEvents() {
-	const listOfSegments = document.querySelector(`.segmentListContainer`);
-	listOfSegments.addEventListener(`change`, e => {
-		if (e.target.classList.contains(`deviceSelect`)) {
-			const i = e.target.dataset.indexofdevice;
-			systemData.bus[i].deviceName = e.target.value;
-			setupBusImage();
-			setupImagesForSegments();
-
-		}
-		if (e.target.classList.contains(`cableSelect`)) {
-			systemData.bus[i].cableType = e.target.value
-		}
-		if (e.target.classList.contains(`segmentListCableLength`)) {
-			systemData.bus[i].cableLen_m = e.target.value
-		}
-	});
-}
-
-//set images for bus
-function setupBusImage() {
-	const installationSegment = document.querySelectorAll(`.installationSegment`);
-	installationSegment.forEach((segment, i) => {
-		const sirenImage = document.querySelector(`#sirenimage${i}`);
-		const deviceimage = document.querySelector(`#deviceimage${i}`);
-		const busImage = document.querySelector(`#cableimage${i}`);
-		const device = NewDevices.find(deviceType => deviceType.type === systemData.bus[i].deviceName);
-		if (device.typeOfDevice === `device`) {
-			chooseBusImage(busImage, `T-conP.svg`);
-			chooseBusImage(deviceimage, `${device.icon}`);
-			sirenImage.src = ``;
-			sirenImage.alt = ``;
-		} else if (device.typeOfDevice === `siren`) {
-			chooseBusImage(busImage, `T-conL.svg`);
-			chooseBusImage(sirenImage, `${device.icon}`);
-			deviceimage.src = ``;
-			deviceimage.alt = ``;
-		}
-	});
+	picture('psu', `powerSupplyImage`, `powerSupplyImage`, `imagePSU`, null);
 }
 
 function getSystem(system) {
-	system.bus.forEach((item, i) => {
-		generateSegments(item, i);
+	system.bus.forEach((item, index) => {
+		const checkIfSegmentExists = document.getElementById(`installationSegment${index}`);
+		if (checkIfSegmentExists === null || !checkIfSegmentExists) {
+			createFundamentalData();
+			createInstallationSegment(index);
+			createSegmentList(index);
+			select(`cableDiameter${index}`, `cable`);
+			input(`.cableLength${index}`, `cableInput`, 'cableInput', 'cableContainerInput');
+			usedIndexes.push(index);
+			select(`deviceType${index}`, 'device', index);
+		}
 	});
+	createConfigureManySegments();
 }
 
 function setSystem(system) {
@@ -348,36 +162,13 @@ function systemInformation() {
 	}
 }
 
-function generateSegments(item, index) {
-	const checkIfSegmentExists = document.getElementById(`installationSegment${index}`);
-	//creating segment if it doesn't exists and if exists, don't create new one.
-	if (checkIfSegmentExists === null || !checkIfSegmentExists) {
-		Cable.cableComponent(item, index);
-		Device.deviceComponent(item, index);
-	}
+function highlightTeta() {
+	let text = document.getElementById(`configuratorInfo`);
+	const highlightedText = text.innerHTML.replace(/Teta/, "<span class=hightlighted>Teta</span>");
+	text.innerHTML = highlightedText;
 }
 
-function initializeSegmentData(system) {
-	document.querySelector('.powerSupply').value = systemData.supplyType;
-
-	document.querySelector(`.elementalCableLabel`).value = system.bus[0].cableType;
-	document.querySelector('.cableLabel').value = system.bus[0].cableType;
-
-	document.querySelector('.deviceSelect').value = system.bus[0].deviceName;
-	document.querySelector(`.elementalDevice`).value = system.bus[0].deviceName;
-
-	document.querySelector('#wireDistance').value = systemData.bus[0].cableLen_m;
-	document.querySelector('.segmentListCableLength').value = systemData.bus[0].cableLen_m;
-}
-
-function matchCablesToSystem() {
-	const installationContainer = document.querySelector('.installationContainer');
-	while (installationContainer.firstChild) {
-		installationContainer.removeChild(installationContainer.firstChild);
-	}
-	getSystem(setSystem(matchSystemCables(systemData)));
-}
-
+//index file
 function checkLang() {
 	let HREF = window.location.href;
 	if (HREF.includes(`lang=pl`)) {
@@ -389,6 +180,7 @@ function checkLang() {
 	}
 }
 
+//info file
 function displayLicenseInfo() {
 	const installationContainer = document.querySelector('.powerManagementInstallationContainer');
 	installationContainer.outerHTML = "";
@@ -420,6 +212,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	document.body.appendChild(licenseDiv);
 }
 
+//info file
 function chooseText(text) {
 	let res;
 	switch (lang) {
@@ -433,9 +226,4 @@ function chooseText(text) {
 		}
 	}
 	return res;
-}
-
-chooseBusImage = (img, device) => {
-	img.src = `./SVG/${device}`;
-	img.alt = `Unable to find image`;
 }
