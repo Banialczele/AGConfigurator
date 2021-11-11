@@ -16,7 +16,6 @@ function select(segmentName, type, index) {
 	const select = document.createElement('select');
 	const div = document.querySelector(`.${segmentName}`);
 	const containerDiv = document.createElement('div');
-
 	switch (type) {
 		case 'supplyType': {
 			containerDiv.className = `powerSupplyContainer`;
@@ -37,6 +36,7 @@ function select(segmentName, type, index) {
 			label.setAttribute('for', 'cableLabel');
 			select.className = 'cableSelect';
 			select.setAttribute('name', 'cableLabel');
+			select.setAttribute('data-indexOfDevice', `${index}`);
 			select.setAttribute('id', 'cableLabel');
 			label.appendChild(select);
 			div.appendChild(label);
@@ -107,7 +107,6 @@ function select(segmentName, type, index) {
 			select.setAttribute('id', 'changeManyDevices');
 			label.appendChild(select);
 			div.appendChild(label);
-			devices.splice(devices.length - 2, 2);
 			generateOptions(devices, select);
 			break;
 		}
@@ -139,14 +138,18 @@ function segmentListEvents() {
 	listOfSegments.addEventListener(`change`, e => {
 		if (e.target.classList.contains(`deviceSelect`)) {
 			const i = e.target.dataset.indexofdevice;
+
 			systemData.bus[i].deviceName = e.target.value;
 			setupBusImage();
 			setupImagesForSegments();
 		}
 		if (e.target.classList.contains(`cableSelect`)) {
+			const i = e.target.dataset.indexofdevice;
 			systemData.bus[i].cableType = e.target.value
 		}
 		if (e.target.classList.contains(`segmentListCableLength`)) {
+			const i = e.target.dataset.indexofdevice;
+
 			systemData.bus[i].cableLen_m = e.target.value
 		}
 	});
@@ -160,7 +163,7 @@ function handleBasicDataChange(e, targetName) {
 	if (segmentContainer.length === 1) {
 		if (targetName === `elementalDeviceLabel`) {
 			systemData.bus[0].deviceName = e.target.value;
-			rightPanelDevice.value = systemData.bus[0].deviceName ;
+			rightPanelDevice.value = systemData.bus[0].deviceName;
 		} else if (targetName === `elementalCableLabel`) {
 			systemData.bus[0].cableType = e.target.value;
 			rightPanelSelect.value = systemData.bus[0].cableType;

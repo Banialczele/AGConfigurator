@@ -1,14 +1,76 @@
+function prepDataToSaveInFile(systemData) {
+	let cableLength = 0;
+
+	const sumAllDeviceEntries = systemData.bus.reduce((obj, currentValue, i) => {
+		if (!obj[currentValue.deviceName]) {
+			obj[currentValue.deviceName] = 0;
+		}
+		obj[currentValue.deviceName]++;
+		return obj;
+	}, {});
+
+	const sumAllCableDimsLengths = systemData.bus.reduce((obj, currentValue, i) => {
+		if (!obj[currentValue.cableType]) {
+			obj[currentValue.cableType] = 0;
+		}
+		if (!obj[`Długość kabla:`]) {
+			obj[`Długość kabla`] = cableLength;
+		}
+		obj[currentValue.cableType]++;
+		cableLength += systemData.bus[i].cableLen_m;
+		obj[`Długość kabla`] = cableLength;
+		return obj;
+	}, {});
+
+	const deviceTypes = Object.keys(sumAllDeviceEntries).map((value, index) => {
+		const foundDevice = NewDevices.find(device => device.type === value ? device : '');
+		return foundDevice.device;
+	});
+
+	const CSV = [
+		[`lp.`, `Nazwa urządzenia`, `Rodzaj urządzenia`, `Ilość`],
+		[deviceTypes],
+		Object.keys(sumAllDeviceEntries),
+		Object.values(sumAllDeviceEntries),
+		Object.keys(sumAllCableDimsLengths),
+		Object.values(sumAllCableDimsLengths),
+		[`Zasilacz`]
+		[systemData.supplyType]
+	];
+	// console.log(CSV);
+	return CSV;
+}
+
+function systemSketch(dataToSave, saveFileName) {
+	const anchor = document.createElement('a');
+	anchor.style = 'display:none';
+	const fileName = `${saveFileName}sketch`;
+	if (fileName === null) return;
+	const dataAsString = JSON.stringify(dataToSave);
+	const blob = new Blob([dataAsString], { type: "text/javascript" });
+	anchor.href = window.URL.createObjectURL(blob);
+	anchor.download = `${fileName}.json`;
+	anchor.click();
+}
+
+
 function saveToFile(dataToSave) {
+	const result = prepDataToSaveInFile(dataToSave);
 	const date = new Date();
 	const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
+
+	const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
+	const encodedUri = encodeURI(csvFile);
 	const anchor = document.createElement('a');
 	anchor.style = 'display:none';
 	const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
-	if( fileName === null ) return;
-	const dataAsString = JSON.stringify(dataToSave);
-	const blob = new Blob([ dataAsString ], { type: "text/javascript" });
-	anchor.href = window.URL.createObjectURL(blob);
-	anchor.download = `${fileName}.json`;
+	anchor.setAttribute(`href`, encodedUri);
+	systemSketch(systemData, fileName);
+	if (fileName === null) {
+		anchor.setAttribute(`download`, `${saveFileName}.csv`);
+	} else {
+		anchor.setAttribute(`download`, `${fileName}.csv`);
+	}
 	anchor.click();
 }
 
@@ -17,26 +79,24 @@ function getMonth(date) {
 	return month < 10 ? `0${month}` : month;
 }
 
-function dragenter(e) {
-	e.stopPropagation();
-	e.preventDefault();
-}
-
-function dragover(e) {
-	e.stopPropagation();
-	e.preventDefault();
+function loadFile(e) {
+	const reader = new FileReader();
+	reader.onload = function () {
+		getSystem(setSystem(JSON.parse(reader.result)));
+		setupBusImage();
+	}
+	reader.readAsText(e.target.files[0]);
 }
 
 function readFromFile() {
-	const element = document.getElementById('file-input');
-	element.addEventListener('change', e => handleDroppedFile(e));
-	element.click();
+	const element = document.getElementById('readSystemFromFile');
+	element.addEventListener(`change`, loadFile);
 }
 
 function fileButtons() {
 	const fileButtonsDiv = document.createElement('div');
 	const saveToFile = document.createElement('button');
-	const readFromFile = document.createElement('button');
+	const readFromFile = document.createElement('input');
 	const saveToFileImage = document.createElement(`img`);
 	const readFromFileImage = document.createElement(`img`);
 	const fileContainer = document.querySelector(`.fileButtons`);
@@ -58,8 +118,6 @@ function fileButtons() {
 
 	saveToFile.type = 'button';
 	saveToFile.innerText = chooseText(usedText.zachowajSystem);
-
-	readFromFile.innerText = chooseText(usedText.wczytajSystem);
 	const powerSupplyContainer = document.querySelector('.configurationPanel');
 
 	// fileButtonsDiv.append(fileInput);
@@ -77,38 +135,54 @@ function addImageToFiles() {
 	readFromFileImage.src = `./SVG/load.svg`;
 }
 
+
+function dragenter(e) {
+	e.stopPropagation();
+	e.preventDefault();
+}
+
+function dragover(e) {
+	e.stopPropagation();
+	e.preventDefault();
+}
+
 function handleDroppedFile(e) {
 	e.stopPropagation();
 	e.preventDefault();
 	const dataTransfer = e.dataTransfer;
 	const files = e.target.files || dataTransfer.files;
-	const installationContainer = document.querySelector('.installationContainer');
-	for (let file of files) {
-		const blob = new Blob([file], { type: "application/json" });
-		const fr = new FileReader();
-
-		fr.addEventListener('load', () => {
-			Array.from(installationContainer.children).forEach(child => child.parentNode.removeChild(child));
-			const data = JSON.parse(fr.result);
-
-			Cable.usedIndexes = [];
-
-			getSystem(setSystem(data));
-			(document.querySelector('.powerSupply')).value = data.supplyType;
-
-			const segments = document.querySelectorAll('.installationSegment');
-
-			segments.forEach((segment, i) => {
-				if (i !== 0) {
-					segment.querySelector('.copyButton').setAttribute('id', `Skopiuj${i}`);
-					segment.querySelector('.deleteButton').setAttribute('id', `Usun${i}`);
-				}
-			});
-			systemInformation();
-
-		});
-		fr.readAsText(blob);
+	const reader = new FileReader();
+	reader.onload = function () {
+		getSystem(setSystem(JSON.parse(reader.result)));
+		setupBusImage();
 	}
+	reader.readAsText(files[0]);
+	// for (let file of files) {
+	// 	const blob = new Blob([file], { type: "application/json" });
+	// 	const fr = new FileReader();
+
+	// 	fr.addEventListener('load', () => {
+	// 		Array.from(installationContainer.children).forEach(child => child.parentNode.removeChild(child));
+	// 		const data = JSON.parse(fr.result);
+
+	// 		Cable.usedIndexes = [];
+
+	// 		getSystem(setSystem(data));
+	// 		(document.querySelector('.powerSupply')).value = data.supplyType;
+
+	// 		const segments = document.querySelectorAll('.installationSegment');
+
+	// 		segments.forEach((segment, i) => {
+	// 			if (i !== 0) {
+	// 				segment.querySelector('.copyButton').setAttribute('id', `Skopiuj${i}`);
+	// 				segment.querySelector('.deleteButton').setAttribute('id', `Usun${i}`);
+	// 			}
+	// 		});
+	// 		systemInformation();
+
+	// 	});
+	// 	fr.readAsText(blob);
+	// }
 }
 
 function handleDragAndDrop() {

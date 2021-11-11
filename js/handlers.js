@@ -6,10 +6,10 @@ function handlePSU() {
 	});
 }
 
-function adjustSystemCables() {
-	const installationSegment = document.querySelector(`.adjustCable`);
-	installationSegment.addEventListener('click', matchCablesToSystem);
-}
+// function adjustSystemCables() {
+// 	const installationSegment = document.querySelector(`.adjustCable`);
+// 	installationSegment.addEventListener('click', matchCablesToSystem);
+// }
 
 function handleInputAndSelectChange(event, selectedSegment) {
 	const segments = document.querySelectorAll('.segmentListContainer');

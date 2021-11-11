@@ -48,7 +48,7 @@ const  picture = function(type, imageContainer, containerName, imageId, index) {
 }
 
 chooseBusImage = (img, device, counterDevice = '') => {
-	img.src = `./SVG/${device}`;
+	img.src = `${device}`;
 	img.alt = `Unable to find image`;
 	counterDevice.src = ``;
 	counterDevice.alt = ``;
@@ -60,28 +60,27 @@ function setupImagesForSegments() {
 		//imageContainer
 		const segmentImage = segment.querySelector(`.deviceImg`);
 		try {
-			segmentImage.src = `./PNG/${systemData.bus[i].deviceName}.png`;
-			segmentImage.alt = `Unable to find image`
+			chooseBusImage(segmentImage, `./PNG/${systemData.bus[i].deviceName}.png`, '');
 		} catch (e) {
-			segmentImage.src = ``;
-			segmentImage.alt = `Unable to find image`
+			chooseBusImage(segmentImage, ``, '');
 		}
 	});
 }
 
 function setupBusImage() {
 	const installationSegment = document.querySelectorAll(`.installationSegment`);
+	console.log(installationSegment);
 	installationSegment.forEach((segment, i) => {
 		const sirenImage = document.querySelector(`#sirenimage${i}`);
 		const deviceimage = document.querySelector(`#deviceimage${i}`);
 		const busImage = document.querySelector(`#cableimage${i}`);
 		const device = NewDevices.find(deviceType => deviceType.type === systemData.bus[i].deviceName);
 		if (device.typeOfDevice === `device`) {
-			chooseBusImage(busImage, `T-conP.svg`);
-			chooseBusImage(deviceimage, `${device.icon}`, sirenImage);
+			chooseBusImage(busImage, `./SVG/T-conP.svg`);
+			chooseBusImage(deviceimage, `./SVG/${device.icon}`, sirenImage);
 		} else if (device.typeOfDevice === `siren`) {
-			chooseBusImage(busImage, `T-conL.svg`);
-			chooseBusImage(sirenImage, `${device.icon}`, deviceimage);
+			chooseBusImage(busImage, `./SVG/T-conL.svg`);
+			chooseBusImage(sirenImage, `./SVG/${device.icon}`, deviceimage);
 		}
 	});
 }

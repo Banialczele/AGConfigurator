@@ -1,4 +1,4 @@
-const input = function(cableContainer, cableLabel, inputName, inputContainerDiv) {
+const input = function(cableContainer, cableLabel, inputName, inputContainerDiv, index) {
 	const cableDiv = document.querySelector(`${cableContainer}`);
 	const inputDiv = document.createElement('div');
 	inputDiv.className = inputContainerDiv;
@@ -7,6 +7,7 @@ const input = function(cableContainer, cableLabel, inputName, inputContainerDiv)
 	const input = document.createElement('input');
 	input.type = `number`;
 	input.name = inputName;
+	input.setAttribute('data-indexOfDevice', `${index}`);
 	input.className = 'segmentListCableLength';
 	input.setAttribute('min', "0");
 	input.setAttribute('step', ".1");

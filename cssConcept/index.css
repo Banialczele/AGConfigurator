@@ -309,10 +309,16 @@ input[type=number] {
     grid-area: loadImage;
 }
 
-.systemFiles .fileDiv button {
+.systemFiles .fileDiv button,input {
     background: white;
     color: black;
     border: 1px solid rgba(116, 113, 113, 0.911);
+}
+
+.systemFiles .fileDiv .readFile {
+    background: none;
+    border: none;
+    width: 100%;
 }
 
 .systemFiles .fileDiv button:hover {

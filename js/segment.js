@@ -117,7 +117,7 @@ function createConfigureManySegments() {
 function insertDataToSegment(index, data, i) {
 	const newSegment = {
 		cableType: `${data.cableType}`,
-		cableLen_m: data.cableLength,
+		cableLen_m: data.cableLen_m,
 		deviceName: `${data.deviceName}`
 	};
 	const segmentContainer = document.querySelector(`.segmentContainer`);

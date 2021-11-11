@@ -65,10 +65,12 @@ window.addEventListener('load', () => {
 
 	if (systemStatus && systemContainer) {
 		systemContainer.appendChild(installationContainer);
+		createFundamentalData();
+
 		//creating select inputs for elemental data
 		getSystem(setSystem(systemData));
 
-		adjustSystemCables();
+		// adjustSystemCables();
 
 		handlePSU();
 
@@ -78,7 +80,7 @@ window.addEventListener('load', () => {
 		addImageToFiles();
 		//handling save/read file buttons function
 		handleFileButtons();
-
+		handleDragAndDrop();
 		adjustCableButton();
 		clickSegmentAndDisplay();
 		const targetNode = document.querySelector("#appContainer");
@@ -122,11 +124,10 @@ function getSystem(system) {
 	system.bus.forEach((item, index) => {
 		const checkIfSegmentExists = document.getElementById(`installationSegment${index}`);
 		if (checkIfSegmentExists === null || !checkIfSegmentExists) {
-			createFundamentalData();
 			createInstallationSegment(index);
 			createSegmentList(index);
-			select(`cableDiameter${index}`, `cable`);
-			input(`.cableLength${index}`, `cableInput`, 'cableInput', 'cableContainerInput');
+			select(`cableDiameter${index}`, `cable`, index);
+			input(`.cableLength${index}`, `cableInput`, 'cableInput', 'cableContainerInput', index);
 			usedIndexes.push(index);
 			select(`deviceType${index}`, 'device', index);
 		}
