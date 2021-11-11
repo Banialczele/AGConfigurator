@@ -84,6 +84,7 @@ function loadFile(e) {
 	reader.onload = function () {
 		getSystem(setSystem(JSON.parse(reader.result)));
 		setupBusImage();
+		setupImagesForSegments();
 	}
 	reader.readAsText(e.target.files[0]);
 }
@@ -155,34 +156,9 @@ function handleDroppedFile(e) {
 	reader.onload = function () {
 		getSystem(setSystem(JSON.parse(reader.result)));
 		setupBusImage();
+		setupImagesForSegments();
 	}
 	reader.readAsText(files[0]);
-	// for (let file of files) {
-	// 	const blob = new Blob([file], { type: "application/json" });
-	// 	const fr = new FileReader();
-
-	// 	fr.addEventListener('load', () => {
-	// 		Array.from(installationContainer.children).forEach(child => child.parentNode.removeChild(child));
-	// 		const data = JSON.parse(fr.result);
-
-	// 		Cable.usedIndexes = [];
-
-	// 		getSystem(setSystem(data));
-	// 		(document.querySelector('.powerSupply')).value = data.supplyType;
-
-	// 		const segments = document.querySelectorAll('.installationSegment');
-
-	// 		segments.forEach((segment, i) => {
-	// 			if (i !== 0) {
-	// 				segment.querySelector('.copyButton').setAttribute('id', `Skopiuj${i}`);
-	// 				segment.querySelector('.deleteButton').setAttribute('id', `Usun${i}`);
-	// 			}
-	// 		});
-	// 		systemInformation();
-
-	// 	});
-	// 	fr.readAsText(blob);
-	// }
 }
 
 function handleDragAndDrop() {
