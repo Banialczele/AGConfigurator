@@ -1,7 +1,6 @@
 function prepDataToSaveInFile(systemData) {
 	let cableLength = 0;
-
-	const sumAllDeviceEntries = systemData.bus.reduce((obj, currentValue, i) => {
+	const sumAllDeviceEntries = systemData.bus.reduce((obj, currentValue) => {
 		if (!obj[currentValue.deviceName]) {
 			obj[currentValue.deviceName] = 0;
 		}
@@ -9,18 +8,23 @@ function prepDataToSaveInFile(systemData) {
 		return obj;
 	}, {});
 
-	const sumAllCableDimsLengths = systemData.bus.reduce((obj, currentValue, i) => {
+	const sumAllCableTypes = systemData.bus.reduce((obj, currentValue) => {
 		if (!obj[currentValue.cableType]) {
 			obj[currentValue.cableType] = 0;
 		}
-		if (!obj[`Długość kabla:`]) {
-			obj[`Długość kabla`] = cableLength;
-		}
 		obj[currentValue.cableType]++;
-		cableLength += systemData.bus[i].cableLen_m;
+		return obj;
+	}, {});
+
+	const sumAllCableLengths = systemData.bus.reduce((obj, currentValue) => {
+		if (!obj[`Długość kabla:`]) {
+			obj[`Długość kabla`] = 0;
+		}		
+		cableLength += currentValue.cableLen_m
 		obj[`Długość kabla`] = cableLength;
 		return obj;
 	}, {});
+
 
 	const deviceTypes = Object.keys(sumAllDeviceEntries).map((value, index) => {
 		const foundDevice = NewDevices.find(device => device.type === value ? device : '');
@@ -28,19 +32,11 @@ function prepDataToSaveInFile(systemData) {
 	});
 
 	const CSV = [
-		["kolumnaA", "kolumnaB", "kolumnaC"],
-		["RządA", "RządB", "RządC"]
-	]
-
-	// const CSV = [
-	// 	[`lp.`, `Nazwa urządzenia`, `Rodzaj urządzenia`, `Ilość`, `Zasilacz`],
-	// 	[deviceTypes],
-	// 	Object.keys(sumAllDeviceEntries),
-	// 	Object.values(sumAllDeviceEntries),
-	// 	Object.keys(sumAllCableDimsLengths),
-	// 	Object.values(sumAllCableDimsLengths),
-	// 	[systemData.supplyType]
-	// ];
+		[`Rodzaj urządzenia`, `Nazwa urządzenia`, `ilość`],
+		[deviceTypes, Object.keys(sumAllDeviceEntries), Object.values(sumAllDeviceEntries)],
+		[`Kabel`, Object.keys(sumAllCableTypes), Object.values(sumAllCableLengths)],
+		[`Zasilacz`, systemData.supplyType]
+	];
 	return CSV;
 }
 
@@ -59,23 +55,16 @@ function systemSketch(dataToSave, saveFileName) {
 
 function saveToFile(dataToSave) {
 	const result = prepDataToSaveInFile(dataToSave);
+	console.log(result);
+	if(result[1][0].length > 1) {
+		result[1][0].map((_, i) => result.map(arr => arr[i]));		
+	console.log(result);
 
-
+	}
 	// const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
-	// const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map((element, i) => {
-	// 	// element.join(",").join("\n")
-	// 	for (let k = 0; k <= result[i].length; k++) {
-	// 		console.log(result[k]);
-	// 		// for (let p = 0; p <= element[i].length; p++) {
-	// 		// 	reutrn result[]
-	// 		// }
-	// 		return result;			
-	// 	}
-	// })
-	// console.log(csvFile);
 
-	const date = new Date();
-	const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
+	// const date = new Date();
+	// const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
 	// const encodedUri = encodeURI(csvFile);
 	// const anchor = document.createElement('a');
 	// anchor.style = 'display:none';

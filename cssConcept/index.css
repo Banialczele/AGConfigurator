@@ -1,8 +1,8 @@
 html, body {
     font-family: 'Spartan';
     background: #F4F3F4;
-    height: 95vh;
-    max-width: 2400px;
+    height: 100vh;
+    max-width: 2250px;
     min-width: 1700px;
     margin: 0 auto;
     padding: 0;
@@ -12,17 +12,11 @@ html, body {
     box-sizing: border-box;
 }
 
-#markAsRed {
-    color: red;
-    background: none;
-}
-
 #header {
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: 2fr 2fr 1fr;
-    margin-top: 5px;
     background: #FBFBFB;
 }
 
@@ -36,7 +30,7 @@ html, body {
 }
 
 #header #headerContainer p#configuratorRevision {
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .languageVersions {
@@ -76,8 +70,8 @@ html, body {
 }
 
 #logoImgContainer img {
-    width: 50%;
-    height: 100%;
+    width: 220px;
+    height: 70px;
 }
 
 h2, p {
@@ -86,12 +80,10 @@ h2, p {
 }
 
 #appContainer {
+    height: 90%;
     display: grid;
-    /* margin: 0 auto; */
-    margin: 0;
     width: 100%;
-    padding: 40px 0;
-    height: 100%;
+    padding: 20px 0;
     grid-template-columns: minmax(275px, 320px) 2fr 1fr;
     grid-template-rows: minmax(auto, 350px) 275px 1fr;
     row-gap: 25px;
@@ -107,10 +99,6 @@ h2, p {
     box-shadow: 0 0 25px 10px rgba(65, 64, 66, 0.15);
 }
 
-#appContainer .counter {
-    box-shadow: none;
-}
-
 .panelStyle {
     background: rgb(255, 255, 255);
     border-radius: 10px;
@@ -120,25 +108,6 @@ h2, p {
 .hightlighted {
     color: red;
     font-weight: bolder;
-}
-
-.counter {
-    grid-area: counterDiv;
-    margin: 0 25px;
-    /* background: red; */
-    display: flex;
-    text-align: center;
-    align-items: center;
-    height: 100% ;
-}
-
-.counter .inputContainer {
-    width: 100%;
-}
-
-.counter .inputContainer input {
-    width: 50%;
-    height: 50px;
 }
 
 h3 {
@@ -344,27 +313,12 @@ input .segmentListCableLength {
     width: 180px;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
 .elementalDevice:after, .powerSupply:after, .elementalCable:after, .deviceSelect:after, .cableSelect:after {
     content: "";
     width: 0.8em;
     height: 0.5em;
     background-color: #777;
     clip-path: polygon(100% 0%, 0 0%, 50% 100%);
-}
-
-select::-ms-expand {
-    display: none;
 }
 
 .deviceImg {
