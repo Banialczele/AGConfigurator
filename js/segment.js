@@ -91,11 +91,12 @@ function createSegmentList(index) {
 function initializeSegmentData(system) {
 	document.querySelector('.powerSupply').value = systemData.supplyType;
 
-	document.querySelector(`.elementalCableLabel`).value = system.bus[0].cableType;
-	document.querySelector('.cableLabel').value = system.bus[0].cableType;
+	document.querySelector('.deviceSelect').value = systemData.bus[0].deviceName;
+	document.querySelector(`.elementalDevice`).value = systemData.bus[0].deviceName;
+	
+	document.querySelector(`.elementalCable`).value = systemData.bus[0].cableType;
+	document.querySelector(`.cableSelect`).value = systemData.bus[0].cableType;
 
-	document.querySelector('.deviceSelect').value = system.bus[0].deviceName;
-	document.querySelector(`.elementalDevice`).value = system.bus[0].deviceName;
 
 	document.querySelector('#wireDistance').value = systemData.bus[0].cableLen_m;
 	document.querySelector('.segmentListCableLength').value = systemData.bus[0].cableLen_m;
@@ -121,6 +122,7 @@ function createConfigureManySegments() {
 }
 
 function insertDataToSegment(index, data, i) {
+	console.log(data);
 	const newSegment = {
 		cableType: `${data.cableType}`,
 		cableLen_m: data.cableLen_m,
@@ -129,7 +131,7 @@ function insertDataToSegment(index, data, i) {
 	const segmentContainer = document.querySelector(`.segmentContainer`);
 	const segmentListContainer = document.querySelector(`.segmentListContainer`);
 	const clone = segmentContainer.cloneNode(true);
-
+	console.log(newSegment.cableType);
 	clone.id = `segment${index}`;
 	clone.className = `segmentContainer`;
 

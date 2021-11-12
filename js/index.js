@@ -1,9 +1,9 @@
 let systemData = {
 	supplyType: "24V bez podtrzymania",
 	bus: [{
-		cableType: "2 x 2 mm2",
+		cableType: "2 x 2,5 mm2",
 		cableLen_m: 15,
-		deviceName: "Teta EcoWent"
+		deviceName: "Teta EcoTerm"
 	}],
 };
 

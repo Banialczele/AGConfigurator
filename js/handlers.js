@@ -174,6 +174,6 @@ function  handleCopyNthTimes(e, amountToCopy) {
 			}
 		}
 		insertDataToSegment(newIndex, systemData.bus[0], i);
-	}
+	}	
 	setupBusImage();
 }
