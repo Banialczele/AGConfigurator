@@ -1,5 +1,7 @@
 function prepDataToSaveInFile(systemData) {
-	let cableLength = 0;
+	const CSV = [
+		[`Rodzaj urządzenia`, `Nazwa urządzenia`, `ilość`]
+	];
 	const sumAllDeviceEntries = systemData.bus.reduce((obj, currentValue) => {
 		if (!obj[currentValue.deviceName]) {
 			obj[currentValue.deviceName] = 0;
@@ -17,26 +19,30 @@ function prepDataToSaveInFile(systemData) {
 	}, {});
 
 	const sumAllCableLengths = systemData.bus.reduce((obj, currentValue) => {
-		if (!obj[`Długość kabla:`]) {
-			obj[`Długość kabla`] = 0;
+		if (!obj[currentValue.cableType]) {
+			obj[currentValue.cableType] = 0;
 		}		
-		cableLength += currentValue.cableLen_m
-		obj[`Długość kabla`] = cableLength;
+		obj[currentValue.cableType] += currentValue.cableLen_m;
 		return obj;
 	}, {});
 
 
-	const deviceTypes = Object.keys(sumAllDeviceEntries).map((value, index) => {
+	const deviceTypes = Object.keys(sumAllDeviceEntries).map((value) => {
 		const foundDevice = NewDevices.find(device => device.type === value ? device : '');
 		return foundDevice.device;
 	});
 
-	const CSV = [
-		[`Rodzaj urządzenia`, `Nazwa urządzenia`, `ilość`],
-		[deviceTypes, Object.keys(sumAllDeviceEntries), Object.values(sumAllDeviceEntries)],
-		[`Kabel`, Object.keys(sumAllCableTypes), Object.values(sumAllCableLengths)],
-		[`Zasilacz`, systemData.supplyType]
-	];
+	deviceTypes.forEach( (device,i) => {
+		CSV.push([device, Object.keys(sumAllDeviceEntries)[i], Object.values(sumAllDeviceEntries)[i]]);
+	});
+
+	Object.keys(sumAllCableTypes).forEach( (cable,i) => {
+		CSV.push([`Kabel`, Object.keys(sumAllCableTypes)[i], Object.values(sumAllCableLengths)[i]]);
+	});
+
+	CSV.push([`Zasilacz`, systemData.supplyType]);
+
+	
 	return CSV;
 }
 
@@ -55,28 +61,22 @@ function systemSketch(dataToSave, saveFileName) {
 
 function saveToFile(dataToSave) {
 	const result = prepDataToSaveInFile(dataToSave);
-	console.log(result);
-	if(result[1][0].length > 1) {
-		result[1][0].map((_, i) => result.map(arr => arr[i]));		
-	console.log(result);
+	const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
 
+	const date = new Date();
+	const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
+	const encodedUri = encodeURI(csvFile);
+	const anchor = document.createElement('a');
+	anchor.style = 'display:none';
+	const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
+	anchor.setAttribute(`href`, encodedUri);
+	systemSketch(systemData, fileName);
+	if (fileName === null) {
+		anchor.setAttribute(`download`, `${saveFileName}.csv`);
+	} else {
+		anchor.setAttribute(`download`, `${fileName}.csv`);
 	}
-	// const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
-
-	// const date = new Date();
-	// const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
-	// const encodedUri = encodeURI(csvFile);
-	// const anchor = document.createElement('a');
-	// anchor.style = 'display:none';
-	// const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
-	// anchor.setAttribute(`href`, encodedUri);
-	// systemSketch(systemData, fileName);
-	// if (fileName === null) {
-	// 	anchor.setAttribute(`download`, `${saveFileName}.csv`);
-	// } else {
-	// 	anchor.setAttribute(`download`, `${fileName}.csv`);
-	// }
-	// anchor.click();
+	anchor.click();
 }
 
 function getMonth(date) {
