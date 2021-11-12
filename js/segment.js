@@ -39,6 +39,10 @@ function createInstallationSegment(index) {
 function createSegmentList(index) {
 	const checkIfUsed = usedIndexes.includes(index);
 	if (!checkIfUsed) {
+		const segmentDataContainer = document.createElement('div');
+		segmentDataContainer.className = `segmentDataContainer`;
+		segmentDataContainer.setAttribute(`id`, `segmentDataContainer${index}`);
+
 		const segment = document.createElement('div');
 		segment.className = `segmentContainer`;
 		segment.setAttribute('id', `segment${index}`);
@@ -71,12 +75,14 @@ function createSegmentList(index) {
 
 		const segmentListContainer = document.querySelector('.segmentListContainer');
 
+		segment.appendChild(segmentDataContainer);
+
 		deviceType.appendChild(devicePara);
-		segment.appendChild(deviceType);
+		segmentDataContainer.appendChild(deviceType);
 		cableDiameter.appendChild(cablePara);
-		segment.appendChild(cableDiameter);
+		segmentDataContainer.appendChild(cableDiameter);
 		cableLength.appendChild(lengthPara);
-		segment.appendChild(cableLength);
+		segmentDataContainer.appendChild(cableLength);
 		segment.appendChild(deviceImageContainer);
 		segmentListContainer.appendChild(segment);
 	}
@@ -132,10 +138,14 @@ function insertDataToSegment(index, data, i) {
 	deviceType.className = `deviceType${index}`;
 	const deviceSelect = deviceType.querySelector(`.deviceSelect`);
 	deviceSelect.dataset.indexofdevice = index;
+	deviceSelect.value = newSegment.deviceName;
 	
 	const cableDim = clone.querySelector(`.cableDiameter${0}`);
 	cableDim.id = `cableDiameter${index}`;
 	cableDim.className = `cableDiameter${index}`;
+	const cableDimSelect = cableDim.querySelector(`.cableSelect`);
+	cableDimSelect.dataset.indexofdevice = index;
+	cableDimSelect.value = newSegment.cableType;
 
 	const cableLen = clone.querySelector(`.cableLength${0}`);
 	cableLen.id = `cableLength${index}`;

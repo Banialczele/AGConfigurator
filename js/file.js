@@ -28,16 +28,19 @@ function prepDataToSaveInFile(systemData) {
 	});
 
 	const CSV = [
-		[`lp.`, `Nazwa urządzenia`, `Rodzaj urządzenia`, `Ilość`],
-		[deviceTypes],
-		Object.keys(sumAllDeviceEntries),
-		Object.values(sumAllDeviceEntries),
-		Object.keys(sumAllCableDimsLengths),
-		Object.values(sumAllCableDimsLengths),
-		[`Zasilacz`]
-		[systemData.supplyType]
-	];
-	// console.log(CSV);
+		["kolumnaA", "kolumnaB", "kolumnaC"],
+		["RządA", "RządB", "RządC"]
+	]
+
+	// const CSV = [
+	// 	[`lp.`, `Nazwa urządzenia`, `Rodzaj urządzenia`, `Ilość`, `Zasilacz`],
+	// 	[deviceTypes],
+	// 	Object.keys(sumAllDeviceEntries),
+	// 	Object.values(sumAllDeviceEntries),
+	// 	Object.keys(sumAllCableDimsLengths),
+	// 	Object.values(sumAllCableDimsLengths),
+	// 	[systemData.supplyType]
+	// ];
 	return CSV;
 }
 
@@ -56,22 +59,35 @@ function systemSketch(dataToSave, saveFileName) {
 
 function saveToFile(dataToSave) {
 	const result = prepDataToSaveInFile(dataToSave);
+
+
+	// const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
+	// const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map((element, i) => {
+	// 	// element.join(",").join("\n")
+	// 	for (let k = 0; k <= result[i].length; k++) {
+	// 		console.log(result[k]);
+	// 		// for (let p = 0; p <= element[i].length; p++) {
+	// 		// 	reutrn result[]
+	// 		// }
+	// 		return result;			
+	// 	}
+	// })
+	// console.log(csvFile);
+
 	const date = new Date();
 	const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
-
-	const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
-	const encodedUri = encodeURI(csvFile);
-	const anchor = document.createElement('a');
-	anchor.style = 'display:none';
-	const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
-	anchor.setAttribute(`href`, encodedUri);
-	systemSketch(systemData, fileName);
-	if (fileName === null) {
-		anchor.setAttribute(`download`, `${saveFileName}.csv`);
-	} else {
-		anchor.setAttribute(`download`, `${fileName}.csv`);
-	}
-	anchor.click();
+	// const encodedUri = encodeURI(csvFile);
+	// const anchor = document.createElement('a');
+	// anchor.style = 'display:none';
+	// const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
+	// anchor.setAttribute(`href`, encodedUri);
+	// systemSketch(systemData, fileName);
+	// if (fileName === null) {
+	// 	anchor.setAttribute(`download`, `${saveFileName}.csv`);
+	// } else {
+	// 	anchor.setAttribute(`download`, `${fileName}.csv`);
+	// }
+	// anchor.click();
 }
 
 function getMonth(date) {
@@ -80,6 +96,7 @@ function getMonth(date) {
 }
 
 function loadFile(e) {
+	console.log('dfgh');
 	const reader = new FileReader();
 	reader.onload = function () {
 		getSystem(setSystem(JSON.parse(reader.result)));
@@ -90,14 +107,16 @@ function loadFile(e) {
 }
 
 function readFromFile() {
-	const element = document.getElementById('readSystemFromFile');
-	element.addEventListener(`change`, loadFile);
+	const fileInput = document.getElementById(`readFileInput`);
+	fileInput.addEventListener('change', loadFile);
+	fileInput.click();
 }
 
 function fileButtons() {
 	const fileButtonsDiv = document.createElement('div');
 	const saveToFile = document.createElement('button');
-	const readFromFile = document.createElement('input');
+	const readIFileInput = document.createElement(`input`);
+	const readFromFile = document.createElement('button');
 	const saveToFileImage = document.createElement(`img`);
 	const readFromFileImage = document.createElement(`img`);
 	const fileContainer = document.querySelector(`.fileButtons`);
@@ -105,8 +124,12 @@ function fileButtons() {
 	saveToFile.setAttribute('id', 'saveSystemToFile');
 	saveToFile.className = `saveSystemToFile`;
 
+	readIFileInput.setAttribute(`id`, `readFileInput`);
+	readIFileInput.setAttribute(`type`, `file`);
+	readIFileInput.style.display = `none`;
+
 	readFromFile.setAttribute('id', 'readSystemFromFile');
-	readFromFile.setAttribute('type', 'file');
+	readFromFile.setAttribute('type', 'button');
 
 	saveToFileImage.className = `saveToFileImage`;
 	saveToFileImage.setAttribute('alt', 'unable to find image');
@@ -119,11 +142,13 @@ function fileButtons() {
 
 	saveToFile.type = 'button';
 	saveToFile.innerText = chooseText(usedText.zachowajSystem);
+	readFromFile.innerText = chooseText(usedText.wczytajSystem);
 	const powerSupplyContainer = document.querySelector('.configurationPanel');
 
 	// fileButtonsDiv.append(fileInput);
 	fileButtonsDiv.append(saveToFile);
 	fileButtonsDiv.append(saveToFileImage);
+	fileButtonsDiv.append(readIFileInput);
 	fileButtonsDiv.append(readFromFile);
 	fileButtonsDiv.append(readFromFileImage);
 	fileContainer.appendChild(fileButtonsDiv);

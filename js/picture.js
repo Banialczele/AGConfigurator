@@ -69,7 +69,6 @@ function setupImagesForSegments() {
 
 function setupBusImage() {
 	const installationSegment = document.querySelectorAll(`.installationSegment`);
-	console.log(installationSegment);
 	installationSegment.forEach((segment, i) => {
 		const sirenImage = document.querySelector(`#sirenimage${i}`);
 		const deviceimage = document.querySelector(`#deviceimage${i}`);

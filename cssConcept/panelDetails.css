@@ -1,4 +1,3 @@
-
 .systemConfiguration {
     width: 90%;
     display: flex;
@@ -44,33 +43,32 @@
 }
 
 .segmentConfiguration .segmentContainer {
+    max-height: 200px;   
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-areas: "deviceImage device" "deviceImage deviceCableDim" "deviceImage deviceCableLength";
+    grid-template-areas: 
+        "deviceImage device" 
+        "deviceImage device"; 
     width: 95%;
     background: rgb(255, 249, 249);
 }
 
-.segmentContainer > div {
-    padding: 2px 0;
-}
-
-.segmentContainer .deviceName {
+.segmentContainer .segmentDataContainer {
     grid-area: device;
-}
-
-.segmentContainer .cableDim {
-    grid-area: deviceCableDim;
-}
-
-.segmentContainer .cableLen {
-    grid-area: deviceCableLength;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: flex-start;
+    row-gap: 20px;
 }
 
 .segmentContainer .deviceImageContainer {
     grid-area: deviceImage;
-    max-height: 240px;
-    max-width: 230px;
+    justify-self: center;
+    max-height: 200px;
+    max-width: 200px;
 }
 
 .segmentContainer .deviceImageContainer img {

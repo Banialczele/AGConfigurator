@@ -157,3 +157,23 @@ function highlightMid(entries) {
 		entry.target.classList.toggle('midsegment', entry.isIntersecting);
 	});
 }
+
+function  handleCopyNthTimes(e, amountToCopy) {
+	let newIndex = 0;
+
+	for (let i = 1; i <= amountToCopy; i++) {
+
+		//generating unique index for segment.
+		while (newIndex === usedIndexes[newIndex]) {
+			newIndex++;
+			if (newIndex !== usedIndexes[newIndex]) {
+				createInstallationSegment(newIndex);
+
+				usedIndexes.push(newIndex);
+				break;
+			}
+		}
+		insertDataToSegment(newIndex, systemData.bus[0], i);
+	}
+	setupBusImage();
+}

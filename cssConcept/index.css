@@ -1,29 +1,20 @@
 html, body {
-    overflow: hidden;
     font-family: 'Spartan';
     background: #F4F3F4;
-    height: 100vh;
-    margin: 0;
+    height: 95vh;
+    max-width: 2400px;
+    min-width: 1700px;
+    margin: 0 auto;
+    padding: 0;
 }
 
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-}
-
 #markAsRed {
     color: red;
     background: none;
-}
-
-header #header {
-    padding: 15px 5px;
 }
 
 #header {
@@ -96,10 +87,11 @@ h2, p {
 
 #appContainer {
     display: grid;
-    margin: 0 auto;
-    width: 100vw;
+    /* margin: 0 auto; */
+    margin: 0;
+    width: 100%;
     padding: 40px 0;
-    height: 95%;
+    height: 100%;
     grid-template-columns: minmax(275px, 320px) 2fr 1fr;
     grid-template-rows: minmax(auto, 350px) 275px 1fr;
     row-gap: 25px;
@@ -309,16 +301,16 @@ input[type=number] {
     grid-area: loadImage;
 }
 
-.systemFiles .fileDiv button,input {
+.systemFiles .fileDiv button {
     background: white;
     color: black;
     border: 1px solid rgba(116, 113, 113, 0.911);
+    cursor: pointer;
 }
 
-.systemFiles .fileDiv .readFile {
-    background: none;
-    border: none;
-    width: 100%;
+.systemFiles .fileDiv input[type="file"] {
+    border: 1px solid rgba(116, 113, 113, 0.911);
+    cursor: pointer;
 }
 
 .systemFiles .fileDiv button:hover {
