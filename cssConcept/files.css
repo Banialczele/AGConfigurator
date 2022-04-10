@@ -1,0 +1,39 @@
+.systemFiles .filesContainer {
+  height: calc(100% - 50px);
+  width: 100%;
+  display: grid;
+  grid-template-areas: "saveSystem" "listOfDevices";
+}
+
+.filesContainer .saveSystem {
+  grid-area: saveSystem;
+  place-self: center;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.filesContainer .setOfDevices {
+  grid-area: listOfDevices;
+  place-self: center;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.saveSystem img,
+.setOfDevices img {
+  width: 30px;
+  height: 30px;
+}
+
+.saveSystem button,
+.setOfDevices button {
+  min-width: 150px;
+  height: 30px;
+  border: none;
+}

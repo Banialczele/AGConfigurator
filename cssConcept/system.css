@@ -1,0 +1,257 @@
+.system {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-areas:
+    "systemStatus systemPreview file"
+    "systemStatus systemPreview usedDevices";
+  /* grid-template-columns: 450px 1fr 300px; */
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 150px 1fr;
+  row-gap: 25px;
+  margin: 150px auto 0 auto;
+}
+
+.system h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.system .systemHeader {
+  background: rgba(39, 39, 39, 0.037);
+  border-radius: 10px;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.system .panelStyle {
+  border: 1px solid rgba(39, 39, 39, 0.096);
+  box-shadow: 0px 0px 102px 10px rgba(227, 227, 227, 1);
+  -webkit-box-shadow: 0px 0px 102px 10px rgba(227, 227, 227, 1);
+  -moz-box-shadow: 0px 0px 102px 10px rgba(227, 227, 227, 1);
+  border-radius: 10px;
+  width: 90%;
+  place-self: start center;
+}
+
+.system .systemStatus {
+  grid-area: systemStatus;
+  max-height: 850px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.systemStatus .systemPreviewContainer {
+  height: 100%;
+  flex: 1;
+}
+
+.systemPreviewContainer ol {
+  margin: 0;
+}
+
+.systemPreviewContainer .divider {
+  height: 1px;
+  width: 85%;
+  border-bottom: 1px solid rgba(39, 39, 39, 0.28);
+  margin: 0 auto;
+}
+
+.systemStatusContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.systemStatusContainer .systemState {
+  place-self: center start;
+}
+
+.systemStatusContainer .systemOutput {
+  place-self: center;
+  margin-left: 45px;
+}
+
+.systemPreviewContainer > div {
+  margin: 10px;
+}
+
+.systemPreviewContainer ol {
+  list-style: none;
+}
+
+.systemPreviewContainer span {
+  font-weight: 800;
+}
+
+.systemPreviewContainer .devices {
+  display: grid;
+  grid-template-areas:
+    "description description"
+    "deviceList deviceAmountList";
+  grid-template-columns: 150px 1fr;
+}
+
+.devices .deviceListHeader {
+  grid-area: description;
+}
+
+.devices .detectorListContainer {
+  grid-area: deviceList;
+}
+
+.devices .deviceAmounts {
+  grid-area: deviceAmountList;
+  place-self: center;
+}
+
+.systemPreviewContainer .accessories {
+  display: grid;
+  grid-template-areas:
+    "accessoryDescription accessoryDescription"
+    "accessoryList accessoryAmountList";
+  grid-template-columns: 150px 1fr;
+}
+
+.accessories .accessoriesListHeader {
+  grid-area: accessoryDescription;
+}
+
+.accessories .accessoriesListContainer {
+  grid-area: accessoryList;
+}
+
+.accessories .accessoriesAmounts {
+  grid-area: accessoryAmountList;
+  place-self: center;
+}
+
+.systemPreviewContainer .controlUnit {
+  display: grid;
+  grid-template-areas:
+    "controlUnitDesc controlUnitDesc"
+    "busLength lengthValue"
+    "powerConsumption consumptionValue";
+  grid-template-columns: 180px 1fr;
+}
+
+.controlUnit .controlUnitHeader {
+  grid-area: controlUnitDesc;
+}
+
+.controlUnit .busLengthDescription {
+  grid-area: busLength;
+  padding-left: 40px;
+}
+
+.controlUnit .systemPowerConsumption {
+  grid-area: powerConsumption;
+  padding-left: 40px;
+}
+
+.controlUnit .busLength {
+  grid-area: lengthValue;
+  place-self: center;
+}
+
+.controlUnit .powerConsumption {
+  grid-area: consumptionValue;
+  place-self: center;
+}
+
+.systemPreviewContainer .powerSupplyContainer {
+  border: 2px solid rgb(0, 156, 52);
+  padding: 15px 10px;
+  display: grid;
+  grid-template-areas:
+    "powerSupplyHeader"
+    "psu"
+    "wireDim"
+    "systemStatus"
+    "optimizeButton";
+}
+
+.powerSupplyContainer .powerSupplyHeader {
+  grid-area: powerSupplyHeader;
+}
+
+.powerSupplyContainer .supplyType {
+  grid-area: psu;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.supplyType .powerSupply {
+  place-self: center;
+}
+
+.supplyType .powerSupplyDetails {
+  place-self: center;
+}
+
+.powerSupplyContainer .wireDiameterContainer {
+  grid-area: wireDim;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.wireDiameterContainer .wireDiameter {
+  place-self: center;
+}
+
+.wireDiameterContainer .typeOfWire {
+  place-self: center;
+}
+
+.powerSupplyContainer .systemStatusContainer {
+  grid-area: systemStatus;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.systemStatusContainer .systemState {
+  place-self: center;
+}
+
+.systemStatusContainer .systemOutput {
+  place-self: center;
+}
+
+.powerSupplyContainer .optimizeContainer {
+  grid-area: optimizeButton;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.optimizeContainer .optimizeSystem {
+  width: 150px;
+  place-self: center end;
+  border: none;
+}
+
+.system .systemPreview {
+  grid-area: systemPreview;
+  height: 100%;
+  width: 95%;
+}
+
+.system .systemFiles {
+  grid-area: file;
+  height: 100%;
+}
+
+.system .usedDevices {
+  grid-area: usedDevices;
+  max-height: 650px;
+  height: 100%;
+}

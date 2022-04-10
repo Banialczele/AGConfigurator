@@ -1,326 +1,301 @@
-html, body {
-    font-family: 'Spartan';
-    background: #F4F3F4;
-    height: 100vh;
-    max-width: 2250px;
-    min-width: 1700px;
-    margin: 0 auto;
-    padding: 0;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-*, *::before, *::after {
-    box-sizing: border-box;
+body {
+  margin: 0px;
+  padding: 0px;
 }
 
-#header {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 2fr 2fr 1fr;
-    background: #FBFBFB;
+header {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-areas:
+    "configurator configurator language logo"
+    "revision revision revision logo";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 2fr 1fr 0 0;
+  background: rgba(39, 39, 39, 0.037);
 }
 
-#headerContainer {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    height: 100%;
-    gap: 0;
-    place-items: center start;
-    margin: 0 30px;
+header #headerContainer {
+  grid-area: configurator;
+  place-self: center start;
 }
 
-#header #headerContainer p#configuratorRevision {
-    font-size: 12px;
+h2 {
+  margin: 0;
 }
 
-.languageVersions {
-    display: flex;
-    height: inherit;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
+header #headerContainer h2 {
+  margin: 0 0 0 25px;
 }
 
-.languageVersions>a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgb(65, 64, 66);
-    height: 75%;
-    width: 20%;
-    text-align: center;
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
+header #headerRevision {
+  grid-area: revision;
 }
 
-.languageVersions>a:not(:last-child) {
-    margin-right: 10px;
+header #headerRevision #configuratorRevision {
+  margin: 0 0 0 25px;
 }
 
-.languageVersions>a:hover {
-    background: rgba(65, 64, 66, 0.6);
-    cursor: pointer;
+header .languageVersions {
+  grid-area: language;
+  place-self: end;
 }
 
-#logoImgContainer {
-    align-self: center;
-    text-align: end;
-    height: inherit;
+header #logoImgContainer {
+  grid-area: logo;
+  place-self: center;
 }
 
-#logoImgContainer img {
-    width: 220px;
-    height: 70px;
-}
-
-h2, p {
-    margin: 0;
-    padding: 0;
-}
-
-#appContainer {
-    height: 90%;
-    display: grid;
-    width: 100%;
-    padding: 20px 0;
-    grid-template-columns: minmax(275px, 320px) 2fr 1fr;
-    grid-template-rows: minmax(auto, 350px) 275px 1fr;
-    row-gap: 25px;
-    grid-template-areas: 
-    "defaultData mainSchema UIInterface" 
-    "systemStatus mainSchema UIInterface" 
-    "systemFiles mainSchema UIInterface"
-    ". mainSchema UIInterface";
-    place-items: stretch center;
-}
-
-#appContainer>div {
-    box-shadow: 0 0 25px 10px rgba(65, 64, 66, 0.15);
-}
-
-.panelStyle {
-    background: rgb(255, 255, 255);
-    border-radius: 10px;
-    font-size: 13px;
+header #logoImgContainer img {
+  height: 80px;
+  width: 350px;
 }
 
 .hightlighted {
-    color: red;
-    font-weight: bolder;
+  color: rgb(189, 37, 37);
 }
 
-h3 {
-    margin: 0;
-    width: 100%;
-    font-size: 19px;
+.appEntry {
+  height: calc(100vh - 130px);
+  width: 80%;
+  margin: 50px auto 0 auto;
+  display: grid;
+  grid-template-areas:
+    "configurator"
+    "dragndrop";
+  grid-template-rows: 500px 225px;
+  grid-template-columns: 1fr;
+  row-gap: 50px;
 }
 
-.panelInfo {
-    background: rgba(248, 248, 248, 0.8);
-    border-radius: 5px;
-    padding: 10px 5px;
-    margin: 15px 10px;
-    height: 42px;
+.appEntry .appEntryDescription {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "config";
+  grid-template-rows: 50px 1fr;
+  grid-template-columns: 1fr;
 }
 
-.leftPanelsStyles {
-    width: 90%;
+.appEntry .entryHeader {
+  grid-area: header;
+  background: rgba(39, 39, 39, 0.037);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.deviceQuantityInput #deviceQuantity {
-    width: 30px;
-    height: 20px;
-    padding: 0;
-    text-align: center;
-    margin-right: 5px;
+.appEntry .entryHeader h2 {
+  margin-left: 50px;
+  font-weight: 300;
 }
 
-.deviceQuantityInput #deviceQuantity::-webkit-outer-spin-button, .deviceQuantityInput #deviceQuantity::-webkit-inner-spin-button, #wireDistance::-webkit-outer-spin-button, #wireDistance::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.appEntry .configuratorConfig {
+  grid-area: config;
+  display: grid;
+  grid-template-areas: "form divider description";
+  grid-template-columns: 1fr 1px 1fr;
 }
 
-input[type=number] {
-    -moz-appearance: textfield;
+.configuratorConfig .entryConfig {
+  grid-area: form;
 }
 
-.deviceQuantityInput #deviceQuantity[type=number] {
-    -moz-appearance: textfield;
+.entryConfig .configForm {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-areas:
+    ". amounts"
+    "buildingInfo building"
+    "gasInfo gas"
+    "batteryInfo batterybackup"
+    "wireInfo wireLength"
+    ". button";
 }
 
-.data {
-    grid-area: defaultData;
-    padding-bottom: 45px;
+.configForm > div {
+  place-self: center start;
 }
 
-.data>div:not(:first-child) {
-    width: 100%;
+.configForm > span {
+  place-self: center;
+  color: rgba(39, 39, 39, 0.322);
+  margin-top: 25px;
 }
 
-.defaultData {
-    display: flex;
-    flex-direction: column;
+.configForm .entryDetectorAmounts {
+  grid-area: amounts;
+  width: 100%;
+  display: grid;
+  grid-template-areas:
+    "description . ."
+    "input unit amount";
+  grid-template-columns: 125px 50px 100px;
+  grid-template-rows: 15px 15px;
+  row-gap: 10px;
 }
 
-.defaultData>div:not(:first-child) {
-    margin: 5px 10px;
-    padding-top: 5px;
+.entryDetectorAmounts .amountDescription {
+  grid-area: description;
 }
 
-.systemStatus {
-    grid-area: systemStatus;
-    place-self: center;
-    max-height: 275px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 2fr 2fr;
-    grid-template-areas: "panelInfo" "powerConsumption" "adjustCable";
+.entryDetectorAmounts .detectorAmounts {
+  grid-area: input;
 }
 
-.systemStatus .status {
-    width: 85%;
-    max-width: 250px;
-    height: 65px;
-    border-radius: 5px;
-    margin: 15px 10px;
-    place-self: center start;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.entryDetectorAmounts .amountUnit {
+  grid-area: unit;
+  place-self: center;
 }
 
-.systemStatus .sysWrong {
-    background: rgb(232, 53, 53);
+.entryDetectorAmounts .shadedAmount {
+  color: rgba(39, 39, 39, 0.322);
+  grid-area: amount;
 }
 
-.systemStatus .sysOk {
-    background: rgb(0, 194, 3);
+.configForm .buildingInformation {
+  grid-area: buildingInfo;
 }
 
-.systemStatus .adjustCable {
-    grid-area: adjustCable;
-    color: white;
-    border-radius: 5px;
-    place-self: center start;
-    margin-left: 5px;
-    width: 100%;
-    height: 50px;
+.configForm .buildingType {
+  grid-area: building;
 }
 
-.systemStatus #matchCablesToSystem {
-    width: 85%;
-    max-width: 250px;
-    background: rgb(65, 64, 66);
+.buildingType .structure {
+  margin-bottom: 10px;
 }
 
-.systemStatus #matchCablesToSystem:hover {
-    background: rgba(65, 64, 66, 0.6);
-    cursor: pointer;
+.configForm .detectedGasInformation {
+  grid-area: gasInfo;
 }
 
-.systemStatus .status .statusText {
-    font-weight: bolder;
-    color: white;
-    font-size: 25px;
+.configForm .detectedGas {
+  grid-area: gas;
 }
 
-.systemStatus .status #powerConsumption {
-    font-weight: bold;
-    color: white;
-    font-size: 14px;
+.detectedGas .gas {
+  margin-bottom: 10px;
 }
 
-.systemFiles {
-    grid-area: systemFiles;
-    max-height: 165px;
-    height: 165px;
-    place-self: start center;
+.configForm .batteryBackUpInformation {
+  grid-area: batteryInfo;
 }
 
-.systemFiles .fileButtons {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin: 15px 10px;
+.configForm .batteryBackUp {
+  grid-area: batterybackup;
 }
 
-.systemFiles .fileDiv {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: minmax(85%, 250px);
-    grid-template-areas: "saveButton saveImage" "loadButton loadImage";
-    row-gap: 15px;
+.batteryBackUp .battery {
+  margin-bottom: 10px;
 }
 
-.systemFiles .fileDiv .saveSystemToFile {
-    grid-area: saveButton;
+.configForm .wireLengthInformation {
+  grid-area: wireInfo;
 }
 
-.systemFiles .fileDiv .saveToFileImage {
-    grid-area: saveImage;
+.configForm .wireLengthContainer {
+  grid-area: wireLength;
 }
 
-.systemFiles .fileDiv .readSystemFromFile {
-    grid-area: loadButton;
+.wireLengthContainer .wireLength {
+  margin-bottom: 10px;
 }
 
-.systemFiles .fileDiv .readFromFileImage {
-    grid-area: loadImage;
+.configForm .formButton {
+  grid-area: button;
+  width: 150px;
+  height: 30px;
+  place-self: center end;
+  margin-right: 25px;
+  border: none;
+  background: rgb(252, 28, 28);
+  color: white;
 }
 
-.systemFiles .fileDiv button {
-    background: white;
-    color: black;
-    border: 1px solid rgba(116, 113, 113, 0.911);
-    cursor: pointer;
+.configuratorConfig .divider {
+  grid-area: divider;
+  border-left: 1px solid rgba(63, 63, 63, 0.377);
+  height: 85%;
 }
 
-.systemFiles .fileDiv input[type="file"] {
-    border: 1px solid rgba(116, 113, 113, 0.911);
-    cursor: pointer;
+.configuratorConfig .entryDescription {
+  grid-area: description;
+  text-align: justify;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 50px;
 }
 
-.systemFiles .fileDiv button:hover {
-    background: rgb(190, 190, 190);
+.entryDescription ol {
+  margin: 0;
 }
 
-.fileDiv img {
-    height: 28px;
-    width: 28x;
+.entryDescription ol li {
+  margin: 10px 0;
 }
 
-.powerManagementInstallationContainer {
-    grid-area: mainSchema;
-    height: 100%;
-    width: 85%;
+.entryDescription .aboutEntry a {
+  text-decoration: none;
+  color: rgb(189, 37, 37);
 }
 
-.systemConfiguration {
-    grid-area: UIInterface;
+.aboutEntry p {
+  margin: 0;
 }
 
-select {
-    width: 180px;
+.appEntry .dragAndDropContainer {
+  grid-area: dragndrop;
+  display: grid;
+  grid-template-areas:
+    "dropArea"
+    "dragAreaButton";
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 60px;
 }
 
-input#deviceQuantity, input#wireDistance {
-    width: 30px;
+.dragAndDropContainer .dragNDropArea {
+  grid-area: dropArea;
+  color: rgba(63, 63, 63, 0.5);
+  place-self: center;
+  font-size: large;
+  height: 75%;
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed rgba(63, 63, 63, 0.301);
 }
 
-input .segmentListCableLength {
-    width: 180px;
+.dragAndDropContainer .dragNDropSubmit {
+  grid-area: dragAreaButton;
+  width: 150px;
+  height: 30px;
+  place-self: center end;
+  margin-right: 25px;
+  border: none;
+  background: rgb(252, 28, 28);
+  color: white;
 }
 
-.elementalDevice:after, .powerSupply:after, .elementalCable:after, .deviceSelect:after, .cableSelect:after {
-    content: "";
-    width: 0.8em;
-    height: 0.5em;
-    background-color: #777;
-    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
-}
+.appEntryDescription,
+.dragAndDropContainer {
+  border: 1px solid rgba(39, 39, 39, 0.096);
 
-.deviceImg {
-    background: none !important;
+  box-shadow: 0px 0px 102px 10px rgba(227, 227, 227, 1);
+  -webkit-box-shadow: 0px 0px 102px 10px rgba(227, 227, 227, 1);
+  -moz-box-shadow: 0px 0px 102px 10px rgba(227, 227, 227, 1);
+  border-radius: 10px;
 }
