@@ -19,7 +19,8 @@ function handleFormSubmit() {
     e.preventDefault();
     setSystem(initSystem);
     createPreview();
-    systemStatusReducer();
+    const reducer = systemStatusReducer();
+    generateSystem(reducer);
   });
 }
 
@@ -205,6 +206,7 @@ function systemActionDevicesSelect(structureType) {
         const option = document.createElement(`option`);
         option.className = `deviceActionOption`;
         option.innerHTML = `Czujnik ${device.gasDetected}`;
+        option.setAttribute(`data-detectedGas`, `${device.gasDetected}`);
         option.value = device.type;
         select.appendChild(option);
       } else {
@@ -217,8 +219,6 @@ function systemActionDevicesSelect(structureType) {
     });
   });
 }
-
-function checkIfToled() {}
 
 function actionsSelectListener() {
   const deviceActionSelect = document.querySelectorAll(`.deviceActionSelect`);
@@ -238,6 +238,7 @@ function actionsSelectListener() {
         createToledSelect(i);
       } else {
         SYSTEM.bus[i].deviceType = `detector`;
+        SYSTEM.bus[i].gasDetected = e.target.options[e.target.selectedIndex].getAttribute(`data-detectedgas`);
         delete SYSTEM.bus[i].toledText;
         const container = document.querySelector(`#actionsContainer${i + 1}`);
         const toled = document.querySelector(`#actionsContainer${i + 1} .toledContainer`);
@@ -246,6 +247,8 @@ function actionsSelectListener() {
         }
       }
       setPreviewImages(SYSTEM.bus);
+      const reduced = systemStatusReducer();
+      appliencedDevices(reduced);
     });
   });
 }
@@ -270,31 +273,84 @@ function createToledSelect(i) {
   container.appendChild(toledContainer);
   toledSelect.addEventListener(`change`, e => {
     SYSTEM.bus[i].toledText = e.target.value;
-    console.log(SYSTEM.bus);
   });
 }
 
 function systemStatusReducer() {
   const system = getSystem(SYSTEM);
+  console.log(system);
   const reduced = Object.values(
     system.bus.reduce((key, { gasDetected, detectorName, wireLen_m, deviceType }) => {
       if (!key[`amountOfDevices`]) {
         key[`amountOfDevices`] = { amountOfDevices: 0 };
       }
-      if (!key[gasDetected]) {
-        key[gasDetected] = { [gasDetected]: 0, detectorName, deviceType };
+      if (!key[detectorName]) {
+        key[detectorName] = { [`detectedGas`]: gasDetected, [gasDetected]: 0, detectorName, deviceType };
       }
 
       if (!key[`wire`]) {
         key[`wire`] = { wireLength: 0 };
       }
-      key[gasDetected][gasDetected]++;
+      key[detectorName][gasDetected]++;
       key[`amountOfDevices`][`amountOfDevices`]++;
 
       key[`wire`][`wireLength`] = parseInt(key[`wire`][`wireLength`]) + parseInt(wireLen_m);
       return key;
     }, Object.create(null))
   );
+  console.log(reduced);
+  return reduced;
+}
+
+function appliencedDevices(reduced) {
+  const usedDevicesContainer = document.querySelector(`.usedDevicesContainer`);
+  const listOfItems = Array.from(document.querySelectorAll(`.usedDeviceItem`));
+  reduced.forEach(element => {
+    const checkIfExist = listOfItems.find(item => item.getAttribute(`id`) === element.detectorName);
+    if (!checkIfExist && (element.deviceType === `detector` || element.deviceType === `siren`)) {
+      // const usedDeviceItem = document.createElement(`div`);
+      // usedDeviceItem.className = `usedDeviceItem`;
+      // usedDeviceItem.setAttribute(`id`, `${element.detectorName}`);
+      // const usedDeviceName = document.createElement(`div`);
+      // usedDeviceName.className = `usedDeviceName`;
+      // const usedDeviceNameParagraph = document.createElement(`p`);
+      // usedDeviceNameParagraph.innerHTML = element.detectorName;
+      // const usedDeviceGasDetected = document.createElement(`div`);
+      // usedDeviceGasDetected.className = `usedDeviceGasDetected`;
+      // const gasDetected = document.createElement(`p`);
+      // gasDetected.innerHTML = element.detectedGas;
+      // const usedDeviceDocs = document.createElement(`div`);
+      // usedDeviceDocs.className = `usedDeviceDocs`;
+      // const usedDeviceDocsParagraph = document.createElement(`p`);
+      // usedDeviceDocsParagraph.className = `usedDeviceDocsParagraph`;
+      // const usedDeviceDocsAnchor = document.createElement(`a`);
+      // usedDeviceDocsAnchor.className = `usedDeviceDocsAnchor`;
+      // usedDeviceDocsAnchor.setAttribute(`href`, "text");
+      // usedDeviceDocsAnchor.setAttribute(`alt`, `unable to find link`);
+      // usedDeviceDocsAnchor.innerHTML = `dokumentacja techniczna`;
+      // const usedDeviceImageContainer = document.createElement(`div`);
+      // usedDeviceImageContainer.className = `usedDeviceImageContainer`;
+      // const usedDeviceImage = document.createElement(`img`);
+      // usedDeviceImage.className = `usedDeviceImage`;
+      // usedDeviceImage.setAttribute(`src`, `./PNG/${element.detectorName}.png`);
+      // usedDeviceImage.setAttribute(`alt`, `unable to find image`);
+      // const divider = document.createElement(`div`);
+      // divider.className = `usedDeviceDivider`;
+      // usedDeviceImageContainer.appendChild(usedDeviceImage);
+      // usedDeviceDocsParagraph.appendChild(usedDeviceDocsAnchor);
+      // usedDeviceDocs.appendChild(usedDeviceDocsParagraph);
+      // usedDeviceName.appendChild(usedDeviceNameParagraph);
+      // usedDeviceName.appendChild(gasDetected);
+      // usedDeviceItem.appendChild(usedDeviceName);
+      // usedDeviceItem.appendChild(usedDeviceDocs);
+      // usedDeviceItem.appendChild(usedDeviceImageContainer);
+      // usedDevicesContainer.appendChild(usedDeviceItem);
+      // usedDevicesContainer.appendChild(divider);
+    }
+  });
+}
+
+function generateSystem(reduced) {
   systemDetectors(reduced);
   systemAccessories(reduced);
   statusBusLength(reduced);
@@ -302,6 +358,7 @@ function systemStatusReducer() {
   systemActionDevicesSelect(initSystem.structureType);
   setPreviewImages(SYSTEM.bus);
   actionsSelectListener();
+  appliencedDevices(reduced);
 }
 
 function createPreview() {

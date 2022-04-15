@@ -41,6 +41,7 @@
 .system .systemStatus {
   grid-area: systemStatus;
   max-height: 850px;
+  min-width: 270px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -188,11 +189,13 @@
 }
 
 .supplyType .powerSupply {
-  place-self: center;
+  place-self: start;
+  padding-left: 15px;
 }
 
 .supplyType .powerSupplyDetails {
-  place-self: center;
+  place-self: end;
+  padding-right: 15px;
 }
 
 .powerSupplyContainer .wireDiameterContainer {
@@ -204,11 +207,13 @@
 }
 
 .wireDiameterContainer .wireDiameter {
-  place-self: center;
+  place-self: start;
+  padding-left: 15px;
 }
 
 .wireDiameterContainer .typeOfWire {
-  place-self: center;
+  place-self: end;
+  padding-right: 15px;
 }
 
 .powerSupplyContainer .systemStatusContainer {
@@ -220,11 +225,13 @@
 }
 
 .systemStatusContainer .systemState {
-  place-self: center;
+  place-self: start;
+  padding-left: 15px;
 }
 
 .systemStatusContainer .systemOutput {
-  place-self: center;
+  place-self: end;
+  padding-right: 15px;
 }
 
 .powerSupplyContainer .optimizeContainer {
@@ -235,6 +242,7 @@
 
 .optimizeContainer .optimizeSystem {
   width: 150px;
+  height: 30px;
   place-self: center end;
   border: none;
 }
