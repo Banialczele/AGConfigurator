@@ -9,10 +9,10 @@
 .usedDevicesContainer .usedDeviceItem {
   display: grid;
   grid-template-areas:
-    "detectorName detectorImage"
-    "detectorGas detectorImage"
-    "detectorLink detectorLink";
-  grid-template-columns: 1fr 1fr;
+    "detectorName detectorName detectorImage"
+    "detectorGas detectorGas detectorImage"
+    "detectorLink detectorLink detectorImage";
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   width: 100%;
   height: 100px;

@@ -25,7 +25,7 @@
   grid-area: header;
   place-self: center;
   margin: 0 15px;
-  width: 95%;
+  /* width: 95%; */
 }
 
 .systemPreview .systemGraphics .systemPreviewControlUnit {

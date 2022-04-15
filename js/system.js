@@ -248,7 +248,8 @@ function actionsSelectListener() {
       }
       setPreviewImages(SYSTEM.bus);
       const reduced = systemStatusReducer();
-      appliencedDevices(reduced);
+      initAppliencedDevices(reduced);
+      checkIfUsedDevice(reduced);
     });
   });
 }
@@ -278,7 +279,6 @@ function createToledSelect(i) {
 
 function systemStatusReducer() {
   const system = getSystem(SYSTEM);
-  console.log(system);
   const reduced = Object.values(
     system.bus.reduce((key, { gasDetected, detectorName, wireLen_m, deviceType }) => {
       if (!key[`amountOfDevices`]) {
@@ -298,58 +298,74 @@ function systemStatusReducer() {
       return key;
     }, Object.create(null))
   );
-  console.log(reduced);
   return reduced;
 }
 
-function appliencedDevices(reduced) {
+function initAppliencedDevices(reduced) {
   const usedDevicesContainer = document.querySelector(`.usedDevicesContainer`);
-  const listOfItems = Array.from(document.querySelectorAll(`.usedDeviceItem`));
-  reduced.forEach(element => {
-    const checkIfExist = listOfItems.find(item => item.getAttribute(`id`) === element.detectorName);
-    if (!checkIfExist && (element.deviceType === `detector` || element.deviceType === `siren`)) {
-      // const usedDeviceItem = document.createElement(`div`);
-      // usedDeviceItem.className = `usedDeviceItem`;
-      // usedDeviceItem.setAttribute(`id`, `${element.detectorName}`);
-      // const usedDeviceName = document.createElement(`div`);
-      // usedDeviceName.className = `usedDeviceName`;
-      // const usedDeviceNameParagraph = document.createElement(`p`);
-      // usedDeviceNameParagraph.innerHTML = element.detectorName;
-      // const usedDeviceGasDetected = document.createElement(`div`);
-      // usedDeviceGasDetected.className = `usedDeviceGasDetected`;
-      // const gasDetected = document.createElement(`p`);
-      // gasDetected.innerHTML = element.detectedGas;
-      // const usedDeviceDocs = document.createElement(`div`);
-      // usedDeviceDocs.className = `usedDeviceDocs`;
-      // const usedDeviceDocsParagraph = document.createElement(`p`);
-      // usedDeviceDocsParagraph.className = `usedDeviceDocsParagraph`;
-      // const usedDeviceDocsAnchor = document.createElement(`a`);
-      // usedDeviceDocsAnchor.className = `usedDeviceDocsAnchor`;
-      // usedDeviceDocsAnchor.setAttribute(`href`, "text");
-      // usedDeviceDocsAnchor.setAttribute(`alt`, `unable to find link`);
-      // usedDeviceDocsAnchor.innerHTML = `dokumentacja techniczna`;
-      // const usedDeviceImageContainer = document.createElement(`div`);
-      // usedDeviceImageContainer.className = `usedDeviceImageContainer`;
-      // const usedDeviceImage = document.createElement(`img`);
-      // usedDeviceImage.className = `usedDeviceImage`;
-      // usedDeviceImage.setAttribute(`src`, `./PNG/${element.detectorName}.png`);
-      // usedDeviceImage.setAttribute(`alt`, `unable to find image`);
-      // const divider = document.createElement(`div`);
-      // divider.className = `usedDeviceDivider`;
-      // usedDeviceImageContainer.appendChild(usedDeviceImage);
-      // usedDeviceDocsParagraph.appendChild(usedDeviceDocsAnchor);
-      // usedDeviceDocs.appendChild(usedDeviceDocsParagraph);
-      // usedDeviceName.appendChild(usedDeviceNameParagraph);
-      // usedDeviceName.appendChild(gasDetected);
-      // usedDeviceItem.appendChild(usedDeviceName);
-      // usedDeviceItem.appendChild(usedDeviceDocs);
-      // usedDeviceItem.appendChild(usedDeviceImageContainer);
-      // usedDevicesContainer.appendChild(usedDeviceItem);
-      // usedDevicesContainer.appendChild(divider);
+  const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDeviceItem`));
+  reduced.forEach((element, i) => {
+    if (element.deviceType === `detector` || element.deviceType === `siren`) {
+      const checkIfExists = usedDeviceItemList.find(item => item.getAttribute("id") === element.detectorName);
+      if (usedDeviceItemList[0].getAttribute("id") === null) {
+        const usedDeviceItem = document.querySelector(`.usedDeviceItem`);
+        usedDeviceItem.setAttribute(`id`, `${element.detectorName}`);
+        const usedDeviceNameParagraph = usedDeviceItem.querySelector(`.usedDeviceName p`);
+        usedDeviceNameParagraph.innerHTML = element.detectorName;
+        const gasDetected = usedDeviceItem.querySelector(`.usedDeviceGasDetected p`);
+        console.log(element.deviceType);
+        if (element.deviceType !== `detector`) {
+          gasDetected.innerHTML = ``;
+        } else {
+          gasDetected.innerHTML = element.detectedGas;
+        }
+        const docs = DEVICEDOCS.find(device => device.type === element.detectorName);
+        const usedDeviceDocs = usedDeviceItem.querySelector(`.usedDeviceDocs .usedDeviceDocsAnchor`);
+        usedDeviceDocs.setAttribute("href", `${docs.link}`);
+        usedDeviceDocs.setAttribute("target", `_blank`);
+        const usedDeviceImage = usedDeviceItem.querySelector(`.usedDeviceImageContainer img`);
+        usedDeviceImage.setAttribute(`src`, `./PNG/${element.detectorName}.png`);
+        usedDeviceImage.setAttribute(`alt`, `unable to find image`);
+      } else if (!checkIfExists) {
+        const cloned = usedDeviceItemList[0].cloneNode(true);
+        const clonedDivider = document.querySelector(`.usedDeviceDivider`).cloneNode(true);
+        cloned.setAttribute(`id`, `${element.detectorName}`);
+        const usedDeviceNameParagraph = cloned.querySelector(`.usedDeviceName p`);
+        usedDeviceNameParagraph.innerHTML = element.detectorName;
+        const gasDetected = cloned.querySelector(`.usedDeviceGasDetected p`);
+        if (element.deviceType !== `detector`) {
+          gasDetected.innerHTML = ``;
+        } else {
+          gasDetected.innerHTML = element.detectedGas;
+        }
+
+        const docs = DEVICEDOCS.find(device => device.type === element.detectorName);
+        const usedDeviceDocs = cloned.querySelector(`.usedDeviceDocs .usedDeviceDocsAnchor`);
+        usedDeviceDocs.setAttribute("href", `${docs.link}`);
+        usedDeviceDocs.setAttribute("target", `_blank`);
+        const usedDeviceImage = cloned.querySelector(`.usedDeviceImageContainer img`);
+        usedDeviceImage.setAttribute(`src`, `./PNG/${element.detectorName}.png`);
+        usedDeviceImage.setAttribute(`alt`, `unable to find image`);
+
+        usedDevicesContainer.appendChild(cloned);
+        usedDevicesContainer.appendChild(clonedDivider);
+      }
     }
   });
 }
 
+function checkIfUsedDevice(reduced) {
+  const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDeviceItem`));
+  usedDeviceItemList.forEach(container => {
+    const arr = reduced.map(element => element.detectorName);
+    if (!arr.includes(container.getAttribute(`id`))) {
+      const parent = container.parentNode;
+      const divider = parent.querySelector(`.usedDeviceDivider`);
+      parent.removeChild(container);
+      parent.removeChild(divider);
+    }
+  });
+}
 function generateSystem(reduced) {
   systemDetectors(reduced);
   systemAccessories(reduced);
@@ -358,7 +374,7 @@ function generateSystem(reduced) {
   systemActionDevicesSelect(initSystem.structureType);
   setPreviewImages(SYSTEM.bus);
   actionsSelectListener();
-  appliencedDevices(reduced);
+  initAppliencedDevices(reduced);
 }
 
 function createPreview() {

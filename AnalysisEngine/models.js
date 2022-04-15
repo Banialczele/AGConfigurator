@@ -219,11 +219,11 @@ const CONSTRUCTIONS = [
         gasDetected: "NO2",
         typeOfDevice: "detector",
       },
-      {
-        type: "Teta MiniDet",
-        gasDetected: "LPG",
-        typeOfDevice: "detector",
-      },
+      // {
+      //   type: "Teta MiniDet",
+      //   gasDetected: "LPG",
+      //   typeOfDevice: "detector",
+      // },
       {
         type: "Teta SZOA",
         typeOfDevice: "siren",
@@ -335,4 +335,47 @@ const TOLEDOptions = [
   { type: "WJ", text: "NADMIAR SPALIN NIE WJEŻDŻAĆ" },
   { type: "OP", text: "NADMIAR SPALIN OPUŚĆ GARAŻ" },
   { type: "WS", text: "Napis na życzenie klienta" },
+];
+
+const DEVICEDOCS = [
+  {
+    type: "Teta EcoWent",
+    link: "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecowent",
+  },
+  {
+    type: "Teta EcoWent + MiniDet",
+    link: "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecowent",
+  },
+  {
+    type: "Teta EcoDet",
+    link: "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecodet",
+  },
+  {
+    type: "Teta EcoN",
+    link: "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-econ",
+  },
+  {
+    type: "Teta MiniDet",
+    link: "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-minidet",
+  },
+  {
+    type: "Teta SZOA",
+    link: "https://www.atestgaz.pl/produkt/sygnalizator-teta-szoa",
+  },
+  {
+    type: "TOLED",
+    link: "https://www.atestgaz.pl/produkt/tablica-ostrzegawcza-toled",
+  },
+  {
+    type: "Teta EcoH",
+    link: "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecoh",
+  },
+  {
+    type: "MSV",
+    link: "https://www.atestgaz.pl/produkt/zawor-odcinajacy-msv",
+  },
+  {
+    type: "Control V",
+    link: "https://www.atestgaz.pl/produkt/sterownik-zaworu-control-v",
+  },
 ];

@@ -9,6 +9,17 @@ body {
   padding: 0px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 header {
   height: 100%;
   width: 100%;
@@ -63,7 +74,7 @@ header #logoImgContainer img {
 
 .appEntry {
   height: calc(100vh - 130px);
-  width: 80%;
+  width: 60%;
   margin: 50px auto 0 auto;
   display: grid;
   grid-template-areas:
@@ -133,15 +144,20 @@ header #logoImgContainer img {
   margin-top: 25px;
 }
 
+.configForm .gasSelect,
+.configForm .batterySelect {
+  width: 50px;
+}
+
 .configForm .entryDetectorAmounts {
   grid-area: amounts;
   width: 100%;
   display: grid;
   grid-template-areas:
-    "description . ."
-    "input unit amount";
-  grid-template-columns: 125px 50px 100px;
-  grid-template-rows: 15px 15px;
+    "description"
+    "input";
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
   row-gap: 10px;
 }
 
@@ -149,18 +165,26 @@ header #logoImgContainer img {
   grid-area: description;
 }
 
-.entryDetectorAmounts .detectorAmounts {
+.entryDetectorAmounts .inputContainer {
   grid-area: input;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.entryDetectorAmounts .amountUnit {
-  grid-area: unit;
-  place-self: center;
+.inputContainer > span {
+  margin: 0 5px;
+}
+
+.inputContainer input {
+  width: 35px;
+  text-align: center;
 }
 
 .entryDetectorAmounts .shadedAmount {
   color: rgba(39, 39, 39, 0.322);
-  grid-area: amount;
+  grid-area: input;
 }
 
 .configForm .buildingInformation {
@@ -209,6 +233,10 @@ header #logoImgContainer img {
 
 .wireLengthContainer .wireLength {
   margin-bottom: 10px;
+}
+
+.wireLengthContainer input {
+  width: 35px;
 }
 
 .configForm .formButton {

@@ -262,4 +262,5 @@
   grid-area: usedDevices;
   max-height: 650px;
   height: 100%;
+  overflow: auto;
 }
