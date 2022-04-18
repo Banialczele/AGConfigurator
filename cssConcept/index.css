@@ -73,16 +73,16 @@ header #logoImgContainer img {
 }
 
 .appEntry {
-  height: calc(100vh - 130px);
-  width: 60%;
-  margin: 50px auto 0 auto;
+  height: calc(100vh - 85px);
+  width: 70%;
+  margin: 0 auto;
   display: grid;
   grid-template-areas:
     "configurator"
     "dragndrop";
-  grid-template-rows: 500px 225px;
+  grid-template-rows: 450px 200px;
   grid-template-columns: 1fr;
-  row-gap: 50px;
+  row-gap: 20px;
 }
 
 .appEntry .appEntryDescription {

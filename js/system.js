@@ -19,8 +19,7 @@ function handleFormSubmit() {
     e.preventDefault();
     setSystem(initSystem);
     createPreview();
-    const reducer = systemStatusReducer();
-    generateSystem(reducer);
+    generateSystem();
   });
 }
 
@@ -100,7 +99,7 @@ function createPreviewActions(amount) {
       segmentNumberInput.value = i;
       segmentNumberInput.setAttribute(`id`, `segment${i}`);
       segmentDeviceInput.value = `Teta MOD Control 1`;
-
+      actionsContainer.setAttribute(`data-psu`, `PSU`);
       actionsContainer.appendChild(segmentDeviceDescrpition);
 
       actionsContainer.appendChild(segmentDeviceInput);
@@ -127,6 +126,8 @@ function createPreviewActions(amount) {
       distanceToPreviuous.className = `distanceToPrevious`;
 
       distanceToPreviuous.value = SYSTEM.bus[i - 1].wireLen_m;
+      actionsContainer.setAttribute(`data-psu`, `detectors`);
+      actionsContainer.setAttribute(`data-segmentNumber`, `${i}`);
       wireLengthContainer.appendChild(wireLengthLabel);
       wireLengthContainer.appendChild(distanceToPreviuous);
       actionsContainer.appendChild(wireLengthContainer);
@@ -135,19 +136,100 @@ function createPreviewActions(amount) {
     actionDivContainer.className = `actionListContainer`;
 
     actionDivContainer.appendChild(actionsContainer);
+    createAddRemoveButtons(actionsContainer);
   }
   systemActions.appendChild(actionDivContainer);
+}
+
+function createAddRemoveButtons(actionsContainer) {
+  if (actionsContainer.getAttribute(`data-psu`) !== `PSU`) {
+    const buttonsContainer = document.createElement(`div`);
+    buttonsContainer.className = `buttonsContainer`;
+
+    const addButton = document.createElement(`button`);
+    addButton.className = `addButton`;
+    const addImage = document.createElement(`img`);
+    addImage.setAttribute(`src`, `./SVG/add.svg`);
+    addImage.setAttribute(`alt`, `unable to find image`);
+    addImage.setAttribute(`name`, `addSegment`);
+
+    addButton.appendChild(addImage);
+
+    const removeButton = document.createElement(`button`);
+    removeButton.className = `removeButton`;
+    const removeImage = document.createElement(`img`);
+    removeImage.setAttribute(`src`, `./SVG/remove.svg`);
+    removeImage.setAttribute(`alt`, `unable to find image`);
+    removeImage.setAttribute(`name`, `removeSegment`);
+
+    removeButton.appendChild(removeImage);
+    buttonsContainer.appendChild(addButton);
+    buttonsContainer.appendChild(removeButton);
+    actionsContainer.appendChild(buttonsContainer);
+  }
+}
+
+function addRemoveActionListener() {
+  const segmentListeners = document.querySelector(`.actionListContainer`);
+  segmentListeners.addEventListener(
+    `click`,
+    e => {
+      const container = e.target.closest(`.actionsContainer`);
+      const number = container.getAttribute(`data-segmentNumber`);
+      if (e.target.name === `addSegment`) {
+        const objToCopy = Object.assign({}, SYSTEM.bus[number - 1]);
+        SYSTEM.bus.splice(number, 0, objToCopy);
+        const reduced = systemStatusReducer();
+        systemDetectors(reduced);
+        systemSignallers(reduced);
+        systemAccessories(reduced);
+        statusBusLength(reduced);
+        systemPowerConsumption();
+        initAppliencedDevices(reduced);
+      } else if (e.target.name === `removeSegment`) {
+        SYSTEM.bus.slice(number, 0, SYSTEM.bus[number - 1]);
+        const reduced = systemStatusReducer();
+        systemDetectors(reduced);
+        systemSignallers(reduced);
+        systemAccessories(reduced);
+        statusBusLength(reduced);
+        systemPowerConsumption();
+        initAppliencedDevices(reduced);
+      }
+    },
+    true
+  );
 }
 
 function systemDetectors(reduced) {
   const listOfDetectors = document.querySelector(`.system .detectorTypes`);
   const amountsOfDelectorsList = document.querySelector(`.system .detectorTypesAmounts`);
+  listOfDetectors.innerHTML = "";
+  amountsOfDelectorsList.innerHTML = "";
   reduced.forEach(element => {
     if (element.deviceType === `detector`) {
+      console.log(element);
       const deviceItem = document.createElement(`li`);
-      deviceItem.innerHTML = Object.keys(element)[0];
+      deviceItem.innerHTML = element.detectedGas;
       const deviceAmountItem = document.createElement(`li`);
-      deviceAmountItem.innerHTML = `${element[Object.keys(element)[0]]} <span class ="bold">szt</span>`;
+      deviceAmountItem.innerHTML = `${element[Object.values(element)[0]]} <span class ="bold">szt</span>`;
+      listOfDetectors.appendChild(deviceItem);
+      amountsOfDelectorsList.appendChild(deviceAmountItem);
+    }
+  });
+}
+
+function systemSignallers(reduced) {
+  const listOfSignallers = document.querySelector(`.system .signallerTypes`);
+  const amountsOfSignallersList = document.querySelector(`.system .signallerTypesAmounts`);
+  listOfSignallers.innerHTML = "";
+  amountsOfSignallersList.innerHTML = "";
+  reduced.forEach(element => {
+    if (element.deviceType === `signaller`) {
+      const deviceItem = document.createElement(`li`);
+      deviceItem.innerHTML = element.detectedGas;
+      const deviceAmountItem = document.createElement(`li`);
+      deviceAmountItem.innerHTML = `${element[Object.values(element)[0]]} <span class ="bold">szt</span>`;
       listOfDetectors.appendChild(deviceItem);
       amountsOfDelectorsList.appendChild(deviceAmountItem);
     }
@@ -157,6 +239,8 @@ function systemDetectors(reduced) {
 function systemAccessories(reduced) {
   const listOfAccessories = document.querySelector(`.system .accessoriesTypes`);
   const amountsOfAccessories = document.querySelector(`.system .accessoriesTypesAmounts`);
+  listOfAccessories.innerHTML = "";
+  amountsOfAccessories.innerHTML = "";
   const findAmounts = reduced.find(deviceAmounts => deviceAmounts.hasOwnProperty(`amountOfDevices`));
   const accessoryItem = document.createElement(`li`);
   accessoryItem.innerHTML = `T-Konektor`;
@@ -168,6 +252,7 @@ function systemAccessories(reduced) {
 
 function statusBusLength(reduced) {
   const busLength = document.querySelector(`.busLength`);
+  busLength.innerHTML = "";
   const busLengthValue = reduced.find(key => key[`wireLength`]);
   busLength.innerHTML = `${busLengthValue[`wireLength`]} <span class="bold"> m </span>`;
 }
@@ -246,10 +331,14 @@ function actionsSelectListener() {
           container.removeChild(toled);
         }
       }
-      setPreviewImages(SYSTEM.bus);
       const reduced = systemStatusReducer();
-      initAppliencedDevices(reduced);
       checkIfUsedDevice(reduced);
+      systemDetectors(reduced);
+      systemSignallers(reduced);
+      systemAccessories(reduced);
+      statusBusLength(reduced);
+      systemPowerConsumption();
+      initAppliencedDevices(reduced);
     });
   });
 }
@@ -274,6 +363,10 @@ function createToledSelect(i) {
   container.appendChild(toledContainer);
   toledSelect.addEventListener(`change`, e => {
     SYSTEM.bus[i].toledText = e.target.value;
+    const reducer = systemStatusReducer();
+    systemDetectors(reducer);
+    systemSignallers(reducer);
+    systemAccessories(reducer);
   });
 }
 
@@ -366,15 +459,18 @@ function checkIfUsedDevice(reduced) {
     }
   });
 }
-function generateSystem(reduced) {
-  systemDetectors(reduced);
-  systemAccessories(reduced);
-  statusBusLength(reduced);
+function generateSystem() {
+  const reducer = systemStatusReducer();
+  systemDetectors(reducer);
+  systemSignallers(reducer);
+  systemAccessories(reducer);
+  statusBusLength(reducer);
   systemPowerConsumption();
   systemActionDevicesSelect(initSystem.structureType);
   setPreviewImages(SYSTEM.bus);
   actionsSelectListener();
-  initAppliencedDevices(reduced);
+  addRemoveActionListener();
+  initAppliencedDevices(reducer);
 }
 
 function createPreview() {

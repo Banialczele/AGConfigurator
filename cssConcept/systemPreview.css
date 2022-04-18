@@ -190,3 +190,21 @@
 .actionsContainer:nth-child(even) {
   background: #f6f6f6;
 }
+
+.actionsContainer:not(:first-child) .buttonsContainer {
+  grid-area: buttons;
+  place-self: end center;
+}
+
+.buttonsContainer > button {
+  height: 20px;
+  width: 35px;
+  border: none;
+  padding: 0;
+  margin: 0 2px;
+}
+
+.buttonsContainer > button img {
+  width: 100%;
+  height: 100%;
+}
