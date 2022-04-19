@@ -182,7 +182,7 @@ function addRemoveActionListener() {
       const imageContainer = document.querySelector(`.deviceImages`);
       const actionsContainer = e.target.closest(`.actionsContainer`);
       const actionContainerToManipulate = actionsList.indexOf(actionsContainer);
-      const imageContainerToManipulate = previewContainer[actionContainerToManipulate];
+      const imageContainerToManipulate = previewContainer[actionContainerToManipulate - 1];
       if (e.target.name === `addSegment`) {
         const objToCopy = Object.assign({}, SYSTEM.bus[actionContainerToManipulate - 1]);
         SYSTEM.bus.splice(actionContainerToManipulate - 1, 0, objToCopy);
@@ -194,9 +194,10 @@ function addRemoveActionListener() {
         newIndex.setAttribute(`id`, `segment${actionsList.length}`);
         newIndex.value = actionsList.length;
         clonedSegmentSelect.value = SYSTEM.bus[actionContainerToManipulate].detectorName;
-        console.log(clonedSegmentSelect.value);
+        console.log(actionContainerToManipulate);
         selectEvent(clonedSegmentSelect, actionContainerToManipulate);
 
+        console.log(imageContainerToManipulate);
         imageContainer.insertBefore(imageContainerToManipulate.cloneNode(true), previewContainer[actionContainerToManipulate]);
         actionsContainer.after(segmentCloned);
         systemDetectors(reduced);
@@ -207,9 +208,12 @@ function addRemoveActionListener() {
         initAppliencedDevices(reduced);
         setPreviewImages(SYSTEM.bus);
       } else if (e.target.name === `removeSegment`) {
-        SYSTEM.bus.splice(actionContainerToManipulate - 1, 1);
-        actionsContainer.remove();
-        imageContainerToManipulate.remove();
+        if (actionsList.length > 1 && previewContainer.length > 1) {
+          SYSTEM.bus.splice(actionContainerToManipulate - 1, 1);
+
+          actionsContainer.remove();
+          imageContainerToManipulate.remove();
+        }
 
         const reduced = systemStatusReducer();
         systemDetectors(reduced);
