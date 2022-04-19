@@ -41,6 +41,7 @@ function setSystem(system) {
 
 function createPreviewImages(amount) {
   const systemGraphics = document.querySelector(`.deviceImages`);
+  systemGraphics.innerHTML = "";
   for (let i = 0; i < amount; i++) {
     const previewContainer = document.createElement(`div`);
     previewContainer.className = `previewContainer`;
@@ -171,23 +172,45 @@ function createAddRemoveButtons(actionsContainer) {
 
 function addRemoveActionListener() {
   const segmentListeners = document.querySelector(`.actionListContainer`);
+
   segmentListeners.addEventListener(
     `click`,
     e => {
-      const container = e.target.closest(`.actionsContainer`);
-      const number = container.getAttribute(`data-segmentNumber`);
+      const previewContainer = document.querySelectorAll(`.previewContainer`);
+      const actionsList = Array.from(document.querySelectorAll(`.actionsContainer`));
+
+      const imageContainer = document.querySelector(`.deviceImages`);
+      const actionsContainer = e.target.closest(`.actionsContainer`);
+      const actionContainerToManipulate = actionsList.indexOf(actionsContainer);
+      const imageContainerToManipulate = previewContainer[actionContainerToManipulate];
       if (e.target.name === `addSegment`) {
-        const objToCopy = Object.assign({}, SYSTEM.bus[number - 1]);
-        SYSTEM.bus.splice(number, 0, objToCopy);
+        const objToCopy = Object.assign({}, SYSTEM.bus[actionContainerToManipulate - 1]);
+        SYSTEM.bus.splice(actionContainerToManipulate - 1, 0, objToCopy);
         const reduced = systemStatusReducer();
+
+        const segmentCloned = actionsContainer.cloneNode(true);
+        const clonedSegmentSelect = segmentCloned.querySelector(`.deviceActionSelect`);
+        const newIndex = segmentCloned.querySelector(`.segmentIdentyfier`);
+        newIndex.setAttribute(`id`, `segment${actionsList.length}`);
+        newIndex.value = actionsList.length;
+        clonedSegmentSelect.value = SYSTEM.bus[actionContainerToManipulate].detectorName;
+        console.log(clonedSegmentSelect.value);
+        selectEvent(clonedSegmentSelect, actionContainerToManipulate);
+
+        imageContainer.insertBefore(imageContainerToManipulate.cloneNode(true), previewContainer[actionContainerToManipulate]);
+        actionsContainer.after(segmentCloned);
         systemDetectors(reduced);
         systemSignallers(reduced);
         systemAccessories(reduced);
         statusBusLength(reduced);
         systemPowerConsumption();
         initAppliencedDevices(reduced);
+        setPreviewImages(SYSTEM.bus);
       } else if (e.target.name === `removeSegment`) {
-        SYSTEM.bus.slice(number, 0, SYSTEM.bus[number - 1]);
+        SYSTEM.bus.splice(actionContainerToManipulate - 1, 1);
+        actionsContainer.remove();
+        imageContainerToManipulate.remove();
+
         const reduced = systemStatusReducer();
         systemDetectors(reduced);
         systemSignallers(reduced);
@@ -195,6 +218,7 @@ function addRemoveActionListener() {
         statusBusLength(reduced);
         systemPowerConsumption();
         initAppliencedDevices(reduced);
+        setPreviewImages(SYSTEM.bus);
       }
     },
     true
@@ -208,7 +232,6 @@ function systemDetectors(reduced) {
   amountsOfDelectorsList.innerHTML = "";
   reduced.forEach(element => {
     if (element.deviceType === `detector`) {
-      console.log(element);
       const deviceItem = document.createElement(`li`);
       deviceItem.innerHTML = element.detectedGas;
       const deviceAmountItem = document.createElement(`li`);
@@ -225,13 +248,13 @@ function systemSignallers(reduced) {
   listOfSignallers.innerHTML = "";
   amountsOfSignallersList.innerHTML = "";
   reduced.forEach(element => {
-    if (element.deviceType === `signaller`) {
+    if (element.deviceType === `siren`) {
       const deviceItem = document.createElement(`li`);
-      deviceItem.innerHTML = element.detectedGas;
+      deviceItem.innerHTML = element.detectorName;
       const deviceAmountItem = document.createElement(`li`);
       deviceAmountItem.innerHTML = `${element[Object.values(element)[0]]} <span class ="bold">szt</span>`;
-      listOfDetectors.appendChild(deviceItem);
-      amountsOfDelectorsList.appendChild(deviceAmountItem);
+      listOfSignallers.appendChild(deviceItem);
+      amountsOfSignallersList.appendChild(deviceAmountItem);
     }
   });
 }
@@ -286,7 +309,7 @@ function systemActionDevicesSelect(structureType) {
   const structureObj = CONSTRUCTIONS.find(constructionType => constructionType.type === structureType);
   const deviceList = structureObj.devices;
   deviceActionSelect.forEach((select, i) => {
-    deviceList.forEach(device => {
+    deviceList.forEach((device, i) => {
       if (device.typeOfDevice !== `siren`) {
         const option = document.createElement(`option`);
         option.className = `deviceActionOption`;
@@ -305,41 +328,46 @@ function systemActionDevicesSelect(structureType) {
   });
 }
 
+function selectEvent(select, i) {
+  select.addEventListener(`change`, e => {
+    SYSTEM.bus[i].detectorName = e.target.value;
+    if (e.target.value === `Teta SZOA`) {
+      SYSTEM.bus[i].deviceType = `siren`;
+      delete SYSTEM.bus[i].toledText;
+      const container = document.querySelector(`#actionsContainer${i + 1}`);
+      const toled = document.querySelector(`#actionsContainer${i + 1} .toledContainer`);
+      if (toled) {
+        container.removeChild(toled);
+      }
+    } else if (e.target.value === `TOLED`) {
+      SYSTEM.bus[i].deviceType = `siren`;
+      createToledSelect(i);
+    } else {
+      SYSTEM.bus[i].deviceType = `detector`;
+      SYSTEM.bus[i].gasDetected = e.target.options[e.target.selectedIndex].getAttribute(`data-detectedgas`);
+      delete SYSTEM.bus[i].toledText;
+      const container = document.querySelector(`#actionsContainer${i + 1}`);
+      const toled = document.querySelector(`#actionsContainer${i + 1} .toledContainer`);
+      if (toled) {
+        container.removeChild(toled);
+      }
+    }
+    const reduced = systemStatusReducer();
+    checkIfUsedDevice(reduced);
+    systemDetectors(reduced);
+    systemSignallers(reduced);
+    systemAccessories(reduced);
+    statusBusLength(reduced);
+    systemPowerConsumption();
+    initAppliencedDevices(reduced);
+    setPreviewImages(SYSTEM.bus);
+  });
+}
+
 function actionsSelectListener() {
   const deviceActionSelect = document.querySelectorAll(`.deviceActionSelect`);
   deviceActionSelect.forEach((select, i) => {
-    select.addEventListener(`change`, e => {
-      SYSTEM.bus[i].detectorName = e.target.value;
-      if (e.target.value === `Teta SZOA`) {
-        SYSTEM.bus[i].deviceType = `siren`;
-        delete SYSTEM.bus[i].toledText;
-        const container = document.querySelector(`#actionsContainer${i + 1}`);
-        const toled = document.querySelector(`#actionsContainer${i + 1} .toledContainer`);
-        if (toled) {
-          container.removeChild(toled);
-        }
-      } else if (e.target.value === `TOLED`) {
-        SYSTEM.bus[i].deviceType = `siren`;
-        createToledSelect(i);
-      } else {
-        SYSTEM.bus[i].deviceType = `detector`;
-        SYSTEM.bus[i].gasDetected = e.target.options[e.target.selectedIndex].getAttribute(`data-detectedgas`);
-        delete SYSTEM.bus[i].toledText;
-        const container = document.querySelector(`#actionsContainer${i + 1}`);
-        const toled = document.querySelector(`#actionsContainer${i + 1} .toledContainer`);
-        if (toled) {
-          container.removeChild(toled);
-        }
-      }
-      const reduced = systemStatusReducer();
-      checkIfUsedDevice(reduced);
-      systemDetectors(reduced);
-      systemSignallers(reduced);
-      systemAccessories(reduced);
-      statusBusLength(reduced);
-      systemPowerConsumption();
-      initAppliencedDevices(reduced);
-    });
+    selectEvent(select, i);
   });
 }
 
@@ -406,7 +434,6 @@ function initAppliencedDevices(reduced) {
         const usedDeviceNameParagraph = usedDeviceItem.querySelector(`.usedDeviceName p`);
         usedDeviceNameParagraph.innerHTML = element.detectorName;
         const gasDetected = usedDeviceItem.querySelector(`.usedDeviceGasDetected p`);
-        console.log(element.deviceType);
         if (element.deviceType !== `detector`) {
           gasDetected.innerHTML = ``;
         } else {
@@ -474,6 +501,6 @@ function generateSystem() {
 }
 
 function createPreview() {
-  createPreviewImages(initSystem.amountOfDetectors);
-  createPreviewActions(initSystem.amountOfDetectors);
+  createPreviewImages(SYSTEM.bus.length);
+  createPreviewActions(SYSTEM.bus.length);
 }

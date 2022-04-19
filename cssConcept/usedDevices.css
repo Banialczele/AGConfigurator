@@ -3,7 +3,7 @@
   height: 100%;
   display: grid;
   grid-auto-rows: 100px 1px;
-  row-gap: 5px;
+  row-gap: 25px;
 }
 
 .usedDevicesContainer .usedDeviceItem {
@@ -56,4 +56,5 @@
   border-bottom: 1px solid rgba(38, 38, 37, 0.28);
   width: 85%;
   place-self: center;
+  margin: 10px 0;
 }

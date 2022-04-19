@@ -18,6 +18,7 @@
 .system .systemHeader {
   background: rgba(39, 39, 39, 0.037);
   border-radius: 10px;
+  padding-left: 10px;
   height: 50px;
   width: 100%;
   display: flex;
@@ -105,6 +106,27 @@
 
 .devices .deviceAmounts {
   grid-area: deviceAmountList;
+  place-self: center;
+}
+
+.systemPreviewContainer .signallers {
+  display: grid;
+  grid-template-areas:
+    "description description"
+    "signallerList signallerAmountList";
+  grid-template-columns: 150px 1fr;
+}
+
+.signallers .signallerListHeader {
+  grid-area: description;
+}
+
+.signallers .signallerListContainer {
+  grid-area: signallerList;
+}
+
+.signallers .signallerAmounts {
+  grid-area: signallerAmountList;
   place-self: center;
 }
 

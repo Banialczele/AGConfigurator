@@ -37,10 +37,6 @@ header #headerContainer {
   place-self: center start;
 }
 
-h2 {
-  margin: 0;
-}
-
 header #headerContainer h2 {
   margin: 0 0 0 25px;
 }
@@ -64,8 +60,8 @@ header #logoImgContainer {
 }
 
 header #logoImgContainer img {
-  height: 80px;
-  width: 350px;
+  height: 55px;
+  width: 240px;
 }
 
 .hightlighted {
@@ -74,13 +70,13 @@ header #logoImgContainer img {
 
 .appEntry {
   height: calc(100vh - 85px);
-  width: 70%;
+  width: 60%;
   margin: 0 auto;
   display: grid;
   grid-template-areas:
     "configurator"
     "dragndrop";
-  grid-template-rows: 450px 200px;
+  grid-template-rows: 500px 200px;
   grid-template-columns: 1fr;
   row-gap: 20px;
 }
@@ -98,6 +94,7 @@ header #logoImgContainer img {
   grid-area: header;
   background: rgba(39, 39, 39, 0.037);
   border-radius: 10px;
+  padding-left: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
