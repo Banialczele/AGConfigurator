@@ -307,7 +307,11 @@ header #logoImgContainer img {
   border: 1px dashed rgba(63, 63, 63, 0.301);
 }
 
-.dragAndDropContainer .dragNDropSubmit {
+.dragAndDropContainer input[type="file"] {
+  display: none;
+}
+
+.dragAndDropContainer label {
   grid-area: dragAreaButton;
   width: 150px;
   height: 30px;
@@ -316,6 +320,9 @@ header #logoImgContainer img {
   border: none;
   background: #cc2a27;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .appEntryDescription,

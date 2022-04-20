@@ -71,7 +71,7 @@ window.addEventListener("load", () => {
   generateGasDetectedOptions();
   generateBatteryBackUpOptions();
   handleDragAndDrop();
-
+  readFromFile();
   handleFormSubmit();
 });
 

@@ -80,12 +80,10 @@ function getMonth(date) {
 }
 
 function loadFile(e) {
-  console.log("dfgh");
+  console.log("aflkl");
   const reader = new FileReader();
   reader.onload = function () {
     getSystem(setSystem(JSON.parse(reader.result)));
-    setupBusImage();
-    setupImagesForSegments();
   };
   reader.readAsText(e.target.files[0]);
 }
@@ -94,13 +92,6 @@ function readFromFile() {
   const fileInput = document.getElementById(`readFileInput`);
   fileInput.addEventListener("change", loadFile);
   fileInput.click();
-}
-
-function addImageToFiles() {
-  const saveToFileImage = document.querySelector(`.saveToFileImage`);
-  const readFromFileImage = document.querySelector(`.readFromFileImage`);
-  saveToFileImage.src = `./SVG/save.svg`;
-  readFromFileImage.src = `./SVG/load.svg`;
 }
 
 function dragenter(e) {
@@ -121,9 +112,7 @@ function handleDroppedFile(e) {
   const reader = new FileReader();
   reader.onload = function () {
     console.log(reader.result);
-    // getSystem(setSystem(JSON.parse(reader.result)));
-    // setupBusImage();
-    // setupImagesForSegments();
+    getSystem(setSystem(JSON.parse(reader.result)));
   };
   reader.readAsText(files[0]);
 }

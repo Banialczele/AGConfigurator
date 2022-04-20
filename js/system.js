@@ -29,14 +29,24 @@ function getSystem(sys) {
 
 function setSystem(system) {
   SYSTEM.powerSupply = "Teta MOD Control1";
-  for (let i = 0; i < system.amountOfDetectors; i++) {
-    SYSTEM.bus.push({
-      detectorName: system.detectorName,
-      deviceType: system.deviceType,
-      gasDetected: system.gasDetected,
-      wireLen_m: system.EWL,
-    });
+  if (system.amountOfDetectors === undefined) {
+    SYSTEM.bus = system.bus.map(object => ({ ...object }));
+    const systemNode = document.querySelector(`.system`);
+    systemNode.scrollIntoView({ behavior: "smooth", block: "start" });
+    createPreview();
+    generateSystem();
+  } else {
+    for (let i = 0; i < system.amountOfDetectors; i++) {
+      SYSTEM.bus.push({
+        detectorName: system.detectorName,
+        deviceType: system.deviceType,
+        gasDetected: system.gasDetected,
+        wireLen_m: system.EWL,
+      });
+    }
   }
+
+  console.log(SYSTEM);
 }
 
 function createPreviewImages(amount) {
