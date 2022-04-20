@@ -80,10 +80,9 @@ function getMonth(date) {
 }
 
 function loadFile(e) {
-  console.log("aflkl");
   const reader = new FileReader();
   reader.onload = function () {
-    getSystem(setSystem(JSON.parse(reader.result)));
+    getSystem(setSystem(JSON.parse(reader.result), "fileLoad"));
   };
   reader.readAsText(e.target.files[0]);
 }

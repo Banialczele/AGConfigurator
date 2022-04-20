@@ -18,8 +18,6 @@ function handleFormSubmit() {
     system.scrollIntoView({ behavior: "smooth", block: "start" });
     e.preventDefault();
     setSystem(initSystem);
-    createPreview();
-    generateSystem();
   });
 }
 
@@ -27,14 +25,18 @@ function getSystem(sys) {
   return sys;
 }
 
-function setSystem(system) {
+function setSystem(system, loadFromSaved = "") {
   SYSTEM.powerSupply = "Teta MOD Control1";
-  if (system.amountOfDetectors === undefined) {
-    SYSTEM.bus = system.bus.map(object => ({ ...object }));
-    const systemNode = document.querySelector(`.system`);
-    systemNode.scrollIntoView({ behavior: "smooth", block: "start" });
-    createPreview();
-    generateSystem();
+  if (loadFromSaved !== "") {
+    const [amountOfDetectors, devices, wire] = system;
+    for (let i = 0; i < devices.amount; i++) {
+      SYSTEM.bus.push({
+        detectorName: devices.detectorName,
+        deviceType: devices.deviceType,
+        gasDetected: devices.detectedGas,
+        wireLen_m: wire.wireLength / amountOfDetectors.amountOfDevices,
+      });
+    }
   } else {
     for (let i = 0; i < system.amountOfDetectors; i++) {
       SYSTEM.bus.push({
@@ -45,8 +47,18 @@ function setSystem(system) {
       });
     }
   }
+  const systemNode = document.querySelector(`.system`);
+  systemNode.scrollIntoView({ behavior: "smooth", block: "start" });
+  createPreview();
+  generateSystem();
+}
 
-  console.log(SYSTEM);
+function saveSketch() {
+  const systemSketchButton = document.querySelector(`.systemSketch`);
+  systemSketchButton.addEventListener(`click`, e => {
+    const reducer = systemStatusReducer();
+    systemSketch(reducer, `test`);
+  });
 }
 
 function createPreviewImages(amount) {
@@ -219,7 +231,6 @@ function addRemoveActionListener() {
 
         const listOfPreviewContainers = document.querySelectorAll(`.previewContainer`);
         const previewContainer = listOfPreviewContainers[indexOfClickedSegment - 1];
-        console.log(listOfPreviewContainers.length);
         if (listOfPreviewContainers.length > 1) {
           SYSTEM.bus.splice(indexOfClickedSegment - 1, 1);
           segmentClicked.remove();
@@ -428,7 +439,6 @@ function systemStatusReducer() {
       return key;
     }, Object.create(null))
   );
-  console.log(reduced);
   return reduced;
 }
 
@@ -489,7 +499,6 @@ function checkIfUsedDevice(reduced) {
   const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDevicePair`));
   usedDeviceItemList.forEach(container => {
     const arr = reduced.map(element => element.detectorName);
-    console.log(container);
     if (!arr.includes(container.getAttribute(`id`))) {
       const parent = container.closest(`.usedDevicePair`);
       parent.remove();
@@ -508,6 +517,7 @@ function generateSystem() {
   actionsSelectListener();
   addRemoveActionListener();
   initAppliencedDevices(reducer);
+  saveSketch();
 }
 
 function createPreview() {
