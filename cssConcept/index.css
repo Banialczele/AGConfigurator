@@ -8,6 +8,7 @@ body {
   margin: 0px;
   padding: 0px;
   font-family: "Spartan";
+  font-size: 14px;
 }
 
 input::-webkit-outer-spin-button,
@@ -244,7 +245,8 @@ header #logoImgContainer img {
   place-self: center end;
   margin-right: 25px;
   border: none;
-  background: rgb(252, 28, 28);
+  background: #cc2a27;
+
   color: white;
 }
 
@@ -312,7 +314,7 @@ header #logoImgContainer img {
   place-self: center end;
   margin-right: 25px;
   border: none;
-  background: rgb(252, 28, 28);
+  background: #cc2a27;
   color: white;
 }
 

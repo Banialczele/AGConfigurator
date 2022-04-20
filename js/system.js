@@ -172,57 +172,49 @@ function createAddRemoveButtons(actionsContainer) {
 
 function addRemoveActionListener() {
   const segmentListeners = document.querySelector(`.actionListContainer`);
-
   segmentListeners.addEventListener(
     `click`,
     e => {
-      const previewContainer = document.querySelectorAll(`.previewContainer`);
-      const actionsList = Array.from(document.querySelectorAll(`.actionsContainer`));
-
-      const imageContainer = document.querySelector(`.deviceImages`);
-      const actionsContainer = e.target.closest(`.actionsContainer`);
-      const actionContainerToManipulate = actionsList.indexOf(actionsContainer);
-      const imageContainerToManipulate = previewContainer[actionContainerToManipulate - 1];
       if (e.target.name === `addSegment`) {
-        const objToCopy = Object.assign({}, SYSTEM.bus[actionContainerToManipulate - 1]);
-        SYSTEM.bus.splice(actionContainerToManipulate - 1, 0, objToCopy);
-        const reduced = systemStatusReducer();
+        const listOfSegments = Array.from(document.querySelectorAll(`.actionsContainer`));
+        const segmentClicked = e.target.closest(`.actionsContainer`);
+        const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
 
-        const segmentCloned = actionsContainer.cloneNode(true);
-        const clonedSegmentSelect = segmentCloned.querySelector(`.deviceActionSelect`);
-        const newIndex = segmentCloned.querySelector(`.segmentIdentyfier`);
-        newIndex.setAttribute(`id`, `segment${actionsList.length}`);
-        newIndex.value = actionsList.length;
-        clonedSegmentSelect.value = SYSTEM.bus[actionContainerToManipulate].detectorName;
-        console.log(actionContainerToManipulate);
-        selectEvent(clonedSegmentSelect, actionContainerToManipulate);
+        const listOfPreviewContainers = document.querySelectorAll(`.previewContainer`);
+        const previewContainer = listOfPreviewContainers[indexOfClickedSegment - 1];
+        const objToCopy = JSON.parse(JSON.stringify(SYSTEM.bus[indexOfClickedSegment - 1]));
+        SYSTEM.bus.splice(indexOfClickedSegment, 0, objToCopy);
 
-        console.log(imageContainerToManipulate);
-        imageContainer.insertBefore(imageContainerToManipulate.cloneNode(true), previewContainer[actionContainerToManipulate]);
-        actionsContainer.after(segmentCloned);
-        systemDetectors(reduced);
-        systemSignallers(reduced);
-        systemAccessories(reduced);
-        statusBusLength(reduced);
+        const clonedSegment = segmentClicked.cloneNode(true);
+        const clonedSegmentSelect = clonedSegment.querySelector(`.deviceActionSelect`);
+        clonedSegmentSelect.value = SYSTEM.bus[indexOfClickedSegment].detectorName;
+        const clonedSegmentIdentyfier = clonedSegment.querySelector(`.segmentIdentyfier`);
+        clonedSegmentIdentyfier.value = `${listOfSegments.length}`;
+        const clonedPreview = previewContainer.cloneNode(true);
+        segmentClicked.after(clonedSegment);
+        previewContainer.after(clonedPreview);
+
+        const reducer = systemStatusReducer();
+        systemDetectors(reducer);
+        systemSignallers(reducer);
+        systemAccessories(reducer);
+        statusBusLength(reducer);
         systemPowerConsumption();
-        initAppliencedDevices(reduced);
-        setPreviewImages(SYSTEM.bus);
+        selectEvent(clonedSegmentSelect, indexOfClickedSegment);
+        initAppliencedDevices(reducer);
       } else if (e.target.name === `removeSegment`) {
-        if (actionsList.length > 1 && previewContainer.length > 1) {
-          SYSTEM.bus.splice(actionContainerToManipulate - 1, 1);
+        const listOfSegments = Array.from(document.querySelectorAll(`.actionsContainer`));
+        const segmentClicked = e.target.closest(`.actionsContainer`);
+        const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
 
-          actionsContainer.remove();
-          imageContainerToManipulate.remove();
+        const listOfPreviewContainers = document.querySelectorAll(`.previewContainer`);
+        const previewContainer = listOfPreviewContainers[indexOfClickedSegment - 1];
+        console.log(listOfPreviewContainers.length);
+        if (listOfPreviewContainers.length > 1) {
+          SYSTEM.bus.splice(indexOfClickedSegment - 1, 1);
+          segmentClicked.remove();
+          previewContainer.remove();
         }
-
-        const reduced = systemStatusReducer();
-        systemDetectors(reduced);
-        systemSignallers(reduced);
-        systemAccessories(reduced);
-        statusBusLength(reduced);
-        systemPowerConsumption();
-        initAppliencedDevices(reduced);
-        setPreviewImages(SYSTEM.bus);
       }
     },
     true
@@ -239,7 +231,7 @@ function systemDetectors(reduced) {
       const deviceItem = document.createElement(`li`);
       deviceItem.innerHTML = element.detectedGas;
       const deviceAmountItem = document.createElement(`li`);
-      deviceAmountItem.innerHTML = `${element[Object.values(element)[0]]} <span class ="bold">szt</span>`;
+      deviceAmountItem.innerHTML = `${element.amount} <span class ="bold">szt</span>`;
       listOfDetectors.appendChild(deviceItem);
       amountsOfDelectorsList.appendChild(deviceAmountItem);
     }
@@ -256,7 +248,7 @@ function systemSignallers(reduced) {
       const deviceItem = document.createElement(`li`);
       deviceItem.innerHTML = element.detectorName;
       const deviceAmountItem = document.createElement(`li`);
-      deviceAmountItem.innerHTML = `${element[Object.values(element)[0]]} <span class ="bold">szt</span>`;
+      deviceAmountItem.innerHTML = `${element.amount} <span class ="bold">szt</span>`;
       listOfSignallers.appendChild(deviceItem);
       amountsOfSignallersList.appendChild(deviceAmountItem);
     }
@@ -409,32 +401,37 @@ function systemStatusReducer() {
       if (!key[`amountOfDevices`]) {
         key[`amountOfDevices`] = { amountOfDevices: 0 };
       }
-      if (!key[detectorName]) {
-        key[detectorName] = { [`detectedGas`]: gasDetected, [gasDetected]: 0, detectorName, deviceType };
+      if (!key[detectorName] && deviceType === `detector`) {
+        key[detectorName] = { [`detectedGas`]: gasDetected, [`amount`]: 0, detectorName, deviceType };
+      } else if (!key[detectorName] && deviceType === `siren`) {
+        key[detectorName] = { detectorName, deviceType, [`amount`]: 0 };
       }
 
       if (!key[`wire`]) {
         key[`wire`] = { wireLength: 0 };
       }
-      key[detectorName][gasDetected]++;
+
+      key[detectorName][`amount`]++;
       key[`amountOfDevices`][`amountOfDevices`]++;
 
       key[`wire`][`wireLength`] = parseInt(key[`wire`][`wireLength`]) + parseInt(wireLen_m);
       return key;
     }, Object.create(null))
   );
+  console.log(reduced);
   return reduced;
 }
 
 function initAppliencedDevices(reduced) {
   const usedDevicesContainer = document.querySelector(`.usedDevicesContainer`);
-  const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDeviceItem`));
+  const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDevicePair`));
   reduced.forEach((element, i) => {
     if (element.deviceType === `detector` || element.deviceType === `siren`) {
       const checkIfExists = usedDeviceItemList.find(item => item.getAttribute("id") === element.detectorName);
       if (usedDeviceItemList[0].getAttribute("id") === null) {
+        const usedDevicePair = usedDevicesContainer.querySelector(`.usedDevicePair`);
         const usedDeviceItem = document.querySelector(`.usedDeviceItem`);
-        usedDeviceItem.setAttribute(`id`, `${element.detectorName}`);
+        usedDevicePair.setAttribute(`id`, `${element.detectorName}`);
         const usedDeviceNameParagraph = usedDeviceItem.querySelector(`.usedDeviceName p`);
         usedDeviceNameParagraph.innerHTML = element.detectorName;
         const gasDetected = usedDeviceItem.querySelector(`.usedDeviceGasDetected p`);
@@ -451,9 +448,10 @@ function initAppliencedDevices(reduced) {
         usedDeviceImage.setAttribute(`src`, `./PNG/${element.detectorName}.png`);
         usedDeviceImage.setAttribute(`alt`, `unable to find image`);
       } else if (!checkIfExists) {
-        const cloned = usedDeviceItemList[0].cloneNode(true);
-        const clonedDivider = document.querySelector(`.usedDeviceDivider`).cloneNode(true);
-        cloned.setAttribute(`id`, `${element.detectorName}`);
+        const elementToClone = usedDevicesContainer.querySelector(`.usedDevicePair`).cloneNode(true);
+        const cloned = elementToClone.querySelector(`.usedDeviceItem`);
+        const clonedDivider = elementToClone.querySelector(`.usedDeviceDivider`);
+        elementToClone.setAttribute(`id`, `${element.detectorName}`);
         const usedDeviceNameParagraph = cloned.querySelector(`.usedDeviceName p`);
         usedDeviceNameParagraph.innerHTML = element.detectorName;
         const gasDetected = cloned.querySelector(`.usedDeviceGasDetected p`);
@@ -471,22 +469,20 @@ function initAppliencedDevices(reduced) {
         usedDeviceImage.setAttribute(`src`, `./PNG/${element.detectorName}.png`);
         usedDeviceImage.setAttribute(`alt`, `unable to find image`);
 
-        usedDevicesContainer.appendChild(cloned);
-        usedDevicesContainer.appendChild(clonedDivider);
+        usedDevicesContainer.appendChild(elementToClone);
       }
     }
   });
 }
 
 function checkIfUsedDevice(reduced) {
-  const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDeviceItem`));
+  const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDevicePair`));
   usedDeviceItemList.forEach(container => {
     const arr = reduced.map(element => element.detectorName);
+    console.log(container);
     if (!arr.includes(container.getAttribute(`id`))) {
-      const parent = container.parentNode;
-      const divider = parent.querySelector(`.usedDeviceDivider`);
-      parent.removeChild(container);
-      parent.removeChild(divider);
+      const parent = container.closest(`.usedDevicePair`);
+      parent.remove();
     }
   });
 }
