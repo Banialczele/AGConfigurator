@@ -70,6 +70,8 @@ window.addEventListener("load", () => {
   generateStructureOptions();
   generateGasDetectedOptions();
   generateBatteryBackUpOptions();
+  handleDragAndDrop();
+
   handleFormSubmit();
 });
 

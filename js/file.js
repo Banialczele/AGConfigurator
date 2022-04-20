@@ -1,183 +1,136 @@
 function prepDataToSaveInFile(systemData) {
-	const CSV = [
-		[`Rodzaj urządzenia`, `Nazwa urządzenia`, `ilość`]
-	];
-	const sumAllDeviceEntries = systemData.bus.reduce((obj, currentValue) => {
-		if (!obj[currentValue.deviceName]) {
-			obj[currentValue.deviceName] = 0;
-		}
-		obj[currentValue.deviceName]++;
-		return obj;
-	}, {});
+  const CSV = [[`Rodzaj urządzenia`, `Nazwa urządzenia`, `ilość`]];
+  const sumAllDeviceEntries = systemData.bus.reduce((obj, currentValue) => {
+    if (!obj[currentValue.deviceName]) {
+      obj[currentValue.deviceName] = 0;
+    }
+    obj[currentValue.deviceName]++;
+    return obj;
+  }, {});
 
-	const sumAllCableTypes = systemData.bus.reduce((obj, currentValue) => {
-		if (!obj[currentValue.cableType]) {
-			obj[currentValue.cableType] = 0;
-		}
-		obj[currentValue.cableType]++;
-		return obj;
-	}, {});
+  const sumAllCableTypes = systemData.bus.reduce((obj, currentValue) => {
+    if (!obj[currentValue.cableType]) {
+      obj[currentValue.cableType] = 0;
+    }
+    obj[currentValue.cableType]++;
+    return obj;
+  }, {});
 
-	const sumAllCableLengths = systemData.bus.reduce((obj, currentValue) => {
-		if (!obj[currentValue.cableType]) {
-			obj[currentValue.cableType] = 0;
-		}		
-		obj[currentValue.cableType] += currentValue.cableLen_m;
-		return obj;
-	}, {});
+  const sumAllCableLengths = systemData.bus.reduce((obj, currentValue) => {
+    if (!obj[currentValue.cableType]) {
+      obj[currentValue.cableType] = 0;
+    }
+    obj[currentValue.cableType] += currentValue.cableLen_m;
+    return obj;
+  }, {});
 
+  const deviceTypes = Object.keys(sumAllDeviceEntries).map(value => {
+    const foundDevice = NewDevices.find(device => (device.type === value ? device : ""));
+    return foundDevice.device;
+  });
 
-	const deviceTypes = Object.keys(sumAllDeviceEntries).map((value) => {
-		const foundDevice = NewDevices.find(device => device.type === value ? device : '');
-		return foundDevice.device;
-	});
+  deviceTypes.forEach((device, i) => {
+    CSV.push([device, Object.keys(sumAllDeviceEntries)[i], Object.values(sumAllDeviceEntries)[i]]);
+  });
 
-	deviceTypes.forEach( (device,i) => {
-		CSV.push([device, Object.keys(sumAllDeviceEntries)[i], Object.values(sumAllDeviceEntries)[i]]);
-	});
+  Object.keys(sumAllCableTypes).forEach((cable, i) => {
+    CSV.push([`Kabel`, Object.keys(sumAllCableTypes)[i], Object.values(sumAllCableLengths)[i]]);
+  });
 
-	Object.keys(sumAllCableTypes).forEach( (cable,i) => {
-		CSV.push([`Kabel`, Object.keys(sumAllCableTypes)[i], Object.values(sumAllCableLengths)[i]]);
-	});
+  CSV.push([`Zasilacz`, systemData.supplyType]);
 
-	CSV.push([`Zasilacz`, systemData.supplyType]);
-
-	
-	return CSV;
+  return CSV;
 }
 
 function systemSketch(dataToSave, saveFileName) {
-	const anchor = document.createElement('a');
-	anchor.style = 'display:none';
-	const fileName = `${saveFileName}sketch`;
-	if (fileName === null) return;
-	const dataAsString = JSON.stringify(dataToSave);
-	const blob = new Blob([dataAsString], { type: "text/javascript" });
-	anchor.href = window.URL.createObjectURL(blob);
-	anchor.download = `${fileName}.json`;
-	anchor.click();
+  const anchor = document.createElement("a");
+  anchor.style = "display:none";
+  const fileName = `${saveFileName}sketch`;
+  if (fileName === null) return;
+  const dataAsString = JSON.stringify(dataToSave);
+  const blob = new Blob([dataAsString], { type: "text/javascript" });
+  anchor.href = window.URL.createObjectURL(blob);
+  anchor.download = `${fileName}.json`;
+  anchor.click();
 }
 
-
 function saveToFile(dataToSave) {
-	const result = prepDataToSaveInFile(dataToSave);
-	const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
+  const result = prepDataToSaveInFile(dataToSave);
+  const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
 
-	const date = new Date();
-	const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
-	const encodedUri = encodeURI(csvFile);
-	const anchor = document.createElement('a');
-	anchor.style = 'display:none';
-	const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
-	anchor.setAttribute(`href`, encodedUri);
-	systemSketch(systemData, fileName);
-	if (fileName === null) {
-		anchor.setAttribute(`download`, `${saveFileName}.csv`);
-	} else {
-		anchor.setAttribute(`download`, `${fileName}.csv`);
-	}
-	anchor.click();
+  const date = new Date();
+  const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
+  const encodedUri = encodeURI(csvFile);
+  const anchor = document.createElement("a");
+  anchor.style = "display:none";
+  const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
+  anchor.setAttribute(`href`, encodedUri);
+  systemSketch(systemData, fileName);
+  if (fileName === null) {
+    anchor.setAttribute(`download`, `${saveFileName}.csv`);
+  } else {
+    anchor.setAttribute(`download`, `${fileName}.csv`);
+  }
+  anchor.click();
 }
 
 function getMonth(date) {
-	const month = new Date().getMonth() + 1;
-	return month < 10 ? `0${month}` : month;
+  const month = new Date().getMonth() + 1;
+  return month < 10 ? `0${month}` : month;
 }
 
 function loadFile(e) {
-	console.log('dfgh');
-	const reader = new FileReader();
-	reader.onload = function () {
-		getSystem(setSystem(JSON.parse(reader.result)));
-		setupBusImage();
-		setupImagesForSegments();
-	}
-	reader.readAsText(e.target.files[0]);
+  console.log("dfgh");
+  const reader = new FileReader();
+  reader.onload = function () {
+    getSystem(setSystem(JSON.parse(reader.result)));
+    setupBusImage();
+    setupImagesForSegments();
+  };
+  reader.readAsText(e.target.files[0]);
 }
 
 function readFromFile() {
-	const fileInput = document.getElementById(`readFileInput`);
-	fileInput.addEventListener('change', loadFile);
-	fileInput.click();
-}
-
-function fileButtons() {
-	const fileButtonsDiv = document.createElement('div');
-	const saveToFile = document.createElement('button');
-	const readIFileInput = document.createElement(`input`);
-	const readFromFile = document.createElement('button');
-	const saveToFileImage = document.createElement(`img`);
-	const readFromFileImage = document.createElement(`img`);
-	const fileContainer = document.querySelector(`.fileButtons`);
-
-	saveToFile.setAttribute('id', 'saveSystemToFile');
-	saveToFile.className = `saveSystemToFile`;
-
-	readIFileInput.setAttribute(`id`, `readFileInput`);
-	readIFileInput.setAttribute(`type`, `file`);
-	readIFileInput.style.display = `none`;
-
-	readFromFile.setAttribute('id', 'readSystemFromFile');
-	readFromFile.setAttribute('type', 'button');
-
-	saveToFileImage.className = `saveToFileImage`;
-	saveToFileImage.setAttribute('alt', 'unable to find image');
-	readFromFileImage.setAttribute('alt', 'unable to find image');
-	readFromFileImage.className = `readFromFileImage`;
-
-	saveToFile.classList.add('saveFile');
-	readFromFile.classList.add('readFile');
-	fileButtonsDiv.classList.add('fileDiv');
-
-	saveToFile.type = 'button';
-	saveToFile.innerText = chooseText(usedText.zachowajSystem);
-	readFromFile.innerText = chooseText(usedText.wczytajSystem);
-	const powerSupplyContainer = document.querySelector('.configurationPanel');
-
-	// fileButtonsDiv.append(fileInput);
-	fileButtonsDiv.append(saveToFile);
-	fileButtonsDiv.append(saveToFileImage);
-	fileButtonsDiv.append(readIFileInput);
-	fileButtonsDiv.append(readFromFile);
-	fileButtonsDiv.append(readFromFileImage);
-	fileContainer.appendChild(fileButtonsDiv);
+  const fileInput = document.getElementById(`readFileInput`);
+  fileInput.addEventListener("change", loadFile);
+  fileInput.click();
 }
 
 function addImageToFiles() {
-	const saveToFileImage = document.querySelector(`.saveToFileImage`);
-	const readFromFileImage = document.querySelector(`.readFromFileImage`);
-	saveToFileImage.src = `./SVG/save.svg`;
-	readFromFileImage.src = `./SVG/load.svg`;
+  const saveToFileImage = document.querySelector(`.saveToFileImage`);
+  const readFromFileImage = document.querySelector(`.readFromFileImage`);
+  saveToFileImage.src = `./SVG/save.svg`;
+  readFromFileImage.src = `./SVG/load.svg`;
 }
 
-
 function dragenter(e) {
-	e.stopPropagation();
-	e.preventDefault();
+  e.stopPropagation();
+  e.preventDefault();
 }
 
 function dragover(e) {
-	e.stopPropagation();
-	e.preventDefault();
+  e.stopPropagation();
+  e.preventDefault();
 }
 
 function handleDroppedFile(e) {
-	e.stopPropagation();
-	e.preventDefault();
-	const dataTransfer = e.dataTransfer;
-	const files = e.target.files || dataTransfer.files;
-	const reader = new FileReader();
-	reader.onload = function () {
-		getSystem(setSystem(JSON.parse(reader.result)));
-		setupBusImage();
-		setupImagesForSegments();
-	}
-	reader.readAsText(files[0]);
+  e.stopPropagation();
+  e.preventDefault();
+  const dataTransfer = e.dataTransfer;
+  const files = e.target.files || dataTransfer.files;
+  const reader = new FileReader();
+  reader.onload = function () {
+    console.log(reader.result);
+    // getSystem(setSystem(JSON.parse(reader.result)));
+    // setupBusImage();
+    // setupImagesForSegments();
+  };
+  reader.readAsText(files[0]);
 }
 
 function handleDragAndDrop() {
-	const dragAndDropContainer = document.querySelector('body');
-	dragAndDropContainer.addEventListener('dragenter', dragenter);
-	dragAndDropContainer.addEventListener('dragover', dragover);
-	dragAndDropContainer.addEventListener('drop', handleDroppedFile);
+  const dragAndDropContainer = document.querySelector(".dragAndDropContainer");
+  dragAndDropContainer.addEventListener("dragenter", dragenter);
+  dragAndDropContainer.addEventListener("dragover", dragover);
+  dragAndDropContainer.addEventListener("drop", handleDroppedFile);
 }
