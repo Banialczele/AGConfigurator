@@ -206,7 +206,6 @@ function addRemoveActionListener() {
         const previewContainer = listOfPreviewContainers[indexOfClickedSegment - 1];
         const objToCopy = JSON.parse(JSON.stringify(SYSTEM.bus[indexOfClickedSegment - 1]));
         SYSTEM.bus.splice(indexOfClickedSegment, 0, objToCopy);
-
         const clonedSegment = segmentClicked.cloneNode(true);
         const clonedSegmentSelect = clonedSegment.querySelector(`.deviceActionSelect`);
         clonedSegmentSelect.value = SYSTEM.bus[indexOfClickedSegment].detectorName;
@@ -222,7 +221,7 @@ function addRemoveActionListener() {
         systemAccessories(reducer);
         statusBusLength(reducer);
         systemPowerConsumption();
-        selectEvent(clonedSegmentSelect, indexOfClickedSegment);
+        selectEvent(clonedSegmentSelect);
         initAppliencedDevices(reducer);
       } else if (e.target.name === `removeSegment`) {
         const listOfSegments = Array.from(document.querySelectorAll(`.actionsContainer`));
@@ -236,6 +235,13 @@ function addRemoveActionListener() {
           segmentClicked.remove();
           previewContainer.remove();
         }
+        const reducer = systemStatusReducer();
+        systemDetectors(reducer);
+        systemSignallers(reducer);
+        systemAccessories(reducer);
+        statusBusLength(reducer);
+        systemPowerConsumption();
+        initAppliencedDevices(reducer);
       }
     },
     true
@@ -345,8 +351,12 @@ function systemActionDevicesSelect(structureType) {
   });
 }
 
-function selectEvent(select, i) {
+function selectEvent(select) {
   select.addEventListener(`change`, e => {
+    const listOfSegments = Array.from(document.querySelectorAll(`.actionsContainer`));
+    const segmentClicked = e.target.closest(`.actionsContainer`);
+    const i = listOfSegments.indexOf(segmentClicked) - 1;
+
     SYSTEM.bus[i].detectorName = e.target.value;
     if (e.target.value === `Teta SZOA`) {
       SYSTEM.bus[i].deviceType = `siren`;
@@ -376,15 +386,15 @@ function selectEvent(select, i) {
     systemAccessories(reduced);
     statusBusLength(reduced);
     systemPowerConsumption();
-    initAppliencedDevices(reduced);
     setPreviewImages(SYSTEM.bus);
+    initAppliencedDevices(reduced);
   });
 }
 
 function actionsSelectListener() {
   const deviceActionSelect = document.querySelectorAll(`.deviceActionSelect`);
-  deviceActionSelect.forEach((select, i) => {
-    selectEvent(select, i);
+  deviceActionSelect.forEach(select => {
+    selectEvent(select);
   });
 }
 
@@ -470,7 +480,6 @@ function initAppliencedDevices(reduced) {
       } else if (!checkIfExists) {
         const elementToClone = usedDevicesContainer.querySelector(`.usedDevicePair`).cloneNode(true);
         const cloned = elementToClone.querySelector(`.usedDeviceItem`);
-        const clonedDivider = elementToClone.querySelector(`.usedDeviceDivider`);
         elementToClone.setAttribute(`id`, `${element.detectorName}`);
         const usedDeviceNameParagraph = cloned.querySelector(`.usedDeviceName p`);
         usedDeviceNameParagraph.innerHTML = element.detectorName;
