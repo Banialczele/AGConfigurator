@@ -16,16 +16,14 @@
   display: grid;
   grid-template-areas:
     "header"
+    "."
     "controlUnit"
     "device";
-  grid-template-rows: 50px 150px 1fr;
+  grid-template-rows: 50px 30px 150px 1fr;
 }
 
 .systemPreview .systemGraphics .systemHeader {
   grid-area: header;
-  place-self: center;
-  margin: 0 15px;
-  /* width: 95%; */
 }
 
 .systemPreview .systemGraphics .systemPreviewControlUnit {
@@ -82,9 +80,10 @@
   display: grid;
   grid-template-areas:
     "actionHeader"
+    "."
     "actions";
   grid-template-columns: 1fr;
-  grid-template-rows: 50px 1fr;
+  grid-template-rows: 50px 30px 1fr;
 }
 
 .systemActions .systemHeader {

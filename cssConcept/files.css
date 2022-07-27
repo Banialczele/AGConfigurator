@@ -1,5 +1,5 @@
 .systemFiles .filesContainer {
-  height: calc(100% - 50px);
+  height: calc(100% - 65px);
   width: 100%;
   display: grid;
   grid-template-areas: "saveSystem" "listOfDevices";

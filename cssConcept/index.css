@@ -73,12 +73,12 @@ header #logoImgContainer img {
 .appEntry {
   height: calc(100vh - 85px);
   width: 60%;
-  margin: 0 auto;
+  margin: 60px auto 0 auto;
   display: grid;
   grid-template-areas:
     "configurator"
     "dragndrop";
-  grid-template-rows: 500px 200px;
+  grid-template-rows: 525px 200px;
   grid-template-columns: 1fr;
   row-gap: 20px;
 }
@@ -88,24 +88,31 @@ header #logoImgContainer img {
   grid-template-areas:
     "header"
     "config";
-  grid-template-rows: 50px 1fr;
+  grid-template-rows: 100px 1fr;
   grid-template-columns: 1fr;
 }
 
 .appEntry .entryHeader {
   grid-area: header;
-  background: rgba(39, 39, 39, 0.037);
-  border-radius: 10px;
-  padding-left: 10px;
+  place-self: center;
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 }
 
-.appEntry .entryHeader h2 {
-  margin-left: 50px;
+.appEntry .entryHeader h3 {
   font-weight: 300;
+  height: 60px;
+  width: 100%;
+  border-radius: 10px;
+  background: rgba(39, 39, 39, 0.037);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 40px;
+  padding-left: 10px;
 }
 
 .appEntry .configuratorConfig {
@@ -262,7 +269,7 @@ header #logoImgContainer img {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center;  */
   align-items: center;
   padding: 0 25px;
 }

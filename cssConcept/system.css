@@ -7,7 +7,7 @@
     "systemStatus systemPreview file"
     "systemStatus systemPreview usedDevices";
   grid-template-columns: 1fr 2fr 1fr;
-  grid-template-rows: 150px 1fr;
+  grid-template-rows: 200px 1fr;
   row-gap: 25px;
 }
 
@@ -21,7 +21,8 @@
   border-radius: 10px;
   padding-left: 10px;
   height: 50px;
-  width: 100%;
+  width: 85%;
+  margin: 5px 15px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -99,6 +100,7 @@
 
 .devices .deviceListHeader {
   grid-area: description;
+  margin-left: 15px;
 }
 
 .devices .detectorListContainer {
@@ -120,6 +122,7 @@
 
 .signallers .signallerListHeader {
   grid-area: description;
+  margin-left: 15px;
 }
 
 .signallers .signallerListContainer {
@@ -141,6 +144,7 @@
 
 .accessories .accessoriesListHeader {
   grid-area: accessoryDescription;
+  margin-left: 15px;
 }
 
 .accessories .accessoriesListContainer {
@@ -163,6 +167,7 @@
 
 .controlUnit .controlUnitHeader {
   grid-area: controlUnitDesc;
+  margin-left: 15px;
 }
 
 .controlUnit .busLengthDescription {
@@ -195,6 +200,7 @@
     "wireDim"
     "systemStatus"
     "optimizeButton";
+  margin-top: 45px;
 }
 
 .powerSupplyContainer .powerSupplyHeader {

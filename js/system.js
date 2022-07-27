@@ -258,7 +258,7 @@ function systemDetectors(reduced) {
       const deviceItem = document.createElement(`li`);
       deviceItem.innerHTML = element.detectedGas;
       const deviceAmountItem = document.createElement(`li`);
-      deviceAmountItem.innerHTML = `${element.amount} <span class ="bold">szt</span>`;
+      deviceAmountItem.innerHTML = `<span class ="bold">${element.amount}</span> szt.`;
       listOfDetectors.appendChild(deviceItem);
       amountsOfDelectorsList.appendChild(deviceAmountItem);
     }
@@ -275,7 +275,7 @@ function systemSignallers(reduced) {
       const deviceItem = document.createElement(`li`);
       deviceItem.innerHTML = element.detectorName;
       const deviceAmountItem = document.createElement(`li`);
-      deviceAmountItem.innerHTML = `${element.amount} <span class ="bold">szt</span>`;
+      deviceAmountItem.innerHTML = `${element.amount}</span> szt.`;
       listOfSignallers.appendChild(deviceItem);
       amountsOfSignallersList.appendChild(deviceAmountItem);
     }
@@ -291,7 +291,7 @@ function systemAccessories(reduced) {
   const accessoryItem = document.createElement(`li`);
   accessoryItem.innerHTML = `T-Konektor`;
   const accessoryAmountItem = document.createElement(`li`);
-  accessoryAmountItem.innerHTML = `${findAmounts.amountOfDevices} <span class ="bold">szt</span>`;
+  accessoryAmountItem.innerHTML = `<span class ="bold">${findAmounts.amountOfDevices}</span> szt.`;
   listOfAccessories.appendChild(accessoryItem);
   amountsOfAccessories.appendChild(accessoryAmountItem);
 }
@@ -300,12 +300,12 @@ function statusBusLength(reduced) {
   const busLength = document.querySelector(`.busLength`);
   busLength.innerHTML = "";
   const busLengthValue = reduced.find(key => key[`wireLength`]);
-  busLength.innerHTML = `${busLengthValue[`wireLength`]} <span class="bold"> m </span>`;
+  busLength.innerHTML = `<span class="bold">${busLengthValue[`wireLength`]}</span> m.`;
 }
 
 function systemPowerConsumption(value) {
   const powerConsumption = document.querySelector(`.powerConsumption`);
-  powerConsumption.innerHTML = `25 <span class="bold">W</span>`;
+  powerConsumption.innerHTML = `<span class="bold">${value === undefined ? 25 : null}</span> W`;
 }
 
 function setPreviewImages(devices) {
