@@ -1,26 +1,28 @@
 function prepDataToSaveInFile(systemData) {
   const CSV = [[`Rodzaj urządzenia`, `Nazwa urządzenia`, `ilość`]];
   const sumAllDeviceEntries = systemData.bus.reduce((obj, currentValue) => {
-    if (!obj[currentValue.deviceName]) {
-      obj[currentValue.deviceName] = 0;
+    if (!obj[currentValue.detectorName]) {
+      obj[currentValue.detectorName] = 0;
     }
-    obj[currentValue.deviceName]++;
+    obj[currentValue.detectorName]++;
     return obj;
   }, {});
 
   const sumAllCableTypes = systemData.bus.reduce((obj, currentValue) => {
-    if (!obj[currentValue.cableType]) {
-      obj[currentValue.cableType] = 0;
+    if (!obj[currentValue.deviceType]) {
+      obj[currentValue.deviceType] = obj[currentValue.deviceType];
+      obj[currentValue.deviceType] = 0;
     }
-    obj[currentValue.cableType]++;
+    obj[currentValue.deviceType]++;
     return obj;
   }, {});
 
   const sumAllCableLengths = systemData.bus.reduce((obj, currentValue) => {
-    if (!obj[currentValue.cableType]) {
-      obj[currentValue.cableType] = 0;
+    if (!obj[`cableTotalLength`]) {
+      obj[`cableTotalLength`] = obj["cableTotalLength"];
+      obj[`cableTotalLength`] = 0;
     }
-    obj[currentValue.cableType] += currentValue.cableLen_m;
+    obj[`cableTotalLength`] += parseInt(currentValue.wireLen_m);
     return obj;
   }, {});
 
@@ -55,7 +57,7 @@ function systemSketch(dataToSave, saveFileName) {
 }
 
 function saveToFile(dataToSave) {
-  const result = prepDataToSaveInFile(dataToSave);
+  const result = prepDataToSaveInFile(SYSTEM);
   const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
 
   const date = new Date();
@@ -65,7 +67,6 @@ function saveToFile(dataToSave) {
   anchor.style = "display:none";
   const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
   anchor.setAttribute(`href`, encodedUri);
-  systemSketch(systemData, fileName);
   if (fileName === null) {
     anchor.setAttribute(`download`, `${saveFileName}.csv`);
   } else {
@@ -110,14 +111,13 @@ function handleDroppedFile(e) {
   const files = e.target.files || dataTransfer.files;
   const reader = new FileReader();
   reader.onload = function () {
-    console.log(reader.result);
-    getSystem(setSystem(JSON.parse(reader.result)));
+    getSystem(setSystem(JSON.parse(reader.result), "test"));
   };
   reader.readAsText(files[0]);
 }
 
 function handleDragAndDrop() {
-  const dragAndDropContainer = document.querySelector(".dragAndDropContainer");
+  const dragAndDropContainer = document.querySelector(".dragNDropArea");
   dragAndDropContainer.addEventListener("dragenter", dragenter);
   dragAndDropContainer.addEventListener("dragover", dragover);
   dragAndDropContainer.addEventListener("drop", handleDroppedFile);

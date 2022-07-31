@@ -27,17 +27,7 @@ function getSystem(sys) {
 
 function setSystem(system, loadFromSaved = "") {
   SYSTEM.powerSupply = "Teta MOD Control1";
-  if (loadFromSaved !== "") {
-    const [amountOfDetectors, devices, wire] = system;
-    for (let i = 0; i < devices.amount; i++) {
-      SYSTEM.bus.push({
-        detectorName: devices.detectorName,
-        deviceType: devices.deviceType,
-        gasDetected: devices.detectedGas,
-        wireLen_m: wire.wireLength / amountOfDetectors.amountOfDevices,
-      });
-    }
-  } else {
+  if (loadFromSaved === "") {
     for (let i = 0; i < system.amountOfDetectors; i++) {
       SYSTEM.bus.push({
         detectorName: system.detectorName,
@@ -46,7 +36,24 @@ function setSystem(system, loadFromSaved = "") {
         wireLen_m: system.EWL,
       });
     }
+  } else {
+    const amountOfDetectors = system.find(element => element.hasOwnProperty(`amountOfDevices`));
+    const busLength = system.find(element => element.hasOwnProperty(`wireLength`));
+    const listOfDevices = system.filter(device => (device.hasOwnProperty(`amount`) === true ? device : null));
+    listOfDevices.forEach(device => {
+      for (let i = 0; i < device.amount; i++) {
+        SYSTEM.bus.push({
+          detectorName: device.detectorName,
+          deviceType: device.deviceType,
+          gasDetected: device.detectedGas || null,
+          wireLen_m: busLength.wireLength / amountOfDetectors.amountOfDevices,
+        });
+      }
+    });
   }
+  console.log(system);
+  console.log(SYSTEM);
+
   const systemNode = document.querySelector(`.system`);
   systemNode.scrollIntoView({ behavior: "smooth", block: "start" });
   createPreview();
@@ -57,7 +64,15 @@ function saveSketch() {
   const systemSketchButton = document.querySelector(`.systemSketch`);
   systemSketchButton.addEventListener(`click`, e => {
     const reducer = systemStatusReducer();
-    systemSketch(reducer, `test`);
+    systemSketch(reducer, `sketch`);
+  });
+}
+
+function saveListOfDevices() {
+  const listOfDevices = document.querySelector(`.systemRecord`);
+  listOfDevices.addEventListener(`click`, e => {
+    const reducer = systemStatusReducer();
+    saveToFile(reducer);
   });
 }
 
