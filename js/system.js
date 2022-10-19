@@ -51,9 +51,6 @@ function setSystem(system, loadFromSaved = "") {
       }
     });
   }
-  console.log(system);
-  console.log(SYSTEM);
-
   const systemNode = document.querySelector(`.system`);
   systemNode.scrollIntoView({ behavior: "smooth", block: "start" });
   createPreview();

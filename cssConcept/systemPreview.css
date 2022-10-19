@@ -52,11 +52,14 @@
   display: grid;
   grid-template-areas: "sirenImage tcon deviceImage";
   grid-template-rows: 200px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 100px 1fr;
 }
 
 .deviceImages .previewContainer .signallerImageContainer {
   grid-row: sirenImage;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .deviceImages .previewContainer .busImageContainer {
