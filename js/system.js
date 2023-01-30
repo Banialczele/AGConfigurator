@@ -574,6 +574,10 @@ function generateSystem() {
   initAppliencedDevices(reducer);
   //zapis do pliku
   saveSketch();
+
+  //zapis do CSV
+
+  saveListOfDevices();
 }
 
 function createPreview() {
