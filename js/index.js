@@ -1,8 +1,10 @@
+//Podgląd systemu, na tych danych bazują wszystkie funkcje
 const SYSTEM = {
   powerSupply: "",
   bus: [],
 };
 
+//Dane, które są wprowadzane z pierwszego widoku.
 let initSystem = {
   amountOfDetectors: 0,
   EWL: 0,
@@ -58,23 +60,33 @@ const usedText = {
   },
 };
 
+//Tablica z używanymi indexami
 const usedIndexes = [];
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
 };
 
+//Entry point apki, generowanie całego widoku do wproadzenia danych.
 window.addEventListener("load", () => {
+  //Sprawdzenie języka po URL
   checkLang();
+  //Podświetlenie napisu TETA
   highlightTeta();
+  //Generowanie opcji kolejno: rodzaj obiektu, wykrywany gaz, podtrzymanie akumulatorowe pracy.
   generateStructureOptions();
   generateGasDetectedOptions();
   generateBatteryBackUpOptions();
+  //Obsługa drag'n'drop która nie działa, trzeba to wykończyć!
   handleDragAndDrop();
+  //Wczytanie systemu z pliku
   readFromFile();
+  //Walidacja danych z podglądu systemu
+  console.log("sdflks");
   handleFormSubmit();
 });
 
+//Podświetlenie napisu "TETA" na czerwono w nagłówku strony
 function highlightTeta() {
   let text = document.getElementById(`configuratorInfo`);
   const highlightedText = text.innerHTML.replace(/Teta/, "<span class=hightlighted>Teta</span>");
@@ -93,7 +105,7 @@ function checkLang() {
   }
 }
 
-//info file
+//Wybór języka
 function chooseText(text) {
   let res;
   switch (lang) {
@@ -108,3 +120,5 @@ function chooseText(text) {
   }
   return res;
 }
+
+//Zmiany w nazewnictwie!

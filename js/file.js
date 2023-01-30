@@ -45,6 +45,7 @@ function prepDataToSaveInFile(systemData) {
 }
 
 function systemSketch(dataToSave, saveFileName) {
+  console.log("chuj w dupe JS");
   const anchor = document.createElement("a");
   anchor.style = "display:none";
   const fileName = `${saveFileName}sketch`;
@@ -53,13 +54,15 @@ function systemSketch(dataToSave, saveFileName) {
   const blob = new Blob([dataAsString], { type: "text/javascript" });
   anchor.href = window.URL.createObjectURL(blob);
   anchor.download = `${fileName}.json`;
+  saveToFile(dataToSave);
+
   anchor.click();
 }
 
 function saveToFile(dataToSave) {
   const result = prepDataToSaveInFile(SYSTEM);
   const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
-
+  console.log("XD");
   const date = new Date();
   const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
   const encodedUri = encodeURI(csvFile);

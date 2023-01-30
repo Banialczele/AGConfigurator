@@ -1,10 +1,16 @@
+//Walidacja inputów z widoku domyślnego po załadowaniu strony
 function handleFormSubmit() {
   const entryFormInputs = document.querySelectorAll(".configForm input");
   const entryFormSelects = document.querySelectorAll(".configForm select");
 
+  //obsługa wprowadzania danych dla pól typu input na widoku domyślnym ( czyt. po załadowaniu strony )
   entryFormInputs.forEach(input => input.addEventListener("keyup", e => (initSystem[e.target.name] = e.target.value)));
+
+  //obsługa selectów na widoku domyślnym ( czyt. po zaladowaniu strony )
   entryFormSelects.forEach(select =>
     select.addEventListener("change", e => {
+      //Ten warunek to nie wiem nawet czy jest potrzebny, prawdopodobnie nie, ale zostawiam. Nie pamietam jaki byl zamysł, chyba chciałem do initSystem przypisywać nazwy detektorów
+      //po atrybuccie data- zeby latwiej je bylo potem znalezc, ale chyba inaczej temat rozwiazalem
       if (e.target[e.target.selectedIndex].getAttribute("data-deviceName") !== null) {
         initSystem[`detectorname`] = e.target[e.target.selectedIndex].getAttribute("data-deviceName");
         initSystem[`deviceType`] = e.target[e.target.selectedIndex].getAttribute("data-devicetype");
@@ -12,6 +18,7 @@ function handleFormSubmit() {
       initSystem[e.target.name] = e.target.value;
     })
   );
+  //Zatwierdzenie systemu i wygenerowanie go.
   const form = document.querySelector(".configForm");
   form.addEventListener("submit", e => {
     const system = document.querySelector(`.system`);
@@ -21,12 +28,16 @@ function handleFormSubmit() {
   });
 }
 
+//W kodzie jest getter i setter systemu, jakby komuś przyszło na myśl generowanie systemu po JSONie :)
 function getSystem(sys) {
   return sys;
 }
 
 function setSystem(system, loadFromSaved = "") {
+  //Obecnie domyślny zasilacz systemu, na razie nie zmieniać
   SYSTEM.powerSupply = "Teta MOD Control1";
+
+  //Generowanie systemu "z reki"
   if (loadFromSaved === "") {
     for (let i = 0; i < system.amountOfDetectors; i++) {
       SYSTEM.bus.push({
@@ -36,6 +47,7 @@ function setSystem(system, loadFromSaved = "") {
         wireLen_m: system.EWL,
       });
     }
+    //Poniższy warunek zaczalem chyba pisac do obslugi wczytywania systemu z pliku
   } else {
     const amountOfDetectors = system.find(element => element.hasOwnProperty(`amountOfDevices`));
     const busLength = system.find(element => element.hasOwnProperty(`wireLength`));
@@ -52,8 +64,11 @@ function setSystem(system, loadFromSaved = "") {
     });
   }
   const systemNode = document.querySelector(`.system`);
+  //przeskakujemy na dól strony
   systemNode.scrollIntoView({ behavior: "smooth", block: "start" });
+  //funkcja poniżej generuje Podlgąd systemu i Działania
   createPreview();
+  //Generowanie systemu
   generateSystem();
 }
 
@@ -73,6 +88,7 @@ function saveListOfDevices() {
   });
 }
 
+//Generowanie wszystkich pojemników na zdjęcia, akcje dotyczące kontenerów w zależności od ilości wprowadzonych urządzeń na widoku podstawowym ( czyt. po zaladowaniu strony )
 function createPreviewImages(amount) {
   const systemGraphics = document.querySelector(`.deviceImages`);
   systemGraphics.innerHTML = "";
@@ -111,6 +127,7 @@ function createPreviewImages(amount) {
   }
 }
 
+//Generowanie wszystkich pojemników na zdjęcia, akcje dotyczące kontenerów w zależności od ilości wprowadzonych urządzeń na widoku podstawowym ( czyt. po zaladowaniu strony )
 function createPreviewActions(amount) {
   const systemActions = document.querySelector(`.systemActions`);
   const actionDivContainer = document.createElement(`div`);
@@ -171,6 +188,7 @@ function createPreviewActions(amount) {
     actionDivContainer.className = `actionListContainer`;
 
     actionDivContainer.appendChild(actionsContainer);
+    //funkcja dodająca przyciski dodawania i usuwania przycisków
     createAddRemoveButtons(actionsContainer);
   }
   systemActions.appendChild(actionDivContainer);
@@ -392,7 +410,10 @@ function selectEvent(select) {
       }
     }
     const reduced = systemStatusReducer();
+
+    //sprawdzam, czy w zestawieniu urządzeń występuje duplikat danego urządzenia, jeśli występuje to go usuwam.
     checkIfUsedDevice(reduced);
+    //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
     systemDetectors(reduced);
     systemSignallers(reduced);
     systemAccessories(reduced);
@@ -400,9 +421,11 @@ function selectEvent(select) {
     systemPowerConsumption();
     setPreviewImages(SYSTEM.bus);
     initAppliencedDevices(reduced);
+    //Aż do tego miejsca.
   });
 }
 
+//Funkcja odpowiadająca za nadanie każdemu selektowi w podglądzie systemu listenera na zmianę stanu. Jeśli chodzi o uwagi techniczne to szukałbym błędu w wyszukiwaniu elementu ( patrz Uwagi techniczne pkt 6 ) w funkcji selectEvent.
 function actionsSelectListener() {
   const deviceActionSelect = document.querySelectorAll(`.deviceActionSelect`);
   deviceActionSelect.forEach(select => {
@@ -461,6 +484,7 @@ function systemStatusReducer() {
       return key;
     }, Object.create(null))
   );
+  console.log(reduced);
   return reduced;
 }
 
@@ -526,22 +550,35 @@ function checkIfUsedDevice(reduced) {
     }
   });
 }
+
 function generateSystem() {
+  //funckja zliczajaca ile jest danych urzadzeń, ile metrów kabla etc.
   const reducer = systemStatusReducer();
+  //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
   systemDetectors(reducer);
   systemSignallers(reducer);
   systemAccessories(reducer);
   statusBusLength(reducer);
   systemPowerConsumption();
+  //Aż do tego miejsca ^^
+
+  //Tworzenie selectów dla urządzeń w podglądzie systemu
   systemActionDevicesSelect(initSystem.structureType);
+  //Tworzenie obrazów
   setPreviewImages(SYSTEM.bus);
   actionsSelectListener();
+  //Dodawanie i usuwanie elementów ( czyli kopiowanie i usuwanie ) oraz dodanie listenera do dodanego segmentu
   addRemoveActionListener();
+
+  //funkcja generująca zestawienie urządzeń w oparciu o dane z reducera
   initAppliencedDevices(reducer);
+  //zapis do pliku
   saveSketch();
 }
 
 function createPreview() {
+  //generowanie konteneru dla zdjęć urządzeń i magistrali
   createPreviewImages(SYSTEM.bus.length);
+  //geneowanie numeracji segmentow, dzialań, selectów, numeracji segmentów etc
   createPreviewActions(SYSTEM.bus.length);
 }
