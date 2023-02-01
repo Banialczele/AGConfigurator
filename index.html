@@ -55,7 +55,7 @@
 						<div class="entryDetectorAmounts">
 							<div class="amountDescription">Ilość czujników</div>
 							<div class="inputContainer">
-								<input type="number" max="50" min="1" class="detectorAmounts"
+								<input type="number" min="1" max="50" value="1" class="detectorAmounts"
 									name="amountOfDetectors" />
 								<span class="amountUnit">szt.</span>
 								<span class="shadedAmount">(max 50 szt.)</span>
@@ -86,7 +86,8 @@
 						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="wireLengthInformation tooltip">i</span>
 						<div class="wireLengthContainer">
 							<div class="wireLength">Orientacyjna odległość między urządzeniami</div>
-							<input min="1" max="999" class="wireLengthInput" name="EWL" /> m
+							<input min="1" max="999"
+							value="15" type="number" class="wireLengthInput" name="EWL" /> m
 						</div>
 						<button class="formButton">Zatwierdź</button>
 					</form>
