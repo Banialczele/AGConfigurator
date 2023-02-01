@@ -53,9 +53,9 @@
 				<div class="entryConfig">
 					<form class="configForm">
 						<div class="entryDetectorAmounts">
-							<div class="amountDescription">Ilość czujników</div>
+							<label for="amountOfDetectors" class="amountDescription">Ilość czujników</label>
 							<div class="inputContainer">
-								<input type="number" min="1" max="50" value="1" class="detectorAmounts"
+								<input type="number" min="1" max="50" value="1" id="amountOfDetectors" class="detectorAmounts"
 									name="amountOfDetectors" />
 								<span class="amountUnit">szt.</span>
 								<span class="shadedAmount">(max 50 szt.)</span>
@@ -64,30 +64,29 @@
 						</div>
 						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="buildingInformation tooltip">i</span>
 						<div class="buildingType">
-							<div class="structure">Rodzaj obiektu</div>
-							<select class="structureSelect" name="structureType">
+							<label for="structureType" class="structure">Rodzaj obiektu</label>
+							<select id="structureType" class="structureSelect" name="structureType">
 
 							</select>
 						</div>
 						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="detectedGasInformation tooltip">i</span>
 						<div class="detectedGas">
-							<div class="gas">Wykrywany gaz</div>
-							<select class="gasSelect" name="gasDetected">
+							<label for="gasDetected" class="gas">Wykrywany gaz</label>
+							<select id="gasDetected" class="gasSelect" name="gasDetected">
 
 							</select>
 						</div>
 						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="batteryBackUpInformation tooltip">i</span>
 						<div class="batteryBackUp">
-							<div class="battery">Akumulatorowe podtrzymanie pracy</div>
-							<select class="batterySelect" name="batteryBackUp">
+							<label for="batteryBackUp" class="battery">Akumulatorowe podtrzymanie pracy</label>
+							<select id="batteryBackUp" class="batterySelect" name="batteryBackUp">
 
 							</select>
 						</div>
 						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="wireLengthInformation tooltip">i</span>
 						<div class="wireLengthContainer">
-							<div class="wireLength">Orientacyjna odległość między urządzeniami</div>
-							<input min="1" max="999"
-							value="15" type="number" class="wireLengthInput" name="EWL" /> m
+							<label for="EWL" class="wireLength">Orientacyjna odległość między urządzeniami</label>
+							<input min="1" max="999" value="15" type="number" class="wireLengthInput" id="EWL" name="EWL" /> m
 						</div>
 						<button class="formButton">Zatwierdź</button>
 					</form>

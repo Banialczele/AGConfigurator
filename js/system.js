@@ -1,30 +1,24 @@
-//Walidacja inputów z widoku domyślnego po załadowaniu strony
+// Przetwarzanie formularza dot. systemu
 function handleFormSubmit() {
-  const entryFormInputs = document.querySelectorAll(".configForm input");
-  const entryFormSelects = document.querySelectorAll(".configForm select");
+  // Wyłapanie zmian w select dot. wybranego typu gazu i przypisanie nazwy czujnika + rodzaju czujnika do obiektu inicjującego podgląd systemu 
+  document.getElementById("gasDetected").addEventListener("change", (event) => {
+    const option = event.target;
+    initSystem.detectorName = option[option.selectedIndex].dataset.devicename;
+    initSystem.deviceType = option[option.selectedIndex].dataset.devicetype;
+  });
 
-  //obsługa wprowadzania danych dla pól typu input na widoku domyślnym ( czyt. po załadowaniu strony )
-  entryFormInputs.forEach(input => input.addEventListener("keyup", e => (initSystem[e.target.name] = e.target.value)));
-
-  //obsługa selectów na widoku domyślnym ( czyt. po zaladowaniu strony )
-  entryFormSelects.forEach(select =>
-    select.addEventListener("change", e => {
-      //Ten warunek to nie wiem nawet czy jest potrzebny, prawdopodobnie nie, ale zostawiam. Nie pamietam jaki byl zamysł, chyba chciałem do initSystem przypisywać nazwy detektorów
-      //po atrybuccie data- zeby latwiej je bylo potem znalezc, ale chyba inaczej temat rozwiazalem
-      if (e.target[e.target.selectedIndex].getAttribute("data-deviceName") !== null) {
-        initSystem[`detectorname`] = e.target[e.target.selectedIndex].getAttribute("data-deviceName");
-        initSystem[`deviceType`] = e.target[e.target.selectedIndex].getAttribute("data-devicetype");
-      }
-      initSystem[e.target.name] = e.target.value;
-    })
-  );
-  //Zatwierdzenie systemu i wygenerowanie go.
+  //Zatwierdzenie formularza i wygenerowanie podglądu systemu
   const form = document.querySelector(".configForm");
-  form.addEventListener("submit", e => {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
     const system = document.querySelector(`.system`);
-    system.scrollIntoView({ behavior: "smooth", block: "start" });
-    e.preventDefault();
+    initSystem.amountOfDetectors = document.getElementById("amountOfDetectors").value;
+    initSystem.structureType = document.getElementById("structureType").value;
+    initSystem.gasDetected = document.getElementById("gasDetected").value;
+    initSystem.batteryBackUp = document.getElementById("batteryBackUp").value;
+    initSystem.EWL = document.getElementById("EWL").value;
     setSystem(initSystem);
+    system.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 }
 
