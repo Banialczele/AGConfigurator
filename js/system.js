@@ -355,6 +355,7 @@ function systemActionDevicesSelect(structureType) {
   const deviceActionSelect = document.querySelectorAll(`.deviceActionSelect`);
   const structureObj = CONSTRUCTIONS.find(constructionType => constructionType.type === structureType);
   const deviceList = structureObj.devices;
+  // Generowanie opcji dla selecta zawierającego dostępne rodzaje urządzenia w utworzonym segmencie 
   deviceActionSelect.forEach((select, i) => {
     deviceList.forEach((device, i) => {
       if (device.typeOfDevice !== `siren`) {
@@ -362,6 +363,9 @@ function systemActionDevicesSelect(structureType) {
         option.className = `deviceActionOption`;
         option.innerHTML = `Czujnik ${device.gasDetected}`;
         option.setAttribute(`data-detectedGas`, `${device.gasDetected}`);
+        if (initSystem.gasDetected === device.gasDetected) {
+          option.setAttribute(`selected`, `selected`);
+        }
         option.value = device.type;
         select.appendChild(option);
       } else {
