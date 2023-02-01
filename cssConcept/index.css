@@ -155,6 +155,50 @@ header #logoImgContainer img {
   width: 50px;
 }
 
+.configForm .tooltip {
+  position: relative;
+  padding: 0px 6px;
+  font-family: 'Times New Roman', Times, serif;
+  color: grey;
+  font-weight: bold;
+  border: 2px solid grey;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.configForm .tooltip::before {
+  position: absolute;
+  display: none;
+  content: attr(data-text);
+  bottom: 180%;
+  left: -50%;
+  width: 300px;
+  padding: 10px;
+  font-family: 'Spartan';
+  color: #fff;
+  font-weight: lighter;
+  text-align: center;
+  background: #222;
+  border-radius: 10px;
+  z-index: 2;
+}
+
+.configForm .tooltip::after {
+  position: absolute;
+  display: none;
+  content: "";
+  bottom: 80%;
+  left: -15%;
+  border: 10px solid #222;
+  border-color: #222 transparent transparent transparent;
+  z-index: 2;
+}
+
+.configForm .tooltip:hover::before,
+.configForm .tooltip:hover::after {
+  display: block;
+}
+
 .configForm .entryDetectorAmounts {
   grid-area: amounts;
   width: 100%;

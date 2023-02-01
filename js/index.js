@@ -51,7 +51,7 @@ const usedText = {
     en: "Load system",
   },
   usunSegment: {
-    pl: "Usunieto segment",
+    pl: "Usunięto segment",
     en: "Deleted segment",
   },
   usunJedynySegment: {
