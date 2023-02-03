@@ -86,7 +86,7 @@ function createSegmentActions(device) {
   const segmentWireLengthContainer = document.createElement("div");
   setAttributes(actionsSegment, { class: "actionsSegment", id: `actionsSegment${device.index}`, "data-segmentType": "detectors", "data-segmentIndex": `${device.index}` });
   setAttributes(segmentDeviceSelectContainer, { class: "segmentDeviceSelectContainer" });
-  setAttributes(segmentWireLengthContainer, { class: "segmentsegmentWireLengthContainer" });
+  setAttributes(segmentWireLengthContainer, { class: "segmentWireLengthContainer" });
   actionsSegment.appendChild(segmentIndexLabel);
   actionsSegment.appendChild(segmentDeviceSelectContainer);
   actionsSegment.appendChild(segmentWireLengthContainer);
