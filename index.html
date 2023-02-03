@@ -55,7 +55,7 @@
 						<div class="entryDetectorAmounts">
 							<label for="amountOfDetectors" class="amountDescription">Ilość czujników</label>
 							<div class="inputContainer">
-								<input type="number" min="1" max="50" value="1" id="amountOfDetectors" class="detectorAmounts"
+								<input type="number" min="1" max="50" value="3" id="amountOfDetectors" class="detectorAmounts"
 									name="amountOfDetectors" />
 								<span class="amountUnit">szt.</span>
 								<span class="shadedAmount">(max 50 szt.)</span>
@@ -196,18 +196,19 @@
 				<div class="systemPreviewControlUnit">
 					<img src="./SVG/controlUnit.svg" alt="unable to find image" />
 				</div>
-				<div class="deviceImages">
+				<div id="systemDiagram" class="systemDiagram">
 
 				</div>
 			</div>
 			<div class="systemActions">
 				<h3 class="systemHeader">Działania</h3>
+				<div id="actionsList" class="actionsList">
+
+				</div>
 			</div>
 		</div>
 		<div class="systemFiles panelStyle">
-			<h3 class="systemHeader">
-				Plik
-			</h3>
+			<h3 class="systemHeader">Plik</h3>
 			<div class="filesContainer">
 				<div class="saveSystem">
 					<img src="./SVG/save.svg" alt="unable to find image">
@@ -252,6 +253,7 @@
 
 	<script src="./AnalysisEngine/models.js"></script>
 	<script src="js/index.js" type="text/javascript"></script>
+	<script src="js/helpers.js" type="text/javascript"></script>
 	<script src="js/select.js" type="text/javascript"></script>
 	<script src="js/system.js" type="text/javascript"></script>
 	<script src="js/file.js" type="text/javascript"></script>

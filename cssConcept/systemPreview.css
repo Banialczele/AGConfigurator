@@ -36,7 +36,7 @@
   height: 100%;
 }
 
-.systemPreview .systemGraphics .deviceImages {
+.systemPreview .systemGraphics .systemDiagram {
   grid-area: device;
   place-self: start center;
   display: flex;
@@ -47,7 +47,7 @@
   height: 100%;
 }
 
-.systemGraphics .deviceImages .previewContainer {
+.systemGraphics .systemDiagram .deviceSegment {
   width: 100%;
   display: grid;
   grid-template-areas: "sirenImage tcon deviceImage";
@@ -55,14 +55,14 @@
   grid-template-columns: 1fr 100px 1fr;
 }
 
-.deviceImages .previewContainer .signallerImageContainer {
+.systemDiagram .deviceSegment .warningDeviceImageContainer {
   grid-row: sirenImage;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-.deviceImages .previewContainer .busImageContainer {
+.systemDiagram .deviceSegment .busImageContainer {
   grid-row: tcon;
   width: 100%;
   height: 100%;
@@ -71,11 +71,11 @@
   align-items: center;
 }
 
-.deviceImages .previewContainer .detectorImageContainer {
+.systemDiagram .deviceSegment .detectorImageContainer {
   grid-row: deviceImage;
 }
 
-.previewContainer img {
+.deviceSegment img {
   height: 100%;
 }
 
@@ -93,7 +93,7 @@
   grid-area: actionHeader;
 }
 
-.systemActions .actionListContainer {
+.systemActions .actionsList {
   grid-area: actions;
   margin-top: 20px;
   display: grid;
@@ -101,19 +101,19 @@
   grid-auto-rows: 200px;
 }
 
-.actionListContainer .segmentIdentyfier {
+.actionsList .segmentId {
   width: 25px;
   height: 25px;
   text-align: center;
   padding: 2px;
 }
 
-.actionListContainer p {
+.actionsList p {
   padding: 0;
   margin: 0;
 }
 
-.actionListContainer .actionsContainer:first-child {
+.actionsList .actionsSegment:first-child {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -122,26 +122,26 @@
   align-items: flex-start;
 }
 
-.actionsContainer:first-child > * {
+.actionsSegment:first-child > * {
   margin: 10px 0;
 }
 
-.actionListContainer .actionsContainer:not(:first-child) {
+.actionsList .actionsSegment:not(:first-child) {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-areas:
-    "segmentNumber . ."
+    "segmentIndexLabel . ."
     "segmentDevice . signallerDevice"
     "cableLength cableLength buttons";
 }
 
-.actionsContainer:not(:first-child) .segmentNumber {
-  grid-area: segmentNumber;
+.actionsSegment:not(:first-child) .segmentIndexLabel {
+  grid-area: segmentIndexLabel;
   place-self: center start;
 }
 
-.actionsContainer:not(:first-child) .deviceSelection {
+.actionsSegment:not(:first-child) .segmentDeviceSelectContainer {
   grid-area: segmentDevice;
   place-self: center start;
   display: flex;
@@ -152,12 +152,12 @@
   align-items: flex-start;
 }
 
-.actionsContainer .deviceSelection > *,
-.actionsContainer .toledContainer > * {
+.actionsSegment .segmentDeviceSelectContainer > *,
+.actionsSegment .toledContainer > * {
   margin: 5px 0;
 }
 
-.actionsContainer .toledContainer {
+.actionsSegment .toledContainer {
   grid-area: signallerDevice;
   place-self: center start;
   display: flex;
@@ -168,7 +168,7 @@
   align-items: flex-start;
 }
 
-.actionsContainer:not(:first-child) .wireLengthActionContainer {
+.actionsSegment:not(:first-child) .segmentWireLengthContainer {
   grid-area: cableLength;
   place-self: center start;
   display: flex;
@@ -179,21 +179,21 @@
   align-items: flex-start;
 }
 
-.wireLengthActionContainer > * {
+.segmentWireLengthContainer > * {
   margin: 10px 0;
 }
 
-.actionListContainer input,
-.actionListContainer select {
+.actionsList input,
+.actionsList select {
   width: 150px;
 }
 
-.previewContainer:nth-child(odd),
-.actionsContainer:nth-child(even) {
+.deviceSegment:nth-child(odd),
+.actionsSegment:nth-child(even) {
   background: #f6f6f6;
 }
 
-.actionsContainer:not(:first-child) .buttonsContainer {
+.actionsSegment:not(:first-child) .buttonsContainer {
   grid-area: buttons;
   place-self: end center;
 }

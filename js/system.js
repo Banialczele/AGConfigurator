@@ -17,9 +17,126 @@ function handleFormSubmit() {
     initSystem.gasDetected = document.getElementById("gasDetected").value;
     initSystem.batteryBackUp = document.getElementById("batteryBackUp").value;
     initSystem.EWL = document.getElementById("EWL").value;
+    createSystemData();
     setSystem(initSystem);
     system.scrollIntoView({ behavior: "smooth", block: "start" });
   });
+}
+
+// Inicjacja głównego obiektu z danymi systemu
+function createSystemData() {
+  systemData.powerSupply = "Teta MOD Control 1";
+  systemData.devicesTypes.push(initSystem.deviceType);
+  for (let i = 0; i < initSystem.amountOfDetectors; i++) {
+    systemData.devices.push({
+      index: i + 1,
+      name: initSystem.detectorName,
+      type: initSystem.deviceType,
+      wireLength: initSystem.EWL
+    })
+  }
+}
+
+// Generowanie schematu utworzonego systemu
+function createSystemDiagram() {
+  const systemDiagram = document.getElementById("systemDiagram");
+  systemData.devices.forEach((device) => systemDiagram.appendChild(createSegmentDiagram(device)));
+}
+
+// Tworzenie schematu segmentu urządzenia
+function createSegmentDiagram(device) {
+  const deviceSegment = document.createElement("div");
+  const warningDeviceImageContainer = document.createElement("div");
+  const busImageContainer = document.createElement("div");
+  const detectorImageContainer = document.createElement("div");
+  setAttributes(deviceSegment, { class: "deviceSegment", id: `segmentDiagram${device.index}` });
+  setAttributes(warningDeviceImageContainer, { class: "warningDeviceImageContainer" });
+  setAttributes(busImageContainer, { class: "busImageContainer" });
+  setAttributes(detectorImageContainer, { class: "detectorImageContainer" });
+  deviceSegment.appendChild(warningDeviceImageContainer);
+  deviceSegment.appendChild(busImageContainer);
+  deviceSegment.appendChild(detectorImageContainer);
+  const warningDeviceImage = document.createElement("img");
+  const busImage = document.createElement("img");
+  const detectorImage = document.createElement("img");
+  setAttributes(warningDeviceImage, { src: "", alt: "Warning device image" });
+  setAttributes(busImage, { src: "./SVG/tconP.svg", alt: "T-Konektor image" });
+  setAttributes(detectorImage, { src: `./SVG/${device.name}.svg`, alt: "Detector image" });
+  warningDeviceImage.style.visibility = "hidden";
+  warningDeviceImageContainer.appendChild(warningDeviceImage);
+  busImageContainer.appendChild(busImage);
+  detectorImageContainer.appendChild(detectorImage);
+  return deviceSegment;
+}
+
+// Generowanie listy działań dla segmentów utworzonego systemu
+function createSystemSegmentsActionsList() {
+  const actionsList = document.getElementById("actionsList");
+  actionsList.appendChild(createSegmentActionsPSU());
+  systemData.devices.forEach((device) => actionsList.appendChild(createSegmentActions(device)));
+}
+
+// Tworzenie panelu działań dla segmentu urządzenia
+function createSegmentActions(device) {
+  const actionsSegment = document.createElement("div");
+  const segmentIndexLabel = document.createElement("label");
+  const segmentDeviceLabel = document.createElement("label");
+  const segmentWireLengthLabel = document.createElement("label");
+  const segmentDeviceSelectContainer = document.createElement("div");
+  const segmentWireLengthContainer = document.createElement("div");
+  setAttributes(actionsSegment, { class: "actionsSegment", id: `actionsSegment${device.index}`, "data-segmentType": "detectors", "data-segmentIndex": `${device.index}` });
+  setAttributes(segmentDeviceSelectContainer, { class: "segmentDeviceSelectContainer" });
+  setAttributes(segmentWireLengthContainer, { class: "segmentsegmentWireLengthContainer" });
+  actionsSegment.appendChild(segmentIndexLabel);
+  actionsSegment.appendChild(segmentDeviceSelectContainer);
+  actionsSegment.appendChild(segmentWireLengthContainer);
+  setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: `actionsSegmentIndex${device.index}` });
+  setAttributes(segmentDeviceLabel, { class: "segmentDeviceLabel", for: `actionsSegmentDevice${device.index}` });
+  setAttributes(segmentWireLengthLabel, { class: "segmentWireLengthLabel", for: `actionsSegmentWireLength${device.index}` });
+  segmentIndexLabel.appendChild(document.createTextNode("Segment nr "));
+  segmentDeviceLabel.appendChild(document.createTextNode("Urządzenie"));
+  segmentWireLengthLabel.appendChild(document.createTextNode("Odległość do poprzedniego segmentu"));
+  const segmentIndexInput = document.createElement("input");
+  const segmentDeviceSelect = document.createElement("select");
+  const segmentWireLengthInput = document.createElement("input");
+  setAttributes(segmentIndexInput, { class: "segmentId", id: `actionsSegmentIndex${device.index}`, type: "number", min: 0, max: 50, value: device.index });
+  setAttributes(segmentDeviceSelect, { class: "segmentDeviceSelect", id: `actionsSegmentDevice${device.index}` });
+  setAttributes(segmentWireLengthInput, { class: "segmentWireLength", id: `actionsSegmentWireLength${device.index}`, type: "number", min: 1, value: device.wireLength });
+  segmentIndexLabel.appendChild(segmentIndexInput);
+  segmentDeviceSelectContainer.appendChild(segmentDeviceLabel);
+  segmentDeviceSelectContainer.appendChild(segmentDeviceSelect);
+  segmentWireLengthContainer.appendChild(segmentWireLengthLabel);
+  segmentWireLengthContainer.appendChild(segmentWireLengthInput);
+
+  return actionsSegment;
+}
+
+// Tworzenie panelu działań dla segmentu jednostki sterującej
+function createSegmentActionsPSU() {
+  const actionsSegment = document.createElement("div");
+  const segmentIndexLabel = document.createElement("label");
+  const segmentDeviceLabel = document.createElement("label");
+  setAttributes(actionsSegment, { class: "actionsSegment", id: "actionsSegment0", "data-segmentType": "PSU", "data-segmentIndex": "0" });
+  setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: "actionsSegmentIndex0" });
+  setAttributes(segmentDeviceLabel, { class: "segmentDeviceLabel", for: "actionsSegmentDevice0" });
+  segmentIndexLabel.appendChild(document.createTextNode("Segment nr "));
+  segmentDeviceLabel.appendChild(document.createTextNode("Urządzenie"));
+  actionsSegment.appendChild(segmentIndexLabel);
+  actionsSegment.appendChild(segmentDeviceLabel);
+  const segmentIndexInput = document.createElement("input");
+  const segmentDeviceInput = document.createElement("input");
+  setAttributes(segmentIndexInput, { class: "segmentId", id: "actionsSegmentIndex0", type: "number", min: 0, max: 50, value: 0 });
+  setAttributes(segmentDeviceInput, { class: "segmentDeviceSelect", id: "actionsSegmentDevice0", value: systemData.powerSupply });
+  segmentIndexLabel.appendChild(segmentIndexInput);
+  segmentDeviceLabel.appendChild(segmentDeviceInput);
+
+  return actionsSegment;
+}
+
+// Ustawienie wartości zużycia energii dla systemu
+function setSystemPowerConsumption(value) {
+  const powerConsumption = document.querySelector(".powerConsumption");
+  powerConsumption.appendChild(document.createTextNode(`${value} W`));
 }
 
 //W kodzie jest getter i setter systemu, jakby komuś przyszło na myśl generowanie systemu po JSONie :)
@@ -57,9 +174,6 @@ function setSystem(system, loadFromSaved = "") {
       }
     });
   }
-  const systemNode = document.querySelector(`.system`);
-  //przeskakujemy na dól strony
-  systemNode.scrollIntoView({ behavior: "smooth", block: "start" });
   //funkcja poniżej generuje Podlgąd systemu i Działania
   createPreview();
   //Generowanie systemu
@@ -84,20 +198,20 @@ function saveListOfDevices() {
 
 //Generowanie wszystkich pojemników na zdjęcia, akcje dotyczące kontenerów w zależności od ilości wprowadzonych urządzeń na widoku podstawowym ( czyt. po zaladowaniu strony )
 function createPreviewImages(amount) {
-  const systemGraphics = document.querySelector(`.deviceImages`);
+  const systemGraphics = document.querySelector(`.systemDiagram`);
   systemGraphics.innerHTML = "";
   for (let i = 0; i < amount; i++) {
-    const previewContainer = document.createElement(`div`);
-    previewContainer.className = `previewContainer`;
-    previewContainer.setAttribute(`id`, `previewContainer${i}`);
+    const deviceSegment = document.createElement(`div`);
+    deviceSegment.className = `deviceSegment`;
+    deviceSegment.setAttribute(`id`, `deviceSegment${i}`);
 
-    const signallerImageContainer = document.createElement(`div`);
-    signallerImageContainer.className = `signallerImageContainer`;
+    const warningDeviceImageContainer = document.createElement(`div`);
+    warningDeviceImageContainer.className = `warningDeviceImageContainer`;
 
-    const signallerImage = document.createElement(`img`);
-    signallerImage.setAttribute(`src`, "");
-    signallerImage.setAttribute(`alt`, `unable to find a image`);
-    signallerImageContainer.appendChild(signallerImage);
+    const warningDeviceImage = document.createElement(`img`);
+    warningDeviceImage.setAttribute(`src`, "");
+    warningDeviceImage.setAttribute(`alt`, `unable to find a image`);
+    warningDeviceImageContainer.appendChild(warningDeviceImage);
 
     const busImageContainer = document.createElement(`div`);
     busImageContainer.className = `busImageContainer`;
@@ -114,82 +228,80 @@ function createPreviewImages(amount) {
     detectorImage.setAttribute(`alt`, `unable to find a image`);
     detectorImageContainer.appendChild(detectorImage);
 
-    previewContainer.appendChild(signallerImageContainer);
-    previewContainer.appendChild(busImageContainer);
-    previewContainer.appendChild(detectorImageContainer);
-    systemGraphics.appendChild(previewContainer);
+    deviceSegment.appendChild(warningDeviceImageContainer);
+    deviceSegment.appendChild(busImageContainer);
+    deviceSegment.appendChild(detectorImageContainer);
+    systemGraphics.appendChild(deviceSegment);
   }
 }
 
 //Generowanie wszystkich pojemników na zdjęcia, akcje dotyczące kontenerów w zależności od ilości wprowadzonych urządzeń na widoku podstawowym ( czyt. po zaladowaniu strony )
 function createPreviewActions(amount) {
-  const systemActions = document.querySelector(`.systemActions`);
-  const actionDivContainer = document.createElement(`div`);
+  const actionsList = document.querySelector(`.actionsList`);
+
   for (let i = 0; i <= amount; i++) {
-    const actionsContainer = document.createElement(`div`);
-    actionsContainer.className = `actionsContainer`;
-    actionsContainer.setAttribute(`id`, `actionsContainer${i}`);
+    const actionsSegment = document.createElement(`div`);
+    actionsSegment.className = `actionsSegment`;
+    actionsSegment.setAttribute(`id`, `actionsSegment${i}`);
 
-    const segmentNumber = document.createElement(`p`);
-    segmentNumber.className = `segmentNumber`;
-    segmentNumber.innerHTML = `Segment nr `;
-    const segmentNumberInput = document.createElement(`input`);
-    segmentNumberInput.className = `segmentIdentyfier`;
+    const segmentIndexLabel = document.createElement(`p`);
+    segmentIndexLabel.className = `segmentIndexLabel`;
+    segmentIndexLabel.innerHTML = `Segment nr `;
+    const segmentIndexInput = document.createElement(`input`);
+    segmentIndexInput.className = `segmentId`;
 
-    actionsContainer.appendChild(segmentNumber);
-    const segmentDeviceDescrpition = document.createElement(`p`);
-    segmentDeviceDescrpition.className = `segmentDeviceDescription`;
-    segmentDeviceDescrpition.innerHTML = `Urządzenie`;
+    actionsSegment.appendChild(segmentIndexLabel);
+    const segmentDeviceLabel = document.createElement(`p`);
+    segmentDeviceLabel.className = `segmentDeviceLabel`;
+    segmentDeviceLabel.innerHTML = `Urządzenie`;
     if (i === 0) {
       const segmentDeviceInput = document.createElement(`input`);
-      segmentNumberInput.value = i;
-      segmentNumberInput.setAttribute(`id`, `segment${i}`);
+      segmentIndexInput.value = i;
+      segmentIndexInput.setAttribute(`id`, `segment${i}`);
       segmentDeviceInput.value = `Teta MOD Control 1`;
-      actionsContainer.setAttribute(`data-psu`, `PSU`);
-      actionsContainer.appendChild(segmentDeviceDescrpition);
+      actionsSegment.setAttribute(`data-segmentType`, `PSU`);
+      actionsSegment.appendChild(segmentDeviceLabel);
 
-      actionsContainer.appendChild(segmentDeviceInput);
+      actionsSegment.appendChild(segmentDeviceInput);
     } else {
-      const deviceSelectionContainer = document.createElement(`div`);
-      deviceSelectionContainer.className = `deviceSelection`;
-      const deviceActionSelect = document.createElement(`select`);
-      deviceActionSelect.className = `deviceActionSelect`;
-      deviceActionSelect.name = `detector`;
-      segmentNumberInput.value = i;
-      segmentNumberInput.setAttribute(`id`, `segment${i}`);
-      deviceSelectionContainer.appendChild(segmentDeviceDescrpition);
-      deviceSelectionContainer.appendChild(deviceActionSelect);
-      actionsContainer.appendChild(deviceSelectionContainer);
+      const segmentDeviceSelectContainer = document.createElement(`div`);
+      segmentDeviceSelectContainer.className = `segmentDeviceSelectContainer`;
+      const segmentDeviceSelect = document.createElement(`select`);
+      segmentDeviceSelect.className = `segmentDeviceSelect`;
+      segmentDeviceSelect.name = `detector`;
+      segmentIndexInput.value = i;
+      segmentIndexInput.setAttribute(`id`, `segment${i}`);
+      segmentDeviceSelectContainer.appendChild(segmentDeviceLabel);
+      segmentDeviceSelectContainer.appendChild(segmentDeviceSelect);
+      actionsSegment.appendChild(segmentDeviceSelectContainer);
 
-      const wireLengthContainer = document.createElement(`div`);
-      wireLengthContainer.className = `wireLengthActionContainer`;
+      const segmentWireLengthContainer = document.createElement(`div`);
+      segmentWireLengthContainer.className = `segmentWireLengthContainer`;
 
-      const wireLengthLabel = document.createElement(`p`);
-      wireLengthLabel.innerHTML = `Odległość do poprzedniego segmentu`;
-      wireLengthLabel.className = `wireLength`;
-      wireLengthLabel.setAttribute(`id`, `wireLength${i}`);
-      const distanceToPreviuous = document.createElement(`input`);
-      distanceToPreviuous.className = `distanceToPrevious`;
+      const segmentWireLengthLabel = document.createElement(`p`);
+      segmentWireLengthLabel.innerHTML = `Odległość do poprzedniego segmentu`;
+      segmentWireLengthLabel.className = `segmentWireLengthLabel`;
+      segmentWireLengthLabel.setAttribute(`id`, `wireLength${i}`);
+      const segmentWireLengthInput = document.createElement(`input`);
+      segmentWireLengthInput.className = `segmentWireLengthInput`;
 
-      distanceToPreviuous.value = SYSTEM.bus[i - 1].wireLen_m;
-      actionsContainer.setAttribute(`data-psu`, `detectors`);
-      actionsContainer.setAttribute(`data-segmentNumber`, `${i}`);
-      wireLengthContainer.appendChild(wireLengthLabel);
-      wireLengthContainer.appendChild(distanceToPreviuous);
-      actionsContainer.appendChild(wireLengthContainer);
+      segmentWireLengthInput.value = SYSTEM.bus[i - 1].wireLen_m;
+      actionsSegment.setAttribute(`data-segmentType`, `detectors`);
+      actionsSegment.setAttribute(`data-segmentIndex`, `${i}`);
+      segmentWireLengthContainer.appendChild(segmentWireLengthLabel);
+      segmentWireLengthContainer.appendChild(segmentWireLengthInput);
+      actionsSegment.appendChild(segmentWireLengthContainer);
     }
-    segmentNumber.appendChild(segmentNumberInput);
-    actionDivContainer.className = `actionListContainer`;
+    segmentIndexLabel.appendChild(segmentIndexInput);
 
-    actionDivContainer.appendChild(actionsContainer);
+    actionsList.appendChild(actionsSegment);
     //funkcja dodająca przyciski dodawania i usuwania przycisków
-    createAddRemoveButtons(actionsContainer);
+    createAddRemoveButtons(actionsSegment);
   }
-  systemActions.appendChild(actionDivContainer);
 }
 
-function createAddRemoveButtons(actionsContainer) {
-  if (actionsContainer.getAttribute(`data-psu`) !== `PSU`) {
+function createAddRemoveButtons(actionsSegment) {
+  if (actionsSegment.getAttribute(`data-segmentType`) !== `PSU`) {
     const buttonsContainer = document.createElement(`div`);
     buttonsContainer.className = `buttonsContainer`;
 
@@ -212,32 +324,32 @@ function createAddRemoveButtons(actionsContainer) {
     removeButton.appendChild(removeImage);
     buttonsContainer.appendChild(addButton);
     buttonsContainer.appendChild(removeButton);
-    actionsContainer.appendChild(buttonsContainer);
+    actionsSegment.appendChild(buttonsContainer);
   }
 }
 
 function addRemoveActionListener() {
-  const segmentListeners = document.querySelector(`.actionListContainer`);
+  const segmentListeners = document.querySelector(`.actionsList`);
   segmentListeners.addEventListener(
     `click`,
     e => {
       if (e.target.name === `addSegment`) {
-        const listOfSegments = Array.from(document.querySelectorAll(`.actionsContainer`));
-        const segmentClicked = e.target.closest(`.actionsContainer`);
+        const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
+        const segmentClicked = e.target.closest(`.actionsSegment`);
         const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
 
-        const listOfPreviewContainers = document.querySelectorAll(`.previewContainer`);
-        const previewContainer = listOfPreviewContainers[indexOfClickedSegment - 1];
+        const listOfdeviceSegments = document.querySelectorAll(`.deviceSegment`);
+        const deviceSegment = listOfdeviceSegments[indexOfClickedSegment - 1];
         const objToCopy = JSON.parse(JSON.stringify(SYSTEM.bus[indexOfClickedSegment - 1]));
         SYSTEM.bus.splice(indexOfClickedSegment, 0, objToCopy);
         const clonedSegment = segmentClicked.cloneNode(true);
-        const clonedSegmentSelect = clonedSegment.querySelector(`.deviceActionSelect`);
+        const clonedSegmentSelect = clonedSegment.querySelector(`.segmentDeviceSelect`);
         clonedSegmentSelect.value = SYSTEM.bus[indexOfClickedSegment].detectorName;
-        const clonedSegmentIdentyfier = clonedSegment.querySelector(`.segmentIdentyfier`);
-        clonedSegmentIdentyfier.value = `${listOfSegments.length}`;
-        const clonedPreview = previewContainer.cloneNode(true);
+        const clonedsegmentIdentifier = clonedSegment.querySelector(`.segmentIdentifier`);
+        clonedsegmentIdentifier.value = `${listOfSegments.length}`;
+        const clonedPreview = deviceSegment.cloneNode(true);
         segmentClicked.after(clonedSegment);
-        previewContainer.after(clonedPreview);
+        deviceSegment.after(clonedPreview);
 
         const reducer = systemStatusReducer();
         systemDetectors(reducer);
@@ -248,16 +360,16 @@ function addRemoveActionListener() {
         selectEvent(clonedSegmentSelect);
         initAppliencedDevices(reducer);
       } else if (e.target.name === `removeSegment`) {
-        const listOfSegments = Array.from(document.querySelectorAll(`.actionsContainer`));
-        const segmentClicked = e.target.closest(`.actionsContainer`);
+        const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
+        const segmentClicked = e.target.closest(`.actionsSegment`);
         const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
 
-        const listOfPreviewContainers = document.querySelectorAll(`.previewContainer`);
-        const previewContainer = listOfPreviewContainers[indexOfClickedSegment - 1];
-        if (listOfPreviewContainers.length > 1) {
+        const listOfdeviceSegments = document.querySelectorAll(`.deviceSegment`);
+        const deviceSegment = listOfdeviceSegments[indexOfClickedSegment - 1];
+        if (listOfdeviceSegments.length > 1) {
           SYSTEM.bus.splice(indexOfClickedSegment - 1, 1);
           segmentClicked.remove();
-          previewContainer.remove();
+          deviceSegment.remove();
         }
         const reducer = systemStatusReducer();
         systemDetectors(reducer);
@@ -333,30 +445,30 @@ function systemPowerConsumption(value) {
 }
 
 function setPreviewImages(devices) {
-  const previewContainer = document.querySelectorAll(`.previewContainer .busImageContainer img`);
-  const detectorImages = document.querySelectorAll(`.previewContainer .detectorImageContainer img`);
-  const sirensImages = document.querySelectorAll(`.previewContainer .signallerImageContainer img`);
+  const deviceSegment = document.querySelectorAll(`.deviceSegment .busImageContainer img`);
+  const detectorImages = document.querySelectorAll(`.deviceSegment .detectorImageContainer img`);
+  const sirensImages = document.querySelectorAll(`.deviceSegment .warningDeviceImageContainer img`);
   devices.forEach((device, i) => {
     if (devices[i].deviceType === `detector`) {
       detectorImages[i].style.visibility = `visible`;
       detectorImages[i].setAttribute("src", `./SVG/${device.detectorName}.svg`);
-      previewContainer[i].setAttribute(`src`, `./SVG/tconP.svg`);
+      deviceSegment[i].setAttribute(`src`, `./SVG/tconP.svg`);
       sirensImages[i].style.visibility = `hidden`;
     } else if (devices[i].deviceType === `siren`) {
       sirensImages[i].style.visibility = `visible`;
       sirensImages[i].setAttribute("src", `./SVG/${device.detectorName}.svg`);
-      previewContainer[i].setAttribute(`src`, `./SVG/tconL.svg`);
+      deviceSegment[i].setAttribute(`src`, `./SVG/tconL.svg`);
       detectorImages[i].style.visibility = `hidden`;
     }
   });
 }
 
 function systemActionDevicesSelect(structureType) {
-  const deviceActionSelect = document.querySelectorAll(`.deviceActionSelect`);
+  const segmentDeviceSelect = document.querySelectorAll(`.segmentDeviceSelect`);
   const structureObj = CONSTRUCTIONS.find(constructionType => constructionType.type === structureType);
   const deviceList = structureObj.devices;
   // Generowanie opcji dla selecta zawierającego dostępne rodzaje urządzenia w utworzonym segmencie 
-  deviceActionSelect.forEach((select, i) => {
+  segmentDeviceSelect.forEach((select, i) => {
     deviceList.forEach((device, i) => {
       if (device.typeOfDevice !== `siren`) {
         const option = document.createElement(`option`);
@@ -381,16 +493,16 @@ function systemActionDevicesSelect(structureType) {
 
 function selectEvent(select) {
   select.addEventListener(`change`, e => {
-    const listOfSegments = Array.from(document.querySelectorAll(`.actionsContainer`));
-    const segmentClicked = e.target.closest(`.actionsContainer`);
+    const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
+    const segmentClicked = e.target.closest(`.actionsSegment`);
     const i = listOfSegments.indexOf(segmentClicked) - 1;
 
     SYSTEM.bus[i].detectorName = e.target.value;
     if (e.target.value === `Teta SZOA`) {
       SYSTEM.bus[i].deviceType = `siren`;
       delete SYSTEM.bus[i].toledText;
-      const container = document.querySelector(`#actionsContainer${i + 1}`);
-      const toled = document.querySelector(`#actionsContainer${i + 1} .toledContainer`);
+      const container = document.querySelector(`#actionsSegment${i + 1}`);
+      const toled = document.querySelector(`#actionsSegment${i + 1} .toledContainer`);
       if (toled) {
         container.removeChild(toled);
       }
@@ -401,8 +513,8 @@ function selectEvent(select) {
       SYSTEM.bus[i].deviceType = `detector`;
       SYSTEM.bus[i].gasDetected = e.target.options[e.target.selectedIndex].getAttribute(`data-detectedgas`);
       delete SYSTEM.bus[i].toledText;
-      const container = document.querySelector(`#actionsContainer${i + 1}`);
-      const toled = document.querySelector(`#actionsContainer${i + 1} .toledContainer`);
+      const container = document.querySelector(`#actionsSegment${i + 1}`);
+      const toled = document.querySelector(`#actionsSegment${i + 1} .toledContainer`);
       if (toled) {
         container.removeChild(toled);
       }
@@ -417,7 +529,7 @@ function selectEvent(select) {
     systemAccessories(reduced);
     statusBusLength(reduced);
     systemPowerConsumption();
-    setPreviewImages(SYSTEM.bus);
+    // setPreviewImages(SYSTEM.bus);
     initAppliencedDevices(reduced);
     //Aż do tego miejsca.
   });
@@ -425,14 +537,14 @@ function selectEvent(select) {
 
 //Funkcja odpowiadająca za nadanie każdemu selektowi w podglądzie systemu listenera na zmianę stanu. Jeśli chodzi o uwagi techniczne to szukałbym błędu w wyszukiwaniu elementu ( patrz Uwagi techniczne pkt 6 ) w funkcji selectEvent.
 function actionsSelectListener() {
-  const deviceActionSelect = document.querySelectorAll(`.deviceActionSelect`);
-  deviceActionSelect.forEach(select => {
+  const segmentDeviceSelect = document.querySelectorAll(`.segmentDeviceSelect`);
+  segmentDeviceSelect.forEach(select => {
     selectEvent(select);
   });
 }
 
 function createToledSelect(i) {
-  const container = document.querySelector(`#actionsContainer${i + 1}`);
+  const container = document.querySelector(`#actionsSegment${i + 1}`);
   const toledContainer = document.createElement(`div`);
   toledContainer.className = `toledContainer`;
   const toledSelect = document.createElement(`select`);
@@ -563,7 +675,7 @@ function generateSystem() {
   //Tworzenie selectów dla urządzeń w podglądzie systemu
   systemActionDevicesSelect(initSystem.structureType);
   //Tworzenie obrazów
-  setPreviewImages(SYSTEM.bus);
+  // setPreviewImages(SYSTEM.bus);
   actionsSelectListener();
   //Dodawanie i usuwanie elementów ( czyli kopiowanie i usuwanie ) oraz dodanie listenera do dodanego segmentu
   addRemoveActionListener();
@@ -580,7 +692,9 @@ function generateSystem() {
 
 function createPreview() {
   //generowanie konteneru dla zdjęć urządzeń i magistrali
-  createPreviewImages(SYSTEM.bus.length);
+  // createPreviewImages(SYSTEM.bus.length);
+  createSystemDiagram();
   //geneowanie numeracji segmentow, dzialań, selectów, numeracji segmentów etc
-  createPreviewActions(SYSTEM.bus.length);
+  // createPreviewActions(SYSTEM.bus.length);
+  createSystemSegmentsActionsList();
 }

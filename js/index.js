@@ -4,6 +4,13 @@ const SYSTEM = {
   bus: [],
 };
 
+// Główny obiekt zawierający dane utworzonego systemu
+const systemData = {
+  powerSupply: "",
+  devicesTypes: [],
+  devices: []
+};
+
 //Dane, które są wprowadzane z pierwszego widoku.
 let initSystem = {
   amountOfDetectors: 0,
