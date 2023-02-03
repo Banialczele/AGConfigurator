@@ -84,12 +84,15 @@ function createSegmentActions(device) {
   const segmentWireLengthLabel = document.createElement("label");
   const segmentDeviceSelectContainer = document.createElement("div");
   const segmentWireLengthContainer = document.createElement("div");
+  const segmentButtonsContainer = document.createElement("div");
   setAttributes(actionsSegment, { class: "actionsSegment", id: `actionsSegment${device.index}`, "data-segmentType": "detectors", "data-segmentIndex": `${device.index}` });
   setAttributes(segmentDeviceSelectContainer, { class: "segmentDeviceSelectContainer" });
   setAttributes(segmentWireLengthContainer, { class: "segmentWireLengthContainer" });
+  setAttributes(segmentButtonsContainer, { class: "segmentButtonsContainer" });
   actionsSegment.appendChild(segmentIndexLabel);
   actionsSegment.appendChild(segmentDeviceSelectContainer);
   actionsSegment.appendChild(segmentWireLengthContainer);
+  actionsSegment.appendChild(segmentButtonsContainer);
   setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: `actionsSegmentIndex${device.index}` });
   setAttributes(segmentDeviceLabel, { class: "segmentDeviceLabel", for: `actionsSegmentDevice${device.index}` });
   setAttributes(segmentWireLengthLabel, { class: "segmentWireLengthLabel", for: `actionsSegmentWireLength${device.index}` });
@@ -99,14 +102,26 @@ function createSegmentActions(device) {
   const segmentIndexInput = document.createElement("input");
   const segmentDeviceSelect = document.createElement("select");
   const segmentWireLengthInput = document.createElement("input");
+  const duplicateDeviceButton = document.createElement("button");
+  const duplicateButtonImage = document.createElement("img");
+  const removeDeviceButton = document.createElement("button");
+  const removeButtonImage = document.createElement("img");
   setAttributes(segmentIndexInput, { class: "segmentId", id: `actionsSegmentIndex${device.index}`, type: "number", min: 0, max: 50, value: device.index });
   setAttributes(segmentDeviceSelect, { class: "segmentDeviceSelect", id: `actionsSegmentDevice${device.index}` });
   setAttributes(segmentWireLengthInput, { class: "segmentWireLength", id: `actionsSegmentWireLength${device.index}`, type: "number", min: 1, value: device.wireLength });
+  setAttributes(duplicateDeviceButton, { class: "duplicateDeviceButton", id: `duplicateDevice${device.index}` });
+  setAttributes(duplicateButtonImage, { src: "./SVG/add.svg", alt: "Duplicate device button" });
+  setAttributes(removeDeviceButton, { class: "removeDeviceButton", id: `removeDevice${device.index}` });
+  setAttributes(removeButtonImage, { src: "./SVG/remove.svg", alt: "Remove device button" });
   segmentIndexLabel.appendChild(segmentIndexInput);
   segmentDeviceSelectContainer.appendChild(segmentDeviceLabel);
   segmentDeviceSelectContainer.appendChild(segmentDeviceSelect);
   segmentWireLengthContainer.appendChild(segmentWireLengthLabel);
   segmentWireLengthContainer.appendChild(segmentWireLengthInput);
+  segmentButtonsContainer.appendChild(duplicateDeviceButton);
+  segmentButtonsContainer.appendChild(removeDeviceButton);
+  duplicateDeviceButton.appendChild(duplicateButtonImage);
+  removeDeviceButton.appendChild(removeButtonImage);
 
   return actionsSegment;
 }

@@ -193,20 +193,21 @@
   background: #f6f6f6;
 }
 
-.actionsSegment:not(:first-child) .buttonsContainer {
+.actionsSegment:not(:first-child) .segmentButtonsContainer {
   grid-area: buttons;
   place-self: end center;
 }
 
-.buttonsContainer > button {
+.segmentButtonsContainer > button {
   height: 20px;
   width: 35px;
   border: none;
   padding: 0;
   margin: 0 2px;
+  cursor: pointer;
 }
 
-.buttonsContainer > button img {
+.segmentButtonsContainer > button img {
   width: 100%;
   height: 100%;
 }
