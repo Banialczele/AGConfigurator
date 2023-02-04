@@ -13,13 +13,13 @@ const systemData = {
 
 //Dane, które są wprowadzane z pierwszego widoku.
 let initSystem = {
-  amountOfDetectors: 0,
-  EWL: 0,
-  detectorName: "",
-  deviceType: "",
-  gasDetected: "",
-  structureType: "",
-  batteryBackUp: "",
+  amountOfDetectors: 1,
+  EWL: 15,
+  detectorName: "Teta EcoWent",
+  deviceType: "detector",
+  gasDetected: "CO",
+  structureType: "garageAndUndergroundCarPark",
+  batteryBackUp: "NO",
 };
 
 let lang = "PL";
@@ -81,9 +81,9 @@ window.addEventListener("load", () => {
   //Podświetlenie napisu TETA
   highlightTeta();
   //Generowanie opcji kolejno: rodzaj obiektu, wykrywany gaz, podtrzymanie akumulatorowe pracy.
-  generateStructureOptions();
-  generateGasDetectedOptions();
-  generateBatteryBackUpOptions();
+  createStructureTypesListSelect();
+  createDetectedGasListSelect();
+  createBatteryBackUpListSelect();
   //Obsługa drag'n'drop która nie działa, trzeba to wykończyć!
   handleDragAndDrop();
   //Wczytanie systemu z pliku
@@ -128,4 +128,141 @@ function chooseText(text) {
   return res;
 }
 
-//Zmiany w nazewnictwie!
+const STRUCTURE_TYPES = [
+  {
+    type: "garageAndUndergroundCarPark",
+    label: "Garaże i parkingi podziemne",
+    devices: [
+      {
+        type: "Teta EcoWent",
+        gasDetected: "CO",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta EcoDet",
+        gasDetected: "LPG",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta EcoWent + MiniDet",
+        gasDetected: "CO + LPG",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta EcoN",
+        gasDetected: "NO2",
+        typeOfDevice: "detector",
+      },
+      // {
+      //   type: "Teta MiniDet",
+      //   gasDetected: "LPG",
+      //   typeOfDevice: "detector",
+      // },
+      {
+        type: "Teta SZOA",
+        typeOfDevice: "siren",
+      },
+      {
+        type: "TOLED",
+        typeOfDevice: "siren",
+      },
+    ],
+  },
+  {
+    type: "powerPack",
+    label: "Akumulatornie",
+    devices: [
+      {
+        type: "Teta EcoH",
+        gasDetected: "H2",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta SZOA",
+        typeOfDevice: "siren",
+      },
+      {
+        type: "TOLED",
+        typeOfDevice: "siren",
+      },
+    ],
+  },
+  {
+    type: "hall",
+    label: "Hale",
+    devices: [
+      {
+        type: "Teta EcoDet",
+        gasDetected: "LPG",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta Term",
+        gasDetected: "NG",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta SZOA",
+        typeOfDevice: "siren",
+      },
+      {
+        type: "TOLED",
+        typeOfDevice: "siren",
+      },
+    ],
+  },
+  {
+    type: "other",
+    label: "Inne",
+    devices: [
+      {
+        type: "Teta EcoWent",
+        gasDetected: "CO",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta EcoDet",
+        gasDetected: "LPG",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta EcoWent + MiniDet",
+        gasDetected: "CO + LPG",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta EcoN",
+        gasDetected: "NO2",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta MiniDet",
+        gasDetected: "LPG",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta EcoH",
+        gasDetected: "H2",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta Term",
+        gasDetected: "NG",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta EcoH",
+        gasDetected: "H2",
+        typeOfDevice: "detector",
+      },
+      {
+        type: "Teta SZOA",
+        typeOfDevice: "siren",
+      },
+      {
+        type: "TOLED",
+        typeOfDevice: "siren",
+      },
+    ],
+  },
+];

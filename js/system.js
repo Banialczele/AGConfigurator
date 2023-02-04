@@ -1,32 +1,8 @@
-// Przetwarzanie formularza dot. systemu
-function handleFormSubmit() {
-  // Wyłapanie zmian w select dot. wybranego typu gazu i przypisanie nazwy czujnika + rodzaju czujnika do obiektu inicjującego podgląd systemu 
-  document.getElementById("gasDetected").addEventListener("change", (event) => {
-    const option = event.target;
-    initSystem.detectorName = option[option.selectedIndex].dataset.devicename;
-    initSystem.deviceType = option[option.selectedIndex].dataset.devicetype;
-  });
-
-  //Zatwierdzenie formularza i wygenerowanie podglądu systemu
-  const form = document.querySelector(".configForm");
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const system = document.querySelector(`.system`);
-    initSystem.amountOfDetectors = document.getElementById("amountOfDetectors").value;
-    initSystem.structureType = document.getElementById("structureType").value;
-    initSystem.gasDetected = document.getElementById("gasDetected").value;
-    initSystem.batteryBackUp = document.getElementById("batteryBackUp").value;
-    initSystem.EWL = document.getElementById("EWL").value;
-    createSystemData();
-    setSystem(initSystem);
-    system.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
-}
-
 // Inicjacja głównego obiektu z danymi systemu
 function createSystemData() {
   systemData.powerSupply = "Teta MOD Control 1";
   systemData.devicesTypes.push(initSystem.deviceType);
+  systemData.structureType.push(initSystem.structureType);
   for (let i = 0; i < initSystem.amountOfDetectors; i++) {
     systemData.devices.push({
       index: i + 1,
@@ -88,42 +64,33 @@ function createSystemSegmentsActionsList() {
 function createSegmentActions(device) {
   const actionsSegment = document.createElement("div");
   const segmentIndexLabel = document.createElement("label");
-  const segmentDeviceLabel = document.createElement("label");
   const segmentWireLengthLabel = document.createElement("label");
-  const segmentDeviceSelectContainer = document.createElement("div");
   const segmentWireLengthContainer = document.createElement("div");
   const segmentButtonsContainer = document.createElement("div");
   setAttributes(actionsSegment, { class: "actionsSegment", id: `actionsSegment${device.index}`, "data-segmentType": "detectors", "data-segmentIndex": `${device.index}` });
-  setAttributes(segmentDeviceSelectContainer, { class: "segmentDeviceSelectContainer" });
   setAttributes(segmentWireLengthContainer, { class: "segmentWireLengthContainer" });
   setAttributes(segmentButtonsContainer, { class: "segmentButtonsContainer" });
   actionsSegment.appendChild(segmentIndexLabel);
-  actionsSegment.appendChild(segmentDeviceSelectContainer);
+  actionsSegment.appendChild(createSegmentDeviceTypeSelect(device));
   actionsSegment.appendChild(segmentWireLengthContainer);
   actionsSegment.appendChild(segmentButtonsContainer);
   setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: `actionsSegmentIndex${device.index}` });
-  setAttributes(segmentDeviceLabel, { class: "segmentDeviceLabel", for: `actionsSegmentDevice${device.index}` });
   setAttributes(segmentWireLengthLabel, { class: "segmentWireLengthLabel", for: `actionsSegmentWireLength${device.index}` });
   segmentIndexLabel.appendChild(document.createTextNode("Segment nr "));
-  segmentDeviceLabel.appendChild(document.createTextNode("Urządzenie"));
   segmentWireLengthLabel.appendChild(document.createTextNode("Odległość do poprzedniego segmentu"));
   const segmentIndexInput = document.createElement("input");
-  const segmentDeviceSelect = document.createElement("select");
   const segmentWireLengthInput = document.createElement("input");
   const duplicateDeviceButton = document.createElement("button");
   const duplicateButtonImage = document.createElement("img");
   const removeDeviceButton = document.createElement("button");
   const removeButtonImage = document.createElement("img");
   setAttributes(segmentIndexInput, { class: "segmentId", id: `actionsSegmentIndex${device.index}`, type: "number", min: 0, max: 50, value: device.index });
-  setAttributes(segmentDeviceSelect, { class: "segmentDeviceSelect", id: `actionsSegmentDevice${device.index}` });
   setAttributes(segmentWireLengthInput, { class: "segmentWireLength", id: `actionsSegmentWireLength${device.index}`, type: "number", min: 1, value: device.wireLength });
   setAttributes(duplicateDeviceButton, { class: "duplicateDeviceButton", id: `duplicateDevice${device.index}` });
   setAttributes(duplicateButtonImage, { src: "./SVG/add.svg", alt: "Duplicate device button" });
   setAttributes(removeDeviceButton, { class: "removeDeviceButton", id: `removeDevice${device.index}` });
   setAttributes(removeButtonImage, { src: "./SVG/remove.svg", alt: "Remove device button" });
   segmentIndexLabel.appendChild(segmentIndexInput);
-  segmentDeviceSelectContainer.appendChild(segmentDeviceLabel);
-  segmentDeviceSelectContainer.appendChild(segmentDeviceSelect);
   segmentWireLengthContainer.appendChild(segmentWireLengthLabel);
   segmentWireLengthContainer.appendChild(segmentWireLengthInput);
   segmentButtonsContainer.appendChild(duplicateDeviceButton);
@@ -132,6 +99,20 @@ function createSegmentActions(device) {
   removeDeviceButton.appendChild(removeButtonImage);
 
   return actionsSegment;
+}
+
+function createSegmentDeviceTypeSelect(device) {
+  const segmentDeviceSelectContainer = document.createElement("div");
+  const segmentDeviceLabel = document.createElement("label");
+  const segmentDeviceSelect = document.createElement("select");
+  setAttributes(segmentDeviceSelectContainer, { class: "segmentDeviceSelectContainer" });
+  setAttributes(segmentDeviceLabel, { class: "segmentDeviceLabel", for: `actionsSegmentDevice${device.index}` });
+  setAttributes(segmentDeviceSelect, { class: "segmentDeviceSelect", id: `actionsSegmentDevice${device.index}` });
+  segmentDeviceLabel.appendChild(document.createTextNode("Urządzenie"));
+  segmentDeviceSelectContainer.appendChild(segmentDeviceLabel);
+  segmentDeviceSelectContainer.appendChild(segmentDeviceSelect);
+
+  return segmentDeviceSelectContainer;
 }
 
 // Tworzenie panelu działań dla segmentu jednostki sterującej
@@ -332,7 +313,7 @@ function statusBusLength(reduced) {
 
 function systemActionDevicesSelect(structureType) {
   const segmentDeviceSelect = document.querySelectorAll(`.segmentDeviceSelect`);
-  const structureObj = CONSTRUCTIONS.find(constructionType => constructionType.type === structureType);
+  const structureObj = STRUCTURE_TYPES.find(constructionType => constructionType.type === structureType);
   const deviceList = structureObj.devices;
   // Generowanie opcji dla selecta zawierającego dostępne rodzaje urządzenia w utworzonym segmencie 
   segmentDeviceSelect.forEach((select, i) => {
