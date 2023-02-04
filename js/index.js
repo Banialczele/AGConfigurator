@@ -19,7 +19,7 @@ let initSystem = {
   deviceType: "detector",
   gasDetected: "CO",
   structureType: "garageAndUndergroundCarPark",
-  batteryBackUp: "NO",
+  batteryBackUp: "YES",
 };
 
 let lang = "PL";
@@ -80,10 +80,8 @@ window.addEventListener("load", () => {
   checkLang();
   //Podświetlenie napisu TETA
   highlightTeta();
-  //Generowanie opcji kolejno: rodzaj obiektu, wykrywany gaz, podtrzymanie akumulatorowe pracy.
-  createStructureTypesListSelect();
-  createDetectedGasListSelect();
-  createBatteryBackUpListSelect();
+  // Inicjalizacja formularza z domyślnymi ustawieniami
+  formInit();
   //Obsługa drag'n'drop która nie działa, trzeba to wykończyć!
   handleDragAndDrop();
   //Wczytanie systemu z pliku
