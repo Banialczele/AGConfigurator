@@ -1,8 +1,8 @@
 // Inicjacja głównego obiektu z danymi systemu
 function createSystemData() {
-  systemData.powerSupply = "Teta MOD Control 1";
+  systemData.powerSupply = initSystem.powerSupply;
+  systemData.structureType = initSystem.structureType;
   systemData.devicesTypes.push(initSystem.deviceType);
-  systemData.structureType.push(initSystem.structureType);
   for (let i = 0; i < initSystem.amountOfDetectors; i++) {
     systemData.devices.push({
       index: i + 1,

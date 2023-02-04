@@ -13,7 +13,8 @@ const systemData = {
 
 //Dane, które są wprowadzane z pierwszego widoku.
 let initSystem = {
-  amountOfDetectors: 1,
+  powerSupply: "Teta MOD Control 1",
+  amountOfDetectors: 3,
   EWL: 15,
   detectorName: "Teta EcoWent",
   deviceType: "detector",
