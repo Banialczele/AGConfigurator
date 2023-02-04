@@ -59,10 +59,18 @@ function createSegmentDiagram(device) {
   const warningDeviceImage = document.createElement("img");
   const busImage = document.createElement("img");
   const detectorImage = document.createElement("img");
-  setAttributes(warningDeviceImage, { src: "", alt: "Warning device image" });
   setAttributes(busImage, { src: "./SVG/tconP.svg", alt: "T-Konektor image" });
-  setAttributes(detectorImage, { src: `./SVG/${device.name}.svg`, alt: "Detector image" });
-  warningDeviceImage.style.visibility = "hidden";
+  if (device.type === "detector") {
+    setAttributes(warningDeviceImage, { src: "", alt: "Warning device image" });
+    setAttributes(detectorImage, { src: `./SVG/${device.name}.svg`, alt: "Detector image" });
+    warningDeviceImage.style.visibility = "hidden";
+    detectorImage.style.visibility = "visible";
+  } else {
+    setAttributes(warningDeviceImage, { src: `./SVG/${device.name}.svg`, alt: "Warning device image" });
+    setAttributes(detectorImage, { src: "", alt: "Detector image" });
+    warningDeviceImage.style.visibility = "visible";
+    detectorImage.style.visibility = "hidden";
+  }
   warningDeviceImageContainer.appendChild(warningDeviceImage);
   busImageContainer.appendChild(busImage);
   detectorImageContainer.appendChild(detectorImage);
@@ -149,7 +157,7 @@ function createSegmentActionsPSU() {
 }
 
 // Ustawienie wartości zużycia energii dla systemu
-function setSystemPowerConsumption(value) {
+function setSystemPowerConsumption(value = 25) {
   const powerConsumption = document.querySelector(".powerConsumption");
   powerConsumption.appendChild(document.createTextNode(`${value} W`));
 }
@@ -211,138 +219,6 @@ function saveListOfDevices() {
   });
 }
 
-//Generowanie wszystkich pojemników na zdjęcia, akcje dotyczące kontenerów w zależności od ilości wprowadzonych urządzeń na widoku podstawowym ( czyt. po zaladowaniu strony )
-function createPreviewImages(amount) {
-  const systemGraphics = document.querySelector(`.systemDiagram`);
-  systemGraphics.innerHTML = "";
-  for (let i = 0; i < amount; i++) {
-    const deviceSegment = document.createElement(`div`);
-    deviceSegment.className = `deviceSegment`;
-    deviceSegment.setAttribute(`id`, `deviceSegment${i}`);
-
-    const warningDeviceImageContainer = document.createElement(`div`);
-    warningDeviceImageContainer.className = `warningDeviceImageContainer`;
-
-    const warningDeviceImage = document.createElement(`img`);
-    warningDeviceImage.setAttribute(`src`, "");
-    warningDeviceImage.setAttribute(`alt`, `unable to find a image`);
-    warningDeviceImageContainer.appendChild(warningDeviceImage);
-
-    const busImageContainer = document.createElement(`div`);
-    busImageContainer.className = `busImageContainer`;
-
-    const busImage = document.createElement(`img`);
-    busImage.setAttribute(`src`, "");
-    busImage.setAttribute(`alt`, `unable to find a image`);
-    busImageContainer.appendChild(busImage);
-
-    const detectorImageContainer = document.createElement(`div`);
-    detectorImageContainer.className = `detectorImageContainer`;
-    const detectorImage = document.createElement(`img`);
-    detectorImage.setAttribute(`src`, "");
-    detectorImage.setAttribute(`alt`, `unable to find a image`);
-    detectorImageContainer.appendChild(detectorImage);
-
-    deviceSegment.appendChild(warningDeviceImageContainer);
-    deviceSegment.appendChild(busImageContainer);
-    deviceSegment.appendChild(detectorImageContainer);
-    systemGraphics.appendChild(deviceSegment);
-  }
-}
-
-//Generowanie wszystkich pojemników na zdjęcia, akcje dotyczące kontenerów w zależności od ilości wprowadzonych urządzeń na widoku podstawowym ( czyt. po zaladowaniu strony )
-function createPreviewActions(amount) {
-  const actionsList = document.querySelector(`.actionsList`);
-
-  for (let i = 0; i <= amount; i++) {
-    const actionsSegment = document.createElement(`div`);
-    actionsSegment.className = `actionsSegment`;
-    actionsSegment.setAttribute(`id`, `actionsSegment${i}`);
-
-    const segmentIndexLabel = document.createElement(`p`);
-    segmentIndexLabel.className = `segmentIndexLabel`;
-    segmentIndexLabel.innerHTML = `Segment nr `;
-    const segmentIndexInput = document.createElement(`input`);
-    segmentIndexInput.className = `segmentId`;
-
-    actionsSegment.appendChild(segmentIndexLabel);
-    const segmentDeviceLabel = document.createElement(`p`);
-    segmentDeviceLabel.className = `segmentDeviceLabel`;
-    segmentDeviceLabel.innerHTML = `Urządzenie`;
-    if (i === 0) {
-      const segmentDeviceInput = document.createElement(`input`);
-      segmentIndexInput.value = i;
-      segmentIndexInput.setAttribute(`id`, `segment${i}`);
-      segmentDeviceInput.value = `Teta MOD Control 1`;
-      actionsSegment.setAttribute(`data-segmentType`, `PSU`);
-      actionsSegment.appendChild(segmentDeviceLabel);
-
-      actionsSegment.appendChild(segmentDeviceInput);
-    } else {
-      const segmentDeviceSelectContainer = document.createElement(`div`);
-      segmentDeviceSelectContainer.className = `segmentDeviceSelectContainer`;
-      const segmentDeviceSelect = document.createElement(`select`);
-      segmentDeviceSelect.className = `segmentDeviceSelect`;
-      segmentDeviceSelect.name = `detector`;
-      segmentIndexInput.value = i;
-      segmentIndexInput.setAttribute(`id`, `segment${i}`);
-      segmentDeviceSelectContainer.appendChild(segmentDeviceLabel);
-      segmentDeviceSelectContainer.appendChild(segmentDeviceSelect);
-      actionsSegment.appendChild(segmentDeviceSelectContainer);
-
-      const segmentWireLengthContainer = document.createElement(`div`);
-      segmentWireLengthContainer.className = `segmentWireLengthContainer`;
-
-      const segmentWireLengthLabel = document.createElement(`p`);
-      segmentWireLengthLabel.innerHTML = `Odległość do poprzedniego segmentu`;
-      segmentWireLengthLabel.className = `segmentWireLengthLabel`;
-      segmentWireLengthLabel.setAttribute(`id`, `wireLength${i}`);
-      const segmentWireLengthInput = document.createElement(`input`);
-      segmentWireLengthInput.className = `segmentWireLengthInput`;
-
-      segmentWireLengthInput.value = SYSTEM.bus[i - 1].wireLen_m;
-      actionsSegment.setAttribute(`data-segmentType`, `detectors`);
-      actionsSegment.setAttribute(`data-segmentIndex`, `${i}`);
-      segmentWireLengthContainer.appendChild(segmentWireLengthLabel);
-      segmentWireLengthContainer.appendChild(segmentWireLengthInput);
-      actionsSegment.appendChild(segmentWireLengthContainer);
-    }
-    segmentIndexLabel.appendChild(segmentIndexInput);
-
-    actionsList.appendChild(actionsSegment);
-    //funkcja dodająca przyciski dodawania i usuwania przycisków
-    createAddRemoveButtons(actionsSegment);
-  }
-}
-
-function createAddRemoveButtons(actionsSegment) {
-  if (actionsSegment.getAttribute(`data-segmentType`) !== `PSU`) {
-    const buttonsContainer = document.createElement(`div`);
-    buttonsContainer.className = `buttonsContainer`;
-
-    const addButton = document.createElement(`button`);
-    addButton.className = `addButton`;
-    const addImage = document.createElement(`img`);
-    addImage.setAttribute(`src`, `./SVG/add.svg`);
-    addImage.setAttribute(`alt`, `unable to find image`);
-    addImage.setAttribute(`name`, `addSegment`);
-
-    addButton.appendChild(addImage);
-
-    const removeButton = document.createElement(`button`);
-    removeButton.className = `removeButton`;
-    const removeImage = document.createElement(`img`);
-    removeImage.setAttribute(`src`, `./SVG/remove.svg`);
-    removeImage.setAttribute(`alt`, `unable to find image`);
-    removeImage.setAttribute(`name`, `removeSegment`);
-
-    removeButton.appendChild(removeImage);
-    buttonsContainer.appendChild(addButton);
-    buttonsContainer.appendChild(removeButton);
-    actionsSegment.appendChild(buttonsContainer);
-  }
-}
-
 function addRemoveActionListener() {
   const segmentListeners = document.querySelector(`.actionsList`);
   segmentListeners.addEventListener(
@@ -371,7 +247,7 @@ function addRemoveActionListener() {
         systemSignallers(reducer);
         systemAccessories(reducer);
         statusBusLength(reducer);
-        systemPowerConsumption();
+        setSystemPowerConsumption();
         selectEvent(clonedSegmentSelect);
         initAppliencedDevices(reducer);
       } else if (e.target.name === `removeSegment`) {
@@ -391,7 +267,7 @@ function addRemoveActionListener() {
         systemSignallers(reducer);
         systemAccessories(reducer);
         statusBusLength(reducer);
-        systemPowerConsumption();
+        setSystemPowerConsumption();
         initAppliencedDevices(reducer);
       }
     },
@@ -452,30 +328,6 @@ function statusBusLength(reduced) {
   busLength.innerHTML = "";
   const busLengthValue = reduced.find(key => key[`wireLength`]);
   busLength.innerHTML = `<span class="bold">${busLengthValue[`wireLength`]}</span> m.`;
-}
-
-function systemPowerConsumption(value) {
-  const powerConsumption = document.querySelector(`.powerConsumption`);
-  powerConsumption.innerHTML = `<span class="bold">${value === undefined ? 25 : null}</span> W`;
-}
-
-function setPreviewImages(devices) {
-  const deviceSegment = document.querySelectorAll(`.deviceSegment .busImageContainer img`);
-  const detectorImages = document.querySelectorAll(`.deviceSegment .detectorImageContainer img`);
-  const sirensImages = document.querySelectorAll(`.deviceSegment .warningDeviceImageContainer img`);
-  devices.forEach((device, i) => {
-    if (devices[i].deviceType === `detector`) {
-      detectorImages[i].style.visibility = `visible`;
-      detectorImages[i].setAttribute("src", `./SVG/${device.detectorName}.svg`);
-      deviceSegment[i].setAttribute(`src`, `./SVG/tconP.svg`);
-      sirensImages[i].style.visibility = `hidden`;
-    } else if (devices[i].deviceType === `siren`) {
-      sirensImages[i].style.visibility = `visible`;
-      sirensImages[i].setAttribute("src", `./SVG/${device.detectorName}.svg`);
-      deviceSegment[i].setAttribute(`src`, `./SVG/tconL.svg`);
-      detectorImages[i].style.visibility = `hidden`;
-    }
-  });
 }
 
 function systemActionDevicesSelect(structureType) {
@@ -543,7 +395,7 @@ function selectEvent(select) {
     systemSignallers(reduced);
     systemAccessories(reduced);
     statusBusLength(reduced);
-    systemPowerConsumption();
+    setSystemPowerConsumption();
     // setPreviewImages(SYSTEM.bus);
     initAppliencedDevices(reduced);
     //Aż do tego miejsca.
@@ -684,7 +536,7 @@ function generateSystem() {
   systemSignallers(reducer);
   systemAccessories(reducer);
   statusBusLength(reducer);
-  systemPowerConsumption();
+  setSystemPowerConsumption();
   //Aż do tego miejsca ^^
 
   //Tworzenie selectów dla urządzeń w podglądzie systemu
@@ -707,9 +559,7 @@ function generateSystem() {
 
 function createPreview() {
   //generowanie konteneru dla zdjęć urządzeń i magistrali
-  // createPreviewImages(SYSTEM.bus.length);
   createSystemDiagram();
   //geneowanie numeracji segmentow, dzialań, selectów, numeracji segmentów etc
-  // createPreviewActions(SYSTEM.bus.length);
   createSystemSegmentsActionsList();
 }
