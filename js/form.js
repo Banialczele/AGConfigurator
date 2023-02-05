@@ -80,11 +80,11 @@ function handleFormSubmit() {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const system = document.getElementById("system");
-    initSystem.amountOfDetectors = document.getElementById("amountOfDetectors").value;
+    initSystem.amountOfDetectors = parseInt(document.getElementById("amountOfDetectors").value);
     initSystem.structureType = document.getElementById("structureType").value;
     initSystem.gasDetected = document.getElementById("gasDetected").value;
     initSystem.batteryBackUp = document.getElementById("batteryBackUp").value;
-    initSystem.EWL = document.getElementById("EWL").value;
+    initSystem.EWL = parseInt(document.getElementById("EWL").value);
     createSystemData();
     setSystem(initSystem);
     system.scrollIntoView({ behavior: "smooth", block: "start" });

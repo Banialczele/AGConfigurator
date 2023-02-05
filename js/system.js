@@ -1,5 +1,7 @@
 // Inicjacja głównego obiektu z danymi systemu
 function createSystemData() {
+  systemData.devicesTypes = [];
+  systemData.devices = [];
   systemData.powerSupply = initSystem.powerSupply;
   systemData.structureType = initSystem.structureType;
   systemData.devicesTypes.push(initSystem.deviceType);
@@ -16,6 +18,7 @@ function createSystemData() {
 // Generowanie schematu utworzonego systemu
 function createSystemDiagram() {
   const systemDiagram = document.getElementById("systemDiagram");
+  systemDiagram.replaceChildren();
   systemData.devices.forEach((device) => systemDiagram.appendChild(createSegmentDiagram(device)));
 }
 
@@ -56,6 +59,7 @@ function createSegmentDiagram(device) {
 // Generowanie listy działań dla segmentów utworzonego systemu
 function createSystemSegmentsActionsList() {
   const actionsList = document.getElementById("actionsList");
+  actionsList.replaceChildren();
   actionsList.appendChild(createSegmentActionsPSU());
   systemData.devices.forEach((device) => actionsList.appendChild(createSegmentActions(device)));
 }
@@ -101,6 +105,7 @@ function createSegmentActions(device) {
   return actionsSegment;
 }
 
+// Tworzenie selecta typu urządzeń dla segmentu urządzenia 
 function createSegmentDeviceTypeSelect(device) {
   const segmentDeviceSelectContainer = document.createElement("div");
   const segmentDeviceLabel = document.createElement("label");
@@ -137,10 +142,17 @@ function createSegmentActionsPSU() {
   return actionsSegment;
 }
 
-// Ustawienie wartości zużycia energii dla systemu
+// Ustawienie długości magistrali w panelu stanu 
+function setSystemBusLength() {
+  const busLength = document.getElementById("busLength");
+  const busLengthValue = systemData.devices.reduce((accumulator, device) => accumulator + device.wireLength, 0);
+  busLength.replaceChildren(busLength.appendChild(document.createTextNode(`${busLengthValue} m.`)))
+}
+
+// Ustawienie wartości zużycia energii dla systemu w panelu stanu
 function setSystemPowerConsumption(value = 25) {
-  const powerConsumption = document.querySelector(".powerConsumption");
-  powerConsumption.appendChild(document.createTextNode(`${value} W`));
+  const powerConsumption = document.getElementById("powerConsumption");
+  powerConsumption.replaceChildren(powerConsumption.appendChild(document.createTextNode(`${value} W`)));
 }
 
 //W kodzie jest getter i setter systemu, jakby komuś przyszło na myśl generowanie systemu po JSONie :)
@@ -227,7 +239,7 @@ function addRemoveActionListener() {
         systemDetectors(reducer);
         systemSignallers(reducer);
         systemAccessories(reducer);
-        statusBusLength(reducer);
+        setSystemBusLength();
         setSystemPowerConsumption();
         selectEvent(clonedSegmentSelect);
         initAppliencedDevices(reducer);
@@ -247,7 +259,7 @@ function addRemoveActionListener() {
         systemDetectors(reducer);
         systemSignallers(reducer);
         systemAccessories(reducer);
-        statusBusLength(reducer);
+        setSystemBusLength();
         setSystemPowerConsumption();
         initAppliencedDevices(reducer);
       }
@@ -302,13 +314,6 @@ function systemAccessories(reduced) {
   accessoryAmountItem.innerHTML = `<span class ="bold">${findAmounts.amountOfDevices}</span> szt.`;
   listOfAccessories.appendChild(accessoryItem);
   amountsOfAccessories.appendChild(accessoryAmountItem);
-}
-
-function statusBusLength(reduced) {
-  const busLength = document.querySelector(`.busLength`);
-  busLength.innerHTML = "";
-  const busLengthValue = reduced.find(key => key[`wireLength`]);
-  busLength.innerHTML = `<span class="bold">${busLengthValue[`wireLength`]}</span> m.`;
 }
 
 function systemActionDevicesSelect(structureType) {
@@ -375,7 +380,7 @@ function selectEvent(select) {
     systemDetectors(reduced);
     systemSignallers(reduced);
     systemAccessories(reduced);
-    statusBusLength(reduced);
+    setSystemBusLength();
     setSystemPowerConsumption();
     // setPreviewImages(SYSTEM.bus);
     initAppliencedDevices(reduced);
@@ -442,7 +447,6 @@ function systemStatusReducer() {
       return key;
     }, Object.create(null))
   );
-  console.log(reduced);
   return reduced;
 }
 
@@ -516,7 +520,7 @@ function generateSystem() {
   systemDetectors(reducer);
   systemSignallers(reducer);
   systemAccessories(reducer);
-  statusBusLength(reducer);
+  setSystemBusLength();
   setSystemPowerConsumption();
   //Aż do tego miejsca ^^
 

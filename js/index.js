@@ -88,7 +88,6 @@ window.addEventListener("load", () => {
   //Wczytanie systemu z pliku
   readFromFile();
   //Walidacja danych z podglądu systemu
-  console.log("sdflks");
   handleFormSubmit();
 });
 
