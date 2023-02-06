@@ -7,7 +7,7 @@ const SYSTEM = {
 // Główny obiekt zawierający dane utworzonego systemu
 const systemData = {
   powerSupply: "",
-  devicesTypes: [],
+  devicesTypes: { detectors: [], signallers: [] },
   devices: []
 };
 
@@ -246,11 +246,6 @@ const STRUCTURE_TYPES = [
       {
         type: "Teta Term",
         gasDetected: "NG",
-        typeOfDevice: "detector",
-      },
-      {
-        type: "Teta EcoH",
-        gasDetected: "H2",
         typeOfDevice: "detector",
       },
       {

@@ -1,14 +1,15 @@
 // Inicjacja głównego obiektu z danymi systemu
 function createSystemData() {
-  systemData.devicesTypes = [];
+  systemData.devicesTypes = { detectors: [], signallers: [] };
   systemData.devices = [];
   systemData.powerSupply = initSystem.powerSupply;
   systemData.structureType = initSystem.structureType;
-  systemData.devicesTypes.push(initSystem.deviceType);
+  systemData.devicesTypes.detectors.push({ name: initSystem.detectorName, gasDetected: initSystem.gasDetected });
   for (let i = 0; i < initSystem.amountOfDetectors; i++) {
     systemData.devices.push({
       index: i + 1,
       name: initSystem.detectorName,
+      gasDetected: initSystem.gasDetected,
       type: initSystem.deviceType,
       wireLength: initSystem.EWL
     })
@@ -142,15 +143,71 @@ function createSegmentActionsPSU() {
   return actionsSegment;
 }
 
+// Ustawienie typów gazu mierzonych przez wybrane czujniki + liczebności tych czujników w panelu stanu
+function setSystemStateDetectorsList() {
+  const detectorsTypesList = document.getElementById("detectorsTypesList");
+  const detectorsQuantityList = document.getElementById("detectorsQuantityList");
+  detectorsTypesList.replaceChildren();
+  detectorsQuantityList.replaceChildren();
+  systemData.devicesTypes.detectors.forEach((detector) => {
+    const detectorListItem = document.createElement("li");
+    const detectorQuantityListItem = document.createElement("li");
+    const detectorQuantity = systemData.devices.reduce((accumulator, device) => {
+      if (detector.gasDetected === device.gasDetected) {
+        return accumulator + 1;
+      } else {
+        return accumulator;
+      }
+    }, 0);
+    detectorListItem.appendChild(document.createTextNode(detector.gasDetected));
+    detectorQuantityListItem.appendChild(document.createTextNode(`${detectorQuantity} szt.`));
+    detectorsTypesList.appendChild(detectorListItem);
+    detectorsQuantityList.appendChild(detectorQuantityListItem);
+  });
+}
+
+// Ustawienie rodzajów sygnalizatorów + ich liczebności w panelu stanu
+function setSystemStateSignallersList() {
+  const signallersTypesList = document.getElementById("signallersTypesList");
+  const signallersQuantityList = document.getElementById("signallersQuantityList");
+  signallersTypesList.replaceChildren();
+  signallersQuantityList.replaceChildren();
+  systemData.devicesTypes.signallers.forEach((signaller) => {
+    const signallerListItem = document.createElement("li");
+    const signallerQuantityListItem = document.createElement("li");
+    const signallerQuantity = systemData.devices.reduce((accumulator, device) => {
+      if (signaller.name === device.name) {
+        return accumulator + 1;
+      } else {
+        return accumulator;
+      }
+    }, 0);
+    signallerListItem.appendChild(document.createTextNode(signaller.name));
+    signallerQuantityListItem.appendChild(document.createTextNode(`${signallerQuantity} szt.`));
+    signallersTypesList.appendChild(signallerListItem);
+    signallersQuantityList.appendChild(signallerQuantityListItem);
+  });
+}
+
+// Ustawienie akcesoriów + ich liczebności w panelu stanu
+function setSystemStateAccessories() {
+  const accessoriesList = document.getElementById("accessoriesList");
+  const accessoriesQuantityList = document.getElementById("accessoriesQuantityList");
+  accessoriesList.replaceChildren();
+  accessoriesQuantityList.replaceChildren();
+  accessoriesList.appendChild(document.createTextNode("T-Konektor"));
+  accessoriesQuantityList.appendChild(document.createTextNode(`${systemData.devices.length} szt.`));
+}
+
 // Ustawienie długości magistrali w panelu stanu 
-function setSystemBusLength() {
+function setSystemStateBusLength() {
   const busLength = document.getElementById("busLength");
   const busLengthValue = systemData.devices.reduce((accumulator, device) => accumulator + device.wireLength, 0);
   busLength.replaceChildren(busLength.appendChild(document.createTextNode(`${busLengthValue} m.`)))
 }
 
 // Ustawienie wartości zużycia energii dla systemu w panelu stanu
-function setSystemPowerConsumption(value = 25) {
+function setSystemStatePowerConsumption(value = 25) {
   const powerConsumption = document.getElementById("powerConsumption");
   powerConsumption.replaceChildren(powerConsumption.appendChild(document.createTextNode(`${value} W`)));
 }
@@ -236,11 +293,11 @@ function addRemoveActionListener() {
         deviceSegment.after(clonedPreview);
 
         const reducer = systemStatusReducer();
-        systemDetectors(reducer);
-        systemSignallers(reducer);
-        systemAccessories(reducer);
-        setSystemBusLength();
-        setSystemPowerConsumption();
+        setSystemStateDetectorsList();
+        setSystemStateSignallersList();
+        setSystemStateAccessories();
+        setSystemStateBusLength();
+        setSystemStatePowerConsumption();
         selectEvent(clonedSegmentSelect);
         initAppliencedDevices(reducer);
       } else if (e.target.name === `removeSegment`) {
@@ -256,64 +313,16 @@ function addRemoveActionListener() {
           deviceSegment.remove();
         }
         const reducer = systemStatusReducer();
-        systemDetectors(reducer);
-        systemSignallers(reducer);
-        systemAccessories(reducer);
-        setSystemBusLength();
-        setSystemPowerConsumption();
+        setSystemStateDetectorsList();
+        setSystemStateSignallersList();
+        setSystemStateAccessories();
+        setSystemStateBusLength();
+        setSystemStatePowerConsumption();
         initAppliencedDevices(reducer);
       }
     },
     true
   );
-}
-
-function systemDetectors(reduced) {
-  const listOfDetectors = document.querySelector(`.system .detectorTypes`);
-  const amountsOfDelectorsList = document.querySelector(`.system .detectorTypesAmounts`);
-  listOfDetectors.innerHTML = "";
-  amountsOfDelectorsList.innerHTML = "";
-  reduced.forEach(element => {
-    if (element.deviceType === `detector`) {
-      const deviceItem = document.createElement(`li`);
-      deviceItem.innerHTML = element.detectedGas;
-      const deviceAmountItem = document.createElement(`li`);
-      deviceAmountItem.innerHTML = `<span class ="bold">${element.amount}</span> szt.`;
-      listOfDetectors.appendChild(deviceItem);
-      amountsOfDelectorsList.appendChild(deviceAmountItem);
-    }
-  });
-}
-
-function systemSignallers(reduced) {
-  const listOfSignallers = document.querySelector(`.system .signallerTypes`);
-  const amountsOfSignallersList = document.querySelector(`.system .signallerTypesAmounts`);
-  listOfSignallers.innerHTML = "";
-  amountsOfSignallersList.innerHTML = "";
-  reduced.forEach(element => {
-    if (element.deviceType === `siren`) {
-      const deviceItem = document.createElement(`li`);
-      deviceItem.innerHTML = element.detectorName;
-      const deviceAmountItem = document.createElement(`li`);
-      deviceAmountItem.innerHTML = `${element.amount}</span> szt.`;
-      listOfSignallers.appendChild(deviceItem);
-      amountsOfSignallersList.appendChild(deviceAmountItem);
-    }
-  });
-}
-
-function systemAccessories(reduced) {
-  const listOfAccessories = document.querySelector(`.system .accessoriesTypes`);
-  const amountsOfAccessories = document.querySelector(`.system .accessoriesTypesAmounts`);
-  listOfAccessories.innerHTML = "";
-  amountsOfAccessories.innerHTML = "";
-  const findAmounts = reduced.find(deviceAmounts => deviceAmounts.hasOwnProperty(`amountOfDevices`));
-  const accessoryItem = document.createElement(`li`);
-  accessoryItem.innerHTML = `T-Konektor`;
-  const accessoryAmountItem = document.createElement(`li`);
-  accessoryAmountItem.innerHTML = `<span class ="bold">${findAmounts.amountOfDevices}</span> szt.`;
-  listOfAccessories.appendChild(accessoryItem);
-  amountsOfAccessories.appendChild(accessoryAmountItem);
 }
 
 function systemActionDevicesSelect(structureType) {
@@ -377,11 +386,11 @@ function selectEvent(select) {
     //sprawdzam, czy w zestawieniu urządzeń występuje duplikat danego urządzenia, jeśli występuje to go usuwam.
     checkIfUsedDevice(reduced);
     //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
-    systemDetectors(reduced);
-    systemSignallers(reduced);
-    systemAccessories(reduced);
-    setSystemBusLength();
-    setSystemPowerConsumption();
+    setSystemStateDetectorsList();
+    setSystemStateSignallersList();
+    setSystemStateAccessories();
+    setSystemStateBusLength();
+    setSystemStatePowerConsumption();
     // setPreviewImages(SYSTEM.bus);
     initAppliencedDevices(reduced);
     //Aż do tego miejsca.
@@ -417,9 +426,9 @@ function createToledSelect(i) {
   toledSelect.addEventListener(`change`, e => {
     SYSTEM.bus[i].toledText = e.target.value;
     const reducer = systemStatusReducer();
-    systemDetectors(reducer);
-    systemSignallers(reducer);
-    systemAccessories(reducer);
+    setSystemStateDetectorsList();
+    setSystemStateSignallersList();
+    setSystemStateAccessories();
   });
 }
 
@@ -517,11 +526,11 @@ function generateSystem() {
   //funckja zliczajaca ile jest danych urzadzeń, ile metrów kabla etc.
   const reducer = systemStatusReducer();
   //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
-  systemDetectors(reducer);
-  systemSignallers(reducer);
-  systemAccessories(reducer);
-  setSystemBusLength();
-  setSystemPowerConsumption();
+  setSystemStateDetectorsList();
+  setSystemStateSignallersList();
+  setSystemStateAccessories();
+  setSystemStateBusLength();
+  setSystemStatePowerConsumption();
   //Aż do tego miejsca ^^
 
   //Tworzenie selectów dla urządzeń w podglądzie systemu
