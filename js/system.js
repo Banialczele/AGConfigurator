@@ -26,35 +26,59 @@ function createSystemDiagram() {
 // Tworzenie schematu segmentu urządzenia
 function createSegmentDiagram(device) {
   const deviceSegment = document.createElement("div");
-  const warningDeviceImageContainer = document.createElement("div");
-  const busImageContainer = document.createElement("div");
-  const detectorImageContainer = document.createElement("div");
   setAttributes(deviceSegment, { class: "deviceSegment", id: `segmentDiagram${device.index}` });
-  setAttributes(warningDeviceImageContainer, { class: "warningDeviceImageContainer" });
-  setAttributes(busImageContainer, { class: "busImageContainer" });
-  setAttributes(detectorImageContainer, { class: "detectorImageContainer" });
-  deviceSegment.appendChild(warningDeviceImageContainer);
-  deviceSegment.appendChild(busImageContainer);
-  deviceSegment.appendChild(detectorImageContainer);
-  const warningDeviceImage = document.createElement("img");
-  const busImage = document.createElement("img");
+  deviceSegment.appendChild(createSegmentWarningDeviceImageDiagram(device));
+  deviceSegment.appendChild(createSegmentBusImageDiagram());
+  deviceSegment.appendChild(createSegmentDetectorImageDiagram(device));
+
+  return deviceSegment;
+}
+
+// Tworzenie obrazu detektora dla schematu segmentu urządzenia
+function createSegmentDetectorImageDiagram(device) {
+  const detectorImageContainer = document.createElement("div");
   const detectorImage = document.createElement("img");
-  setAttributes(busImage, { src: "./SVG/tconP.svg", alt: "T-Konektor image" });
+  setAttributes(detectorImageContainer, { class: "detectorImageContainer" });
+  detectorImageContainer.appendChild(detectorImage);
+
   if (device.type === "detector") {
-    setAttributes(warningDeviceImage, { src: "", alt: "Warning device image" });
     setAttributes(detectorImage, { src: `./SVG/${device.name}.svg`, alt: "Detector image" });
-    warningDeviceImage.style.visibility = "hidden";
     detectorImage.style.visibility = "visible";
   } else {
-    setAttributes(warningDeviceImage, { src: `./SVG/${device.name}.svg`, alt: "Warning device image" });
     setAttributes(detectorImage, { src: "", alt: "Detector image" });
-    warningDeviceImage.style.visibility = "visible";
     detectorImage.style.visibility = "hidden";
   }
+
+  return detectorImageContainer;
+}
+
+// Tworzenie obrazu sygnalizatora dla schematu segmentu urządzenia
+function createSegmentWarningDeviceImageDiagram(device) {
+  const warningDeviceImageContainer = document.createElement("div");
+  const warningDeviceImage = document.createElement("img");
+  setAttributes(warningDeviceImageContainer, { class: "warningDeviceImageContainer" });
   warningDeviceImageContainer.appendChild(warningDeviceImage);
+
+  if (device.type !== "detector") {
+    setAttributes(warningDeviceImage, { src: `./SVG/${device.name}.svg`, alt: "Warning device image" });
+    warningDeviceImage.style.visibility = "visible";
+  } else {
+    setAttributes(warningDeviceImage, { src: "", alt: "Warning device image" });
+    warningDeviceImage.style.visibility = "hidden";
+  }
+
+  return warningDeviceImageContainer;
+}
+
+// Tworzenie obrazu T-Konektora dla schematu segmentu urządzenia
+function createSegmentBusImageDiagram() {
+  const busImageContainer = document.createElement("div");
+  const busImage = document.createElement("img");
+  setAttributes(busImageContainer, { class: "busImageContainer" });
+  setAttributes(busImage, { src: "./SVG/tconP.svg", alt: "T-Konektor image" });
   busImageContainer.appendChild(busImage);
-  detectorImageContainer.appendChild(detectorImage);
-  return deviceSegment;
+
+  return busImageContainer;
 }
 
 // Generowanie listy działań dla segmentów utworzonego systemu
