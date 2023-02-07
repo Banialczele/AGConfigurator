@@ -117,6 +117,20 @@ function createSegmentDeviceTypeSelect(device) {
   segmentDeviceLabel.appendChild(document.createTextNode("Urządzenie"));
   segmentDeviceSelectContainer.appendChild(segmentDeviceLabel);
   segmentDeviceSelectContainer.appendChild(segmentDeviceSelect);
+  const structureType = STRUCTURE_TYPES.find((structureType) => structureType.type === systemData.structureType);
+  structureType.devices.forEach((structureDevice) => {
+    const deviceTypeOption = document.createElement("option");
+    setAttributes(deviceTypeOption, { value: structureDevice.type });
+    if (structureDevice.typeOfDevice === "detector") {
+      deviceTypeOption.appendChild(document.createTextNode(`Czujnik ${structureDevice.gasDetected}`));
+    } else {
+      deviceTypeOption.appendChild(document.createTextNode(`Sygnalizator ${structureDevice.type}`));
+    }
+    if (device.name === structureDevice.type) {
+      setAttributes(deviceTypeOption, { selected: "selected" });
+    }
+    segmentDeviceSelect.appendChild(deviceTypeOption);
+  });
 
   return segmentDeviceSelectContainer;
 }
@@ -325,34 +339,6 @@ function addRemoveActionListener() {
   );
 }
 
-function systemActionDevicesSelect(structureType) {
-  const segmentDeviceSelect = document.querySelectorAll(`.segmentDeviceSelect`);
-  const structureObj = STRUCTURE_TYPES.find(constructionType => constructionType.type === structureType);
-  const deviceList = structureObj.devices;
-  // Generowanie opcji dla selecta zawierającego dostępne rodzaje urządzenia w utworzonym segmencie 
-  segmentDeviceSelect.forEach((select, i) => {
-    deviceList.forEach((device, i) => {
-      if (device.typeOfDevice !== `siren`) {
-        const option = document.createElement(`option`);
-        option.className = `deviceActionOption`;
-        option.innerHTML = `Czujnik ${device.gasDetected}`;
-        option.setAttribute(`data-detectedGas`, `${device.gasDetected}`);
-        if (initSystem.gasDetected === device.gasDetected) {
-          option.setAttribute(`selected`, `selected`);
-        }
-        option.value = device.type;
-        select.appendChild(option);
-      } else {
-        const option = document.createElement(`option`);
-        option.className = `deviceActionOption`;
-        option.innerHTML = `Sygnalizator ${device.type}`;
-        option.value = device.type;
-        select.appendChild(option);
-      }
-    });
-  });
-}
-
 function selectEvent(select) {
   select.addEventListener(`change`, e => {
     const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
@@ -361,7 +347,7 @@ function selectEvent(select) {
 
     SYSTEM.bus[i].detectorName = e.target.value;
     if (e.target.value === `Teta SZOA`) {
-      SYSTEM.bus[i].deviceType = `siren`;
+      SYSTEM.bus[i].deviceType = `signaller`;
       delete SYSTEM.bus[i].toledText;
       const container = document.querySelector(`#actionsSegment${i + 1}`);
       const toled = document.querySelector(`#actionsSegment${i + 1} .toledContainer`);
@@ -369,7 +355,7 @@ function selectEvent(select) {
         container.removeChild(toled);
       }
     } else if (e.target.value === `TOLED`) {
-      SYSTEM.bus[i].deviceType = `siren`;
+      SYSTEM.bus[i].deviceType = `signaller`;
       createToledSelect(i);
     } else {
       SYSTEM.bus[i].deviceType = `detector`;
@@ -441,7 +427,7 @@ function systemStatusReducer() {
       }
       if (!key[detectorName] && deviceType === `detector`) {
         key[detectorName] = { [`detectedGas`]: gasDetected, [`amount`]: 0, detectorName, deviceType };
-      } else if (!key[detectorName] && deviceType === `siren`) {
+      } else if (!key[detectorName] && deviceType === `signaller`) {
         key[detectorName] = { detectorName, deviceType, [`amount`]: 0 };
       }
 
@@ -463,7 +449,7 @@ function initAppliencedDevices(reduced) {
   const usedDevicesContainer = document.querySelector(`.usedDevicesContainer`);
   const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDevicePair`));
   reduced.forEach((element, i) => {
-    if (element.deviceType === `detector` || element.deviceType === `siren`) {
+    if (element.deviceType === `detector` || element.deviceType === `signaller`) {
       const checkIfExists = usedDeviceItemList.find(item => item.getAttribute("id") === element.detectorName);
       if (usedDeviceItemList[0].getAttribute("id") === null) {
         const usedDevicePair = usedDevicesContainer.querySelector(`.usedDevicePair`);
@@ -533,8 +519,6 @@ function generateSystem() {
   setSystemStatePowerConsumption();
   //Aż do tego miejsca ^^
 
-  //Tworzenie selectów dla urządzeń w podglądzie systemu
-  systemActionDevicesSelect(initSystem.structureType);
   //Tworzenie obrazów
   // setPreviewImages(SYSTEM.bus);
   actionsSelectListener();

@@ -158,11 +158,11 @@ const STRUCTURE_TYPES = [
       // },
       {
         type: "Teta SZOA",
-        typeOfDevice: "siren",
+        typeOfDevice: "signaller",
       },
       {
         type: "TOLED",
-        typeOfDevice: "siren",
+        typeOfDevice: "signaller",
       },
     ],
   },
@@ -177,11 +177,11 @@ const STRUCTURE_TYPES = [
       },
       {
         type: "Teta SZOA",
-        typeOfDevice: "siren",
+        typeOfDevice: "signaller",
       },
       {
         type: "TOLED",
-        typeOfDevice: "siren",
+        typeOfDevice: "signaller",
       },
     ],
   },
@@ -201,11 +201,11 @@ const STRUCTURE_TYPES = [
       },
       {
         type: "Teta SZOA",
-        typeOfDevice: "siren",
+        typeOfDevice: "signaller",
       },
       {
         type: "TOLED",
-        typeOfDevice: "siren",
+        typeOfDevice: "signaller",
       },
     ],
   },
@@ -250,11 +250,11 @@ const STRUCTURE_TYPES = [
       },
       {
         type: "Teta SZOA",
-        typeOfDevice: "siren",
+        typeOfDevice: "signaller",
       },
       {
         type: "TOLED",
-        typeOfDevice: "siren",
+        typeOfDevice: "signaller",
       },
     ],
   },
