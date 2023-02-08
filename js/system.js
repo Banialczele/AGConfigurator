@@ -11,7 +11,8 @@ function createSystemData() {
       name: initSystem.detectorName,
       gasDetected: initSystem.gasDetected,
       type: initSystem.deviceType,
-      wireLength: initSystem.EWL
+      wireLength: initSystem.EWL,
+      description: ""
     })
   }
 }
@@ -101,6 +102,9 @@ function createSegmentActions(device) {
   setAttributes(segmentButtonsContainer, { class: "segmentButtonsContainer" });
   actionsSegment.appendChild(segmentIndexLabel);
   actionsSegment.appendChild(createSegmentDeviceTypeSelect(device));
+  if (device.name === "TOLED") {
+    actionsSegment.appendChild(createSegmentTOLEDDescriptionSelect(device));
+  }
   actionsSegment.appendChild(segmentWireLengthContainer);
   actionsSegment.appendChild(segmentButtonsContainer);
   setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: `actionsSegmentIndex${device.index}` });
@@ -157,6 +161,30 @@ function createSegmentDeviceTypeSelect(device) {
   });
 
   return segmentDeviceSelectContainer;
+}
+
+// Tworzenie selecta rodzaju etykiety dla segmentu urządzenia typu TOLED
+function createSegmentTOLEDDescriptionSelect(device) {
+  const segmentTOLEDSelectContainer = document.createElement("div");
+  const segmentTOLEDLabel = document.createElement("label");
+  const segmentTOLEDSelect = document.createElement("select");
+  setAttributes(segmentTOLEDSelectContainer, { class: "toledContainer" });
+  setAttributes(segmentTOLEDLabel, { class: "toledDescription" });
+  setAttributes(segmentTOLEDSelect, { class: "toledSelect" });
+  segmentTOLEDLabel.appendChild(document.createTextNode("Napis"));
+  segmentTOLEDSelectContainer.appendChild(segmentTOLEDLabel);
+  segmentTOLEDSelectContainer.appendChild(segmentTOLEDSelect);
+  TOLED_OPTIONS.forEach((option) => {
+    const toledOption = document.createElement("option");
+    setAttributes(toledOption, { value: option.type });
+    toledOption.appendChild(document.createTextNode(option.label));
+    if (device.description === option.type) {
+      setAttributes(toledOption, { selected: "selected" });
+    }
+    segmentTOLEDSelect.appendChild(toledOption);
+  });
+
+  return segmentTOLEDSelectContainer;
 }
 
 // Tworzenie panelu działań dla segmentu jednostki sterującej
@@ -380,7 +408,7 @@ function selectEvent(select) {
       }
     } else if (e.target.value === `TOLED`) {
       SYSTEM.bus[i].deviceType = `signaller`;
-      createToledSelect(i);
+      // createSegmentTOLEDDescriptionSelect();
     } else {
       SYSTEM.bus[i].deviceType = `detector`;
       SYSTEM.bus[i].gasDetected = e.target.options[e.target.selectedIndex].getAttribute(`data-detectedgas`);
@@ -421,7 +449,7 @@ function createToledSelect(i) {
   toledContainer.className = `toledContainer`;
   const toledSelect = document.createElement(`select`);
   toledSelect.className = `toledSelect`;
-  TOLEDOptions.forEach(option => {
+  TOLED_OPTIONS.forEach(option => {
     const toledOption = document.createElement(`option`);
     toledOption.innerHTML = `${option.text}`;
     toledOption.value = `${option.type} - ${option.text}`;

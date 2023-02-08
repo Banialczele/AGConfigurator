@@ -259,3 +259,10 @@ const STRUCTURE_TYPES = [
     ],
   },
 ];
+
+const TOLED_OPTIONS = [
+  { type: "WE", label: "NADMIAR SPALIN NIE WCHODZIĆ" },
+  { type: "WJ", label: "NADMIAR SPALIN NIE WJEŻDŻAĆ" },
+  { type: "OP", label: "NADMIAR SPALIN OPUŚĆ GARAŻ" },
+  { type: "WS", label: "Napis na życzenie klienta" },
+];
