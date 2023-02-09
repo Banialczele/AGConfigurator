@@ -163,8 +163,50 @@ function createSegmentDeviceTypeSelect(device) {
     }
     segmentDeviceSelect.appendChild(deviceTypeOption);
   });
+  segmentDeviceSelect.addEventListener("change", (event) => setSegmentDeviceTypeSelectChangeEvent(event, device.index));
 
   return segmentDeviceSelectContainer;
+}
+
+// Ustawienie nasłuchiwania zdarzeń dot. zmiany typu urządzenia w wybranym segmencie
+function setSegmentDeviceTypeSelectChangeEvent(event, index) {
+  const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
+  const oldNameDeviceQuantity = systemData.devices.reduce((accumulator, setDeviceType) => {
+    if(setDeviceType.name === setDevice.name) {
+      return accumulator + 1;
+    } else {
+      return accumulator;
+    }
+  }, 0);
+  if ((oldNameDeviceQuantity - 1) < 1) {
+    const type = setDevice.type;
+    systemData.devicesTypes[`${type}s`] = systemData.devicesTypes[`${type}s`].filter((systemDeviceType) => {
+      return systemDeviceType.name !== setDevice.name;
+    });
+  }
+  setDevice.name = event.target[event.target.selectedIndex].value;
+  const setStructureType = STRUCTURE_TYPES.find((structureType) => structureType.type === systemData.structureType);
+  const newDeviceType = setStructureType.devices.find((structureTypeDevice) => structureTypeDevice.type === setDevice.name);
+  setDevice.type = newDeviceType.typeOfDevice;
+  if (newDeviceType.typeOfDevice === "detector") {
+    setDevice.gasDetected = newDeviceType.gasDetected;
+    if (!systemData.devicesTypes.detectors.find((systemTypeDevice) => systemTypeDevice.name === newDeviceType.type)) {
+      systemData.devicesTypes.detectors.push({
+        name: newDeviceType.type,
+        gasDetected: newDeviceType.gasDetected,
+        docs: DEVICES_DOCS[newDeviceType.type]
+      });
+    }
+  } else {
+    setDevice.gasDetected = ""; 
+    if (!systemData.devicesTypes.signallers.find((systemTypeDevice) => systemTypeDevice.name === newDeviceType.type)) {
+      systemData.devicesTypes.signallers.push({
+        name: newDeviceType.type,
+        docs: DEVICES_DOCS[newDeviceType.type]
+      });
+    }
+  }
+  setSystem();
 }
 
 // Tworzenie selecta rodzaju etykiety dla segmentu urządzenia typu TOLED
@@ -211,6 +253,15 @@ function createSegmentActionsPSU() {
   segmentDeviceLabel.appendChild(segmentDeviceInput);
 
   return actionsSegment;
+}
+
+// Tworzenie panelu stanu systemu
+function setSystemStatePanel() {
+  setSystemStateDetectorsList();
+  setSystemStateSignallersList();
+  setSystemStateAccessories();
+  setSystemStateBusLength();
+  setSystemStatePowerConsumption();
 }
 
 // Ustawienie typów gazu mierzonych przez wybrane czujniki + liczebności tych czujników w panelu stanu
@@ -328,45 +379,17 @@ function setSystemUsedDevice(device, isSignaller = false) {
   return systemUsedDeviceContainer;
 }
 
+// Tworzenie systemu
+function setSystem() {
+  createSystemDiagram();
+  createSystemSegmentsActionsList();
+  setSystemStatePanel();
+  createSystemUsedDevicesPanel();
+}
+
 //W kodzie jest getter i setter systemu, jakby komuś przyszło na myśl generowanie systemu po JSONie :)
 function getSystem(sys) {
   return sys;
-}
-
-function setSystem(system, loadFromSaved = "") {
-  //Obecnie domyślny zasilacz systemu, na razie nie zmieniać
-  SYSTEM.powerSupply = "Teta MOD Control1";
-
-  //Generowanie systemu "z reki"
-  if (loadFromSaved === "") {
-    for (let i = 0; i < system.amountOfDetectors; i++) {
-      SYSTEM.bus.push({
-        detectorName: system.detectorName,
-        deviceType: system.deviceType,
-        gasDetected: system.gasDetected,
-        wireLen_m: system.EWL,
-      });
-    }
-    //Poniższy warunek zaczalem chyba pisac do obslugi wczytywania systemu z pliku
-  } else {
-    const amountOfDetectors = system.find(element => element.hasOwnProperty(`amountOfDevices`));
-    const busLength = system.find(element => element.hasOwnProperty(`wireLength`));
-    const listOfDevices = system.filter(device => (device.hasOwnProperty(`amount`) === true ? device : null));
-    listOfDevices.forEach(device => {
-      for (let i = 0; i < device.amount; i++) {
-        SYSTEM.bus.push({
-          detectorName: device.detectorName,
-          deviceType: device.deviceType,
-          gasDetected: device.detectedGas || null,
-          wireLen_m: busLength.wireLength / amountOfDetectors.amountOfDevices,
-        });
-      }
-    });
-  }
-  //funkcja poniżej generuje Podlgąd systemu i Działania
-  createPreview();
-  //Generowanie systemu
-  generateSystem();
 }
 
 function saveSketch() {
@@ -385,164 +408,164 @@ function saveListOfDevices() {
   });
 }
 
-function addRemoveActionListener() {
-  const segmentListeners = document.querySelector(`.actionsList`);
-  segmentListeners.addEventListener(
-    `click`,
-    e => {
-      if (e.target.name === `addSegment`) {
-        const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
-        const segmentClicked = e.target.closest(`.actionsSegment`);
-        const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
+// function addRemoveActionListener() {
+//   const segmentListeners = document.querySelector(`.actionsList`);
+//   segmentListeners.addEventListener(
+//     `click`,
+//     e => {
+//       if (e.target.name === `addSegment`) {
+//         const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
+//         const segmentClicked = e.target.closest(`.actionsSegment`);
+//         const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
 
-        const listOfdeviceSegments = document.querySelectorAll(`.deviceSegment`);
-        const deviceSegment = listOfdeviceSegments[indexOfClickedSegment - 1];
-        const objToCopy = JSON.parse(JSON.stringify(SYSTEM.bus[indexOfClickedSegment - 1]));
-        SYSTEM.bus.splice(indexOfClickedSegment, 0, objToCopy);
-        const clonedSegment = segmentClicked.cloneNode(true);
-        const clonedSegmentSelect = clonedSegment.querySelector(`.segmentDeviceSelect`);
-        clonedSegmentSelect.value = SYSTEM.bus[indexOfClickedSegment].detectorName;
-        const clonedsegmentIdentifier = clonedSegment.querySelector(`.segmentIdentifier`);
-        clonedsegmentIdentifier.value = `${listOfSegments.length}`;
-        const clonedPreview = deviceSegment.cloneNode(true);
-        segmentClicked.after(clonedSegment);
-        deviceSegment.after(clonedPreview);
+//         const listOfdeviceSegments = document.querySelectorAll(`.deviceSegment`);
+//         const deviceSegment = listOfdeviceSegments[indexOfClickedSegment - 1];
+//         const objToCopy = JSON.parse(JSON.stringify(SYSTEM.bus[indexOfClickedSegment - 1]));
+//         SYSTEM.bus.splice(indexOfClickedSegment, 0, objToCopy);
+//         const clonedSegment = segmentClicked.cloneNode(true);
+//         const clonedSegmentSelect = clonedSegment.querySelector(`.segmentDeviceSelect`);
+//         clonedSegmentSelect.value = SYSTEM.bus[indexOfClickedSegment].detectorName;
+//         const clonedsegmentIdentifier = clonedSegment.querySelector(`.segmentIdentifier`);
+//         clonedsegmentIdentifier.value = `${listOfSegments.length}`;
+//         const clonedPreview = deviceSegment.cloneNode(true);
+//         segmentClicked.after(clonedSegment);
+//         deviceSegment.after(clonedPreview);
 
-        const reducer = systemStatusReducer();
-        setSystemStateDetectorsList();
-        setSystemStateSignallersList();
-        setSystemStateAccessories();
-        setSystemStateBusLength();
-        setSystemStatePowerConsumption();
-        selectEvent(clonedSegmentSelect);
-        createSystemUsedDevicesPanel();
-      } else if (e.target.name === `removeSegment`) {
-        const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
-        const segmentClicked = e.target.closest(`.actionsSegment`);
-        const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
+//         const reducer = systemStatusReducer();
+//         setSystemStateDetectorsList();
+//         setSystemStateSignallersList();
+//         setSystemStateAccessories();
+//         setSystemStateBusLength();
+//         setSystemStatePowerConsumption();
+//         selectEvent(clonedSegmentSelect);
+//         createSystemUsedDevicesPanel();
+//       } else if (e.target.name === `removeSegment`) {
+//         const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
+//         const segmentClicked = e.target.closest(`.actionsSegment`);
+//         const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
 
-        const listOfdeviceSegments = document.querySelectorAll(`.deviceSegment`);
-        const deviceSegment = listOfdeviceSegments[indexOfClickedSegment - 1];
-        if (listOfdeviceSegments.length > 1) {
-          SYSTEM.bus.splice(indexOfClickedSegment - 1, 1);
-          segmentClicked.remove();
-          deviceSegment.remove();
-        }
-        const reducer = systemStatusReducer();
-        setSystemStateDetectorsList();
-        setSystemStateSignallersList();
-        setSystemStateAccessories();
-        setSystemStateBusLength();
-        setSystemStatePowerConsumption();
-        createSystemUsedDevicesPanel();
-      }
-    },
-    true
-  );
-}
+//         const listOfdeviceSegments = document.querySelectorAll(`.deviceSegment`);
+//         const deviceSegment = listOfdeviceSegments[indexOfClickedSegment - 1];
+//         if (listOfdeviceSegments.length > 1) {
+//           SYSTEM.bus.splice(indexOfClickedSegment - 1, 1);
+//           segmentClicked.remove();
+//           deviceSegment.remove();
+//         }
+//         const reducer = systemStatusReducer();
+//         setSystemStateDetectorsList();
+//         setSystemStateSignallersList();
+//         setSystemStateAccessories();
+//         setSystemStateBusLength();
+//         setSystemStatePowerConsumption();
+//         createSystemUsedDevicesPanel();
+//       }
+//     },
+//     true
+//   );
+// }
 
-function selectEvent(select) {
-  select.addEventListener(`change`, e => {
-    const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
-    const segmentClicked = e.target.closest(`.actionsSegment`);
-    const i = listOfSegments.indexOf(segmentClicked) - 1;
+// function selectEvent(select) {
+//   select.addEventListener(`change`, e => {
+//     const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
+//     const segmentClicked = e.target.closest(`.actionsSegment`);
+//     const i = listOfSegments.indexOf(segmentClicked) - 1;
 
-    SYSTEM.bus[i].detectorName = e.target.value;
-    if (e.target.value === `Teta SZOA`) {
-      SYSTEM.bus[i].deviceType = `signaller`;
-      delete SYSTEM.bus[i].toledText;
-      const container = document.querySelector(`#actionsSegment${i + 1}`);
-      const toled = document.querySelector(`#actionsSegment${i + 1} .toledContainer`);
-      if (toled) {
-        container.removeChild(toled);
-      }
-    } else if (e.target.value === `TOLED`) {
-      SYSTEM.bus[i].deviceType = `signaller`;
-      // createSegmentTOLEDDescriptionSelect();
-    } else {
-      SYSTEM.bus[i].deviceType = `detector`;
-      SYSTEM.bus[i].gasDetected = e.target.options[e.target.selectedIndex].getAttribute(`data-detectedgas`);
-      delete SYSTEM.bus[i].toledText;
-      const container = document.querySelector(`#actionsSegment${i + 1}`);
-      const toled = document.querySelector(`#actionsSegment${i + 1} .toledContainer`);
-      if (toled) {
-        container.removeChild(toled);
-      }
-    }
-    const reduced = systemStatusReducer();
-    //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
-    setSystemStateDetectorsList();
-    setSystemStateSignallersList();
-    setSystemStateAccessories();
-    setSystemStateBusLength();
-    setSystemStatePowerConsumption();
-    // setPreviewImages(SYSTEM.bus);
-    createSystemUsedDevicesPanel();
-    //Aż do tego miejsca.
-  });
-}
+//     SYSTEM.bus[i].detectorName = e.target.value;
+//     if (e.target.value === `Teta SZOA`) {
+//       SYSTEM.bus[i].deviceType = `signaller`;
+//       delete SYSTEM.bus[i].toledText;
+//       const container = document.querySelector(`#actionsSegment${i + 1}`);
+//       const toled = document.querySelector(`#actionsSegment${i + 1} .toledContainer`);
+//       if (toled) {
+//         container.removeChild(toled);
+//       }
+//     } else if (e.target.value === `TOLED`) {
+//       SYSTEM.bus[i].deviceType = `signaller`;
+//       // createSegmentTOLEDDescriptionSelect();
+//     } else {
+//       SYSTEM.bus[i].deviceType = `detector`;
+//       SYSTEM.bus[i].gasDetected = e.target.options[e.target.selectedIndex].getAttribute(`data-detectedgas`);
+//       delete SYSTEM.bus[i].toledText;
+//       const container = document.querySelector(`#actionsSegment${i + 1}`);
+//       const toled = document.querySelector(`#actionsSegment${i + 1} .toledContainer`);
+//       if (toled) {
+//         container.removeChild(toled);
+//       }
+//     }
+//     const reduced = systemStatusReducer();
+//     //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
+//     setSystemStateDetectorsList();
+//     setSystemStateSignallersList();
+//     setSystemStateAccessories();
+//     setSystemStateBusLength();
+//     setSystemStatePowerConsumption();
+//     // setPreviewImages(SYSTEM.bus);
+//     createSystemUsedDevicesPanel();
+//     //Aż do tego miejsca.
+//   });
+// }
 
 //Funkcja odpowiadająca za nadanie każdemu selektowi w podglądzie systemu listenera na zmianę stanu. Jeśli chodzi o uwagi techniczne to szukałbym błędu w wyszukiwaniu elementu ( patrz Uwagi techniczne pkt 6 ) w funkcji selectEvent.
-function actionsSelectListener() {
-  const segmentDeviceSelect = document.querySelectorAll(`.segmentDeviceSelect`);
-  segmentDeviceSelect.forEach(select => {
-    selectEvent(select);
-  });
-}
+// function actionsSelectListener() {
+//   const segmentDeviceSelect = document.querySelectorAll(`.segmentDeviceSelect`);
+//   segmentDeviceSelect.forEach(select => {
+//     selectEvent(select);
+//   });
+// }
 
-function systemStatusReducer() {
-  const system = getSystem(SYSTEM);
-  const reduced = Object.values(
-    system.bus.reduce((key, { gasDetected, detectorName, wireLen_m, deviceType }) => {
-      if (!key[`amountOfDevices`]) {
-        key[`amountOfDevices`] = { amountOfDevices: 0 };
-      }
-      if (!key[detectorName] && deviceType === `detector`) {
-        key[detectorName] = { [`detectedGas`]: gasDetected, [`amount`]: 0, detectorName, deviceType };
-      } else if (!key[detectorName] && deviceType === `signaller`) {
-        key[detectorName] = { detectorName, deviceType, [`amount`]: 0 };
-      }
+// function systemStatusReducer() {
+//   const system = getSystem(SYSTEM);
+//   const reduced = Object.values(
+//     system.bus.reduce((key, { gasDetected, detectorName, wireLen_m, deviceType }) => {
+//       if (!key[`amountOfDevices`]) {
+//         key[`amountOfDevices`] = { amountOfDevices: 0 };
+//       }
+//       if (!key[detectorName] && deviceType === `detector`) {
+//         key[detectorName] = { [`detectedGas`]: gasDetected, [`amount`]: 0, detectorName, deviceType };
+//       } else if (!key[detectorName] && deviceType === `signaller`) {
+//         key[detectorName] = { detectorName, deviceType, [`amount`]: 0 };
+//       }
 
-      if (!key[`wire`]) {
-        key[`wire`] = { wireLength: 0 };
-      }
+//       if (!key[`wire`]) {
+//         key[`wire`] = { wireLength: 0 };
+//       }
 
-      key[detectorName][`amount`]++;
-      key[`amountOfDevices`][`amountOfDevices`]++;
+//       key[detectorName][`amount`]++;
+//       key[`amountOfDevices`][`amountOfDevices`]++;
 
-      key[`wire`][`wireLength`] = parseInt(key[`wire`][`wireLength`]) + parseInt(wireLen_m);
-      return key;
-    }, Object.create(null))
-  );
-  return reduced;
-}
+//       key[`wire`][`wireLength`] = parseInt(key[`wire`][`wireLength`]) + parseInt(wireLen_m);
+//       return key;
+//     }, Object.create(null))
+//   );
+//   return reduced;
+// }
 
-function generateSystem() {
-  //funckja zliczajaca ile jest danych urzadzeń, ile metrów kabla etc.
-  const reducer = systemStatusReducer();
-  //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
-  setSystemStateDetectorsList();
-  setSystemStateSignallersList();
-  setSystemStateAccessories();
-  setSystemStateBusLength();
-  setSystemStatePowerConsumption();
-  //Aż do tego miejsca ^^
+// function generateSystem() {
+//   //funckja zliczajaca ile jest danych urzadzeń, ile metrów kabla etc.
+//   const reducer = systemStatusReducer();
+//   //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
+//   setSystemStateDetectorsList();
+//   setSystemStateSignallersList();
+//   setSystemStateAccessories();
+//   setSystemStateBusLength();
+//   setSystemStatePowerConsumption();
+//   //Aż do tego miejsca ^^
 
-  //Tworzenie obrazów
-  // setPreviewImages(SYSTEM.bus);
-  actionsSelectListener();
-  //Dodawanie i usuwanie elementów ( czyli kopiowanie i usuwanie ) oraz dodanie listenera do dodanego segmentu
-  addRemoveActionListener();
+//   //Tworzenie obrazów
+//   // setPreviewImages(SYSTEM.bus);
+//   actionsSelectListener();
+//   //Dodawanie i usuwanie elementów ( czyli kopiowanie i usuwanie ) oraz dodanie listenera do dodanego segmentu
+//   addRemoveActionListener();
 
-  //funkcja generująca zestawienie urządzeń w oparciu o dane z reducera
-  createSystemUsedDevicesPanel();
-  //zapis do pliku
-  saveSketch();
+//   //funkcja generująca zestawienie urządzeń w oparciu o dane z reducera
+//   createSystemUsedDevicesPanel();
+//   //zapis do pliku
+//   saveSketch();
 
-  //zapis do CSV
+//   //zapis do CSV
 
-  saveListOfDevices();
-}
+//   saveListOfDevices();
+// }
 
 function createPreview() {
   //generowanie konteneru dla zdjęć urządzeń i magistrali
