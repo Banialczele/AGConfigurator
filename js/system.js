@@ -4,7 +4,11 @@ function createSystemData() {
   systemData.devices = [];
   systemData.powerSupply = initSystem.powerSupply;
   systemData.structureType = initSystem.structureType;
-  systemData.devicesTypes.detectors.push({ name: initSystem.detectorName, gasDetected: initSystem.gasDetected });
+  systemData.devicesTypes.detectors.push({
+    name: initSystem.detectorName,
+    gasDetected: initSystem.gasDetected,
+    docs: DEVICES_DOCS[initSystem.detectorName]
+  });
   for (let i = 0; i < initSystem.amountOfDetectors; i++) {
     systemData.devices.push({
       index: i + 1,
@@ -278,6 +282,52 @@ function setSystemStatePowerConsumption(value = 25) {
   powerConsumption.replaceChildren(powerConsumption.appendChild(document.createTextNode(`${value} W`)));
 }
 
+// Tworzenie panelu z listą rodzajów wykorzystanych w systemie urządzeń
+function createSystemUsedDevicesPanel() {
+  const systemUsedDevicesContainer = document.getElementById("usedDevicesContainer");
+  systemUsedDevicesContainer.replaceChildren();
+  const { detectors, signallers } = systemData.devicesTypes;
+  detectors.forEach((detector) => systemUsedDevicesContainer.appendChild(setSystemUsedDevice(detector)));
+  signallers.forEach((signaller) => systemUsedDevicesContainer.appendChild(setSystemUsedDevice(signaller, true)));
+}
+
+// Ustawienie wykorzystanego w systemie rodzaju urządzenia
+function setSystemUsedDevice(device, isSignaller = false) {
+  const systemUsedDeviceContainer = document.createElement("div");
+  const systemUsedDevice = document.createElement("div");
+  const systemUsedDeviceDivider = document.createElement("div");
+  setAttributes(systemUsedDeviceContainer, { class: "usedDevicePair" });
+  setAttributes(systemUsedDevice, { class: "usedDeviceItem", id: `used${device.name.replace(/ |\+/g, "")}Device` });
+  setAttributes(systemUsedDeviceDivider, { class: "usedDeviceDivider" });
+  systemUsedDeviceContainer.appendChild(systemUsedDevice);
+  systemUsedDeviceContainer.appendChild(systemUsedDeviceDivider);
+  const systemUsedDeviceName = document.createElement("div");
+  const systemUsedDeviceDocs = document.createElement("div");
+  const systemUsedDeviceImageContainer = document.createElement("div");
+  setAttributes(systemUsedDeviceName, { class: "usedDeviceName" });
+  setAttributes(systemUsedDeviceDocs, { class: "usedDeviceDocs" });
+  setAttributes(systemUsedDeviceImageContainer, { class: "usedDeviceImageContainer" });
+  systemUsedDeviceName.appendChild(document.createTextNode(device.name));
+  const systemUsedDeviceDocsLink = document.createElement("a");
+  const systemUsedDeviceImage = document.createElement("img");
+  setAttributes(systemUsedDeviceDocsLink, { class: "usedDeviceDocsAnchor", href: device.docs, target: "_blank" });
+  setAttributes(systemUsedDeviceImage, { src: `./PNG/${device.name}.png`, alt: `${device.name} image` });
+  systemUsedDeviceDocsLink.appendChild(document.createTextNode("Dokumentacja techniczna"));
+  systemUsedDeviceDocs.appendChild(systemUsedDeviceDocsLink);
+  systemUsedDeviceImageContainer.appendChild(systemUsedDeviceImage);
+  systemUsedDevice.appendChild(systemUsedDeviceName);
+  if (!isSignaller) {
+    const systemUsedDeviceGasDetected = document.createElement("div");
+    setAttributes(systemUsedDeviceGasDetected, { class: "usedDeviceGasDetected" });
+    systemUsedDeviceGasDetected.appendChild(document.createTextNode(device.gasDetected));
+    systemUsedDevice.appendChild(systemUsedDeviceGasDetected);
+  }
+  systemUsedDevice.appendChild(systemUsedDeviceDocs);
+  systemUsedDevice.appendChild(systemUsedDeviceImageContainer);
+
+  return systemUsedDeviceContainer;
+}
+
 //W kodzie jest getter i setter systemu, jakby komuś przyszło na myśl generowanie systemu po JSONie :)
 function getSystem(sys) {
   return sys;
@@ -365,7 +415,7 @@ function addRemoveActionListener() {
         setSystemStateBusLength();
         setSystemStatePowerConsumption();
         selectEvent(clonedSegmentSelect);
-        initAppliencedDevices(reducer);
+        createSystemUsedDevicesPanel();
       } else if (e.target.name === `removeSegment`) {
         const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
         const segmentClicked = e.target.closest(`.actionsSegment`);
@@ -384,7 +434,7 @@ function addRemoveActionListener() {
         setSystemStateAccessories();
         setSystemStateBusLength();
         setSystemStatePowerConsumption();
-        initAppliencedDevices(reducer);
+        createSystemUsedDevicesPanel();
       }
     },
     true
@@ -420,9 +470,6 @@ function selectEvent(select) {
       }
     }
     const reduced = systemStatusReducer();
-
-    //sprawdzam, czy w zestawieniu urządzeń występuje duplikat danego urządzenia, jeśli występuje to go usuwam.
-    checkIfUsedDevice(reduced);
     //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
     setSystemStateDetectorsList();
     setSystemStateSignallersList();
@@ -430,7 +477,7 @@ function selectEvent(select) {
     setSystemStateBusLength();
     setSystemStatePowerConsumption();
     // setPreviewImages(SYSTEM.bus);
-    initAppliencedDevices(reduced);
+    createSystemUsedDevicesPanel();
     //Aż do tego miejsca.
   });
 }
@@ -440,33 +487,6 @@ function actionsSelectListener() {
   const segmentDeviceSelect = document.querySelectorAll(`.segmentDeviceSelect`);
   segmentDeviceSelect.forEach(select => {
     selectEvent(select);
-  });
-}
-
-function createToledSelect(i) {
-  const container = document.querySelector(`#actionsSegment${i + 1}`);
-  const toledContainer = document.createElement(`div`);
-  toledContainer.className = `toledContainer`;
-  const toledSelect = document.createElement(`select`);
-  toledSelect.className = `toledSelect`;
-  TOLED_OPTIONS.forEach(option => {
-    const toledOption = document.createElement(`option`);
-    toledOption.innerHTML = `${option.text}`;
-    toledOption.value = `${option.type} - ${option.text}`;
-    toledSelect.appendChild(toledOption);
-  });
-  const toledDescription = document.createElement(`p`);
-  toledDescription.className = `toledDescription`;
-  toledDescription.innerHTML = `Napis`;
-  toledContainer.appendChild(toledDescription);
-  toledContainer.appendChild(toledSelect);
-  container.appendChild(toledContainer);
-  toledSelect.addEventListener(`change`, e => {
-    SYSTEM.bus[i].toledText = e.target.value;
-    const reducer = systemStatusReducer();
-    setSystemStateDetectorsList();
-    setSystemStateSignallersList();
-    setSystemStateAccessories();
   });
 }
 
@@ -497,69 +517,6 @@ function systemStatusReducer() {
   return reduced;
 }
 
-function initAppliencedDevices(reduced) {
-  const usedDevicesContainer = document.querySelector(`.usedDevicesContainer`);
-  const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDevicePair`));
-  reduced.forEach((element, i) => {
-    if (element.deviceType === `detector` || element.deviceType === `signaller`) {
-      const checkIfExists = usedDeviceItemList.find(item => item.getAttribute("id") === element.detectorName);
-      if (usedDeviceItemList[0].getAttribute("id") === null) {
-        const usedDevicePair = usedDevicesContainer.querySelector(`.usedDevicePair`);
-        const usedDeviceItem = document.querySelector(`.usedDeviceItem`);
-        usedDevicePair.setAttribute(`id`, `${element.detectorName}`);
-        const usedDeviceNameParagraph = usedDeviceItem.querySelector(`.usedDeviceName p`);
-        usedDeviceNameParagraph.innerHTML = element.detectorName;
-        const gasDetected = usedDeviceItem.querySelector(`.usedDeviceGasDetected p`);
-        if (element.deviceType !== `detector`) {
-          gasDetected.innerHTML = ``;
-        } else {
-          gasDetected.innerHTML = element.detectedGas;
-        }
-        const docs = DEVICEDOCS.find(device => device.type === element.detectorName);
-        const usedDeviceDocs = usedDeviceItem.querySelector(`.usedDeviceDocs .usedDeviceDocsAnchor`);
-        usedDeviceDocs.setAttribute("href", `${docs.link}`);
-        usedDeviceDocs.setAttribute("target", `_blank`);
-        const usedDeviceImage = usedDeviceItem.querySelector(`.usedDeviceImageContainer img`);
-        usedDeviceImage.setAttribute(`src`, `./PNG/${element.detectorName}.png`);
-        usedDeviceImage.setAttribute(`alt`, `unable to find image`);
-      } else if (!checkIfExists) {
-        const elementToClone = usedDevicesContainer.querySelector(`.usedDevicePair`).cloneNode(true);
-        const cloned = elementToClone.querySelector(`.usedDeviceItem`);
-        elementToClone.setAttribute(`id`, `${element.detectorName}`);
-        const usedDeviceNameParagraph = cloned.querySelector(`.usedDeviceName p`);
-        usedDeviceNameParagraph.innerHTML = element.detectorName;
-        const gasDetected = cloned.querySelector(`.usedDeviceGasDetected p`);
-        if (element.deviceType !== `detector`) {
-          gasDetected.innerHTML = ``;
-        } else {
-          gasDetected.innerHTML = element.detectedGas;
-        }
-
-        const docs = DEVICEDOCS.find(device => device.type === element.detectorName);
-        const usedDeviceDocs = cloned.querySelector(`.usedDeviceDocs .usedDeviceDocsAnchor`);
-        usedDeviceDocs.setAttribute("href", `${docs.link}`);
-        usedDeviceDocs.setAttribute("target", `_blank`);
-        const usedDeviceImage = cloned.querySelector(`.usedDeviceImageContainer img`);
-        usedDeviceImage.setAttribute(`src`, `./PNG/${element.detectorName}.png`);
-        usedDeviceImage.setAttribute(`alt`, `unable to find image`);
-
-        usedDevicesContainer.appendChild(elementToClone);
-      }
-    }
-  });
-}
-
-function checkIfUsedDevice(reduced) {
-  const usedDeviceItemList = Array.from(document.querySelectorAll(`.usedDevicePair`));
-  usedDeviceItemList.forEach(container => {
-    const arr = reduced.map(element => element.detectorName);
-    if (!arr.includes(container.getAttribute(`id`))) {
-      const parent = container.closest(`.usedDevicePair`);
-      parent.remove();
-    }
-  });
-}
-
 function generateSystem() {
   //funckja zliczajaca ile jest danych urzadzeń, ile metrów kabla etc.
   const reducer = systemStatusReducer();
@@ -578,7 +535,7 @@ function generateSystem() {
   addRemoveActionListener();
 
   //funkcja generująca zestawienie urządzeń w oparciu o dane z reducera
-  initAppliencedDevices(reducer);
+  createSystemUsedDevicesPanel();
   //zapis do pliku
   saveSketch();
 

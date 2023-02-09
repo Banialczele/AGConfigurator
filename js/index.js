@@ -266,3 +266,16 @@ const TOLED_OPTIONS = [
   { type: "OP", label: "NADMIAR SPALIN OPUŚĆ GARAŻ" },
   { type: "WS", label: "Napis na życzenie klienta" },
 ];
+
+const DEVICES_DOCS = {
+  "Teta EcoWent": "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecowent",
+  "Teta EcoWent + MiniDet": "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecowent",
+  "Teta EcoDet": "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecodet",
+  "Teta EcoN": "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-econ",
+  "Teta EcoH": "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecoh",
+  "Teta MiniDet": "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-minidet",
+  "Teta SZOA": "https://www.atestgaz.pl/produkt/sygnalizator-teta-szoa",
+  "TOLED": "https://www.atestgaz.pl/produkt/tablica-ostrzegawcza-toled",
+  "MSV": "https://www.atestgaz.pl/produkt/zawor-odcinajacy-msv",
+  "Control V": "https://www.atestgaz.pl/produkt/sterownik-zaworu-control-v"
+}
