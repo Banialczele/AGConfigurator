@@ -163,6 +163,7 @@ function createSegmentDeviceTypeSelect(device) {
     }
     segmentDeviceSelect.appendChild(deviceTypeOption);
   });
+  // Nasłuchiwanie zdarzeń dot. zmiany typu urządzenia w wybranym segmencie
   segmentDeviceSelect.addEventListener("change", (event) => setSegmentDeviceTypeSelectChangeEvent(event, device.index));
 
   return segmentDeviceSelectContainer;
@@ -171,6 +172,7 @@ function createSegmentDeviceTypeSelect(device) {
 // Ustawienie nasłuchiwania zdarzeń dot. zmiany typu urządzenia w wybranym segmencie
 function setSegmentDeviceTypeSelectChangeEvent(event, index) {
   const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
+  // Sprawdzenie liczebności urządzeń dotychczas wybranego typu w systemie
   const oldNameDeviceQuantity = systemData.devices.reduce((accumulator, setDeviceType) => {
     if(setDeviceType.name === setDevice.name) {
       return accumulator + 1;
@@ -178,11 +180,16 @@ function setSegmentDeviceTypeSelectChangeEvent(event, index) {
       return accumulator;
     }
   }, 0);
+  // Usunięcie typu urządzenia z listy wykorzystywanych w systemie, jeśli wybrane było ostatnim
   if ((oldNameDeviceQuantity - 1) < 1) {
     const type = setDevice.type;
     systemData.devicesTypes[`${type}s`] = systemData.devicesTypes[`${type}s`].filter((systemDeviceType) => {
       return systemDeviceType.name !== setDevice.name;
     });
+  }
+  // Usunięcie opisu urządzenia, jeśli następuje zmiana z typu TOLED na inny
+  if (setDevice.name === "TOLED") {
+    setDevice.description = "";
   }
   setDevice.name = event.target[event.target.selectedIndex].value;
   const setStructureType = STRUCTURE_TYPES.find((structureType) => structureType.type === systemData.structureType);
@@ -211,6 +218,10 @@ function setSegmentDeviceTypeSelectChangeEvent(event, index) {
 
 // Tworzenie selecta rodzaju etykiety dla segmentu urządzenia typu TOLED
 function createSegmentTOLEDDescriptionSelect(device) {
+  // Sprawdzenie czy opis urządzenia był wcześniej ustawiony, w przeciwnym wypadku ustawienie domyślnej wartości
+  if (!device.description) {
+    device.description = "WE";
+  }
   const segmentTOLEDSelectContainer = document.createElement("div");
   const segmentTOLEDLabel = document.createElement("label");
   const segmentTOLEDSelect = document.createElement("select");
@@ -229,8 +240,16 @@ function createSegmentTOLEDDescriptionSelect(device) {
     }
     segmentTOLEDSelect.appendChild(toledOption);
   });
+  // Nasłuchiwanie zdarzeń dot. zmiany opisu urządzenia typu TOLED
+  segmentTOLEDSelectContainer.addEventListener("change", (event) => setSegmentTOLEDDescriptionSelectChangeEvent(event, device.index));
 
   return segmentTOLEDSelectContainer;
+}
+
+// Ustawienie nasłuchiwania zdarzeń dot. zmiany opisu urządzenia typu TOLED
+function setSegmentTOLEDDescriptionSelectChangeEvent(event, index) {
+  const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
+  setDevice.description = event.target[event.target.selectedIndex].value;
 }
 
 // Tworzenie panelu działań dla segmentu jednostki sterującej
