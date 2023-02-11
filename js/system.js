@@ -98,38 +98,29 @@ function createSystemSegmentsActionsList() {
 function createSegmentActions(device) {
   const actionsSegment = document.createElement("div");
   const segmentIndexLabel = document.createElement("label");
-  const segmentWireLengthLabel = document.createElement("label");
-  const segmentWireLengthContainer = document.createElement("div");
   const segmentButtonsContainer = document.createElement("div");
   setAttributes(actionsSegment, { class: "actionsSegment", id: `actionsSegment${device.index}`, "data-segmentType": "detectors", "data-segmentIndex": `${device.index}` });
-  setAttributes(segmentWireLengthContainer, { class: "segmentWireLengthContainer" });
   setAttributes(segmentButtonsContainer, { class: "segmentButtonsContainer" });
   actionsSegment.appendChild(segmentIndexLabel);
   actionsSegment.appendChild(createSegmentDeviceTypeSelect(device));
   if (device.name === "TOLED") {
     actionsSegment.appendChild(createSegmentTOLEDDescriptionSelect(device));
   }
-  actionsSegment.appendChild(segmentWireLengthContainer);
+  actionsSegment.appendChild(createSegmentWireLengthInput(device));
   actionsSegment.appendChild(segmentButtonsContainer);
   setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: `actionsSegmentIndex${device.index}` });
-  setAttributes(segmentWireLengthLabel, { class: "segmentWireLengthLabel", for: `actionsSegmentWireLength${device.index}` });
   segmentIndexLabel.appendChild(document.createTextNode("Segment nr "));
-  segmentWireLengthLabel.appendChild(document.createTextNode("Odległość do poprzedniego segmentu"));
   const segmentIndexInput = document.createElement("input");
-  const segmentWireLengthInput = document.createElement("input");
   const duplicateDeviceButton = document.createElement("button");
   const duplicateButtonImage = document.createElement("img");
   const removeDeviceButton = document.createElement("button");
   const removeButtonImage = document.createElement("img");
   setAttributes(segmentIndexInput, { class: "segmentId", id: `actionsSegmentIndex${device.index}`, type: "number", min: 0, max: 50, value: device.index });
-  setAttributes(segmentWireLengthInput, { class: "segmentWireLength", id: `actionsSegmentWireLength${device.index}`, type: "number", min: 1, value: device.wireLength });
   setAttributes(duplicateDeviceButton, { class: "duplicateDeviceButton", id: `duplicateDevice${device.index}` });
   setAttributes(duplicateButtonImage, { src: "./SVG/add.svg", alt: "Duplicate device button" });
   setAttributes(removeDeviceButton, { class: "removeDeviceButton", id: `removeDevice${device.index}` });
   setAttributes(removeButtonImage, { src: "./SVG/remove.svg", alt: "Remove device button" });
   segmentIndexLabel.appendChild(segmentIndexInput);
-  segmentWireLengthContainer.appendChild(segmentWireLengthLabel);
-  segmentWireLengthContainer.appendChild(segmentWireLengthInput);
   segmentButtonsContainer.appendChild(duplicateDeviceButton);
   segmentButtonsContainer.appendChild(removeDeviceButton);
   duplicateDeviceButton.appendChild(duplicateButtonImage);
@@ -250,6 +241,26 @@ function createSegmentTOLEDDescriptionSelect(device) {
 function setSegmentTOLEDDescriptionSelectChangeEvent(event, index) {
   const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
   setDevice.description = event.target[event.target.selectedIndex].value;
+}
+
+// Tworzenie inputa długości kabla (odległości od poprzedniego segmentu) dla segmentu urządzenia 
+function createSegmentWireLengthInput(device) {
+  const segmentWireLengthContainer = document.createElement("div");
+  const segmentWireLengthLabel = document.createElement("label");
+  const segmentWireLengthInput = document.createElement("input");
+  setAttributes(segmentWireLengthContainer, { class: "segmentWireLengthContainer" });
+  setAttributes(segmentWireLengthLabel, { class: "segmentWireLengthLabel", for: `actionsSegmentWireLength${device.index}` });
+  setAttributes(segmentWireLengthInput, { class: "segmentWireLength", id: `actionsSegmentWireLength${device.index}`, type: "number", min: 1, value: device.wireLength });
+  segmentWireLengthLabel.appendChild(document.createTextNode("Odległość do poprzedniego segmentu"));
+  segmentWireLengthContainer.appendChild(segmentWireLengthLabel);
+  segmentWireLengthContainer.appendChild(segmentWireLengthInput);
+
+  return segmentWireLengthContainer;
+}
+
+// Ustawienie nasłuchiwania zdarzeń dot. długości kabla (odległości od poprzedniego segmentu) w wybranym segmencie
+function setSegmentWireLengthInputChangeEvent(event, index) {
+
 }
 
 // Tworzenie panelu działań dla segmentu jednostki sterującej
