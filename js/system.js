@@ -98,33 +98,19 @@ function createSystemSegmentsActionsList() {
 function createSegmentActions(device) {
   const actionsSegment = document.createElement("div");
   const segmentIndexLabel = document.createElement("label");
-  const segmentButtonsContainer = document.createElement("div");
   setAttributes(actionsSegment, { class: "actionsSegment", id: `actionsSegment${device.index}`, "data-segmentType": "detectors", "data-segmentIndex": `${device.index}` });
-  setAttributes(segmentButtonsContainer, { class: "segmentButtonsContainer" });
   actionsSegment.appendChild(segmentIndexLabel);
   actionsSegment.appendChild(createSegmentDeviceTypeSelect(device));
   if (device.name === "TOLED") {
     actionsSegment.appendChild(createSegmentTOLEDDescriptionSelect(device));
   }
   actionsSegment.appendChild(createSegmentWireLengthInput(device));
-  actionsSegment.appendChild(segmentButtonsContainer);
+  actionsSegment.appendChild(createSegmentButtons(device));
   setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: `actionsSegmentIndex${device.index}` });
   segmentIndexLabel.appendChild(document.createTextNode("Segment nr "));
   const segmentIndexInput = document.createElement("input");
-  const duplicateDeviceButton = document.createElement("button");
-  const duplicateButtonImage = document.createElement("img");
-  const removeDeviceButton = document.createElement("button");
-  const removeButtonImage = document.createElement("img");
   setAttributes(segmentIndexInput, { class: "segmentId", id: `actionsSegmentIndex${device.index}`, type: "number", min: 0, max: 50, value: device.index });
-  setAttributes(duplicateDeviceButton, { class: "duplicateDeviceButton", id: `duplicateDevice${device.index}` });
-  setAttributes(duplicateButtonImage, { src: "./SVG/add.svg", alt: "Duplicate device button" });
-  setAttributes(removeDeviceButton, { class: "removeDeviceButton", id: `removeDevice${device.index}` });
-  setAttributes(removeButtonImage, { src: "./SVG/remove.svg", alt: "Remove device button" });
   segmentIndexLabel.appendChild(segmentIndexInput);
-  segmentButtonsContainer.appendChild(duplicateDeviceButton);
-  segmentButtonsContainer.appendChild(removeDeviceButton);
-  duplicateDeviceButton.appendChild(duplicateButtonImage);
-  removeDeviceButton.appendChild(removeButtonImage);
 
   return actionsSegment;
 }
@@ -269,6 +255,62 @@ function setSegmentWireLengthInputChangeEvent(event, index) {
     setDevice.wireLength = 0;
   }
   setSystemStateBusLength();
+}
+
+// Tworzenie przycisków akcji dla segmentu urządzenia 
+function createSegmentButtons(device) {
+  const segmentButtonsContainer = document.createElement("div");
+  const duplicateDeviceButton = document.createElement("button");
+  const duplicateButtonImage = document.createElement("img");
+  const removeDeviceButton = document.createElement("button");
+  const removeButtonImage = document.createElement("img");
+  setAttributes(segmentButtonsContainer, { class: "segmentButtonsContainer" });
+  setAttributes(duplicateDeviceButton, { class: "duplicateDeviceButton", id: `duplicateDevice${device.index}` });
+  setAttributes(duplicateButtonImage, { src: "./SVG/add.svg", alt: "Duplicate device button" });
+  setAttributes(removeDeviceButton, { class: "removeDeviceButton", id: `removeDevice${device.index}` });
+  setAttributes(removeButtonImage, { src: "./SVG/remove.svg", alt: "Remove device button" });
+  segmentButtonsContainer.appendChild(duplicateDeviceButton);
+  segmentButtonsContainer.appendChild(removeDeviceButton);
+  duplicateDeviceButton.appendChild(duplicateButtonImage);
+  removeDeviceButton.appendChild(removeButtonImage);
+  duplicateDeviceButton.addEventListener("click", (event) => setSegmentDuplicateDeviceButtonClickEvent(event, device.index));
+  removeDeviceButton.addEventListener("click", (event) => setSegmentRemoveDeviceButtonClickEvent(event, device.index));
+
+  return segmentButtonsContainer;
+}
+
+// Ustawienie nasłuchiwania zdarzeń dot. powielenia segmentu z tymi samymi parametrami
+function setSegmentDuplicateDeviceButtonClickEvent(event, index) {
+
+}
+
+// Ustawienie nasłuchiwania zdarzeń dot. usunięcia segmentu
+function setSegmentRemoveDeviceButtonClickEvent(event, index) {
+  const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
+  // Sprawdzenie liczebności urządzeń dotychczas wybranego typu w systemie
+  const oldNameDeviceQuantity = systemData.devices.reduce((accumulator, setDeviceType) => {
+    if(setDeviceType.name === setDevice.name) {
+      return accumulator + 1;
+    } else {
+      return accumulator;
+    }
+  }, 0);
+  // Usunięcie typu urządzenia z listy wykorzystywanych w systemie, jeśli wybrane było ostatnim
+  if ((oldNameDeviceQuantity - 1) < 1) {
+    const type = setDevice.type;
+    systemData.devicesTypes[`${type}s`] = systemData.devicesTypes[`${type}s`].filter((systemDeviceType) => {
+      return systemDeviceType.name !== setDevice.name;
+    });
+  }
+  systemData.devices.splice(setDevice.index - 1, 1);
+  if (systemData.devices.length > 0) {
+    systemData.devices.forEach((device) => {
+      if (device.index > setDevice.index) {
+        return device.index -= 1;
+      }
+    });
+  }
+  setSystem();
 }
 
 // Tworzenie panelu działań dla segmentu jednostki sterującej
