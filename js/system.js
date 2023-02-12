@@ -254,13 +254,21 @@ function createSegmentWireLengthInput(device) {
   segmentWireLengthLabel.appendChild(document.createTextNode("Odległość do poprzedniego segmentu"));
   segmentWireLengthContainer.appendChild(segmentWireLengthLabel);
   segmentWireLengthContainer.appendChild(segmentWireLengthInput);
+  segmentWireLengthInput.addEventListener("change", (event) => setSegmentWireLengthInputChangeEvent(event, device.index));
 
   return segmentWireLengthContainer;
 }
 
 // Ustawienie nasłuchiwania zdarzeń dot. długości kabla (odległości od poprzedniego segmentu) w wybranym segmencie
 function setSegmentWireLengthInputChangeEvent(event, index) {
-
+  const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
+  const newValue = parseInt(event.target.value);
+  if (newValue > 0) {
+    setDevice.wireLength = newValue;
+  } else {
+    setDevice.wireLength = 0;
+  }
+  setSystemStateBusLength();
 }
 
 // Tworzenie panelu działań dla segmentu jednostki sterującej
