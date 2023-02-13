@@ -97,22 +97,28 @@ function createSystemSegmentsActionsList() {
 // Tworzenie panelu działań dla segmentu urządzenia
 function createSegmentActions(device) {
   const actionsSegment = document.createElement("div");
-  const segmentIndexLabel = document.createElement("label");
   setAttributes(actionsSegment, { class: "actionsSegment", id: `actionsSegment${device.index}`, "data-segmentType": "detectors", "data-segmentIndex": `${device.index}` });
-  actionsSegment.appendChild(segmentIndexLabel);
+  actionsSegment.appendChild(createSegmentIndex(device));
   actionsSegment.appendChild(createSegmentDeviceTypeSelect(device));
   if (device.name === "TOLED") {
     actionsSegment.appendChild(createSegmentTOLEDDescriptionSelect(device));
   }
   actionsSegment.appendChild(createSegmentWireLengthInput(device));
   actionsSegment.appendChild(createSegmentButtons(device));
-  setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: `actionsSegmentIndex${device.index}` });
-  segmentIndexLabel.appendChild(document.createTextNode("Segment nr "));
-  const segmentIndexInput = document.createElement("input");
-  setAttributes(segmentIndexInput, { class: "segmentId", id: `actionsSegmentIndex${device.index}`, type: "number", min: 0, max: 50, value: device.index });
-  segmentIndexLabel.appendChild(segmentIndexInput);
 
   return actionsSegment;
+}
+
+// Tworzenie inputa indeksu dla segmentu urządzenia
+function createSegmentIndex(device) {
+  const segmentIndexLabel = document.createElement("label");
+  const segmentIndexInput = document.createElement("input");
+  setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: `actionsSegmentIndex${device.index}` });
+  setAttributes(segmentIndexInput, { class: "segmentId", id: `actionsSegmentIndex${device.index}`, type: "number", min: 0, max: 50, value: device.index });
+  segmentIndexLabel.appendChild(document.createTextNode("Segment nr "));
+  segmentIndexLabel.appendChild(segmentIndexInput);
+
+  return segmentIndexLabel;
 }
 
 // Tworzenie selecta typu urządzeń dla segmentu urządzenia 
@@ -229,7 +235,7 @@ function setSegmentTOLEDDescriptionSelectChangeEvent(event, index) {
   setDevice.description = event.target[event.target.selectedIndex].value;
 }
 
-// Tworzenie inputa długości kabla (odległości od poprzedniego segmentu) dla segmentu urządzenia 
+// Tworzenie inputa długości kabla (odległości od poprzedniego segmentu) dla segmentu urządzenia
 function createSegmentWireLengthInput(device) {
   const segmentWireLengthContainer = document.createElement("div");
   const segmentWireLengthLabel = document.createElement("label");
@@ -273,19 +279,27 @@ function createSegmentButtons(device) {
   segmentButtonsContainer.appendChild(removeDeviceButton);
   duplicateDeviceButton.appendChild(duplicateButtonImage);
   removeDeviceButton.appendChild(removeButtonImage);
-  duplicateDeviceButton.addEventListener("click", (event) => setSegmentDuplicateDeviceButtonClickEvent(event, device.index));
-  removeDeviceButton.addEventListener("click", (event) => setSegmentRemoveDeviceButtonClickEvent(event, device.index));
+  duplicateDeviceButton.addEventListener("click", (event) => setSegmentDuplicateDeviceButtonClickEvent(device.index));
+  removeDeviceButton.addEventListener("click", (event) => setSegmentRemoveDeviceButtonClickEvent(device.index));
 
   return segmentButtonsContainer;
 }
 
 // Ustawienie nasłuchiwania zdarzeń dot. powielenia segmentu z tymi samymi parametrami
-function setSegmentDuplicateDeviceButtonClickEvent(event, index) {
-
+function setSegmentDuplicateDeviceButtonClickEvent(index) {
+  const duplicatedDevice = structuredClone(systemData.devices.find((systemDevice) => systemDevice.index === index));
+  duplicatedDevice.index = index + 1;
+  systemData.devices.forEach((device) => {
+    if (device.index > index) {
+      return device.index += 1;
+    }
+  });
+  systemData.devices.splice(index, 0, duplicatedDevice);
+  setSystem();
 }
 
 // Ustawienie nasłuchiwania zdarzeń dot. usunięcia segmentu
-function setSegmentRemoveDeviceButtonClickEvent(event, index) {
+function setSegmentRemoveDeviceButtonClickEvent(index) {
   const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
   // Sprawdzenie liczebności urządzeń dotychczas wybranego typu w systemie
   const oldNameDeviceQuantity = systemData.devices.reduce((accumulator, setDeviceType) => {
@@ -467,189 +481,14 @@ function setSystem() {
   createSystemUsedDevicesPanel();
 }
 
-//W kodzie jest getter i setter systemu, jakby komuś przyszło na myśl generowanie systemu po JSONie :)
-function getSystem(sys) {
-  return sys;
+// Ustawienie nasłuchiwania zdarzeń dot. eksportu systemu do pliku CSV
+function setExportToCSVButtonEvent() {
+  const exportToCSVButton = document.getElementById("exportToCSV");
+  exportToCSVButton.addEventListener("click", () => exportToCSV());
 }
 
-function saveSketch() {
-  const systemSketchButton = document.querySelector(`.systemSketch`);
-  systemSketchButton.addEventListener(`click`, e => {
-    const reducer = systemStatusReducer();
-    systemSketch(reducer, `sketch`);
-  });
-}
-
-function saveListOfDevices() {
-  const listOfDevices = document.querySelector(`.systemRecord`);
-  listOfDevices.addEventListener(`click`, e => {
-    const reducer = systemStatusReducer();
-    saveToFile(reducer);
-  });
-}
-
-// function addRemoveActionListener() {
-//   const segmentListeners = document.querySelector(`.actionsList`);
-//   segmentListeners.addEventListener(
-//     `click`,
-//     e => {
-//       if (e.target.name === `addSegment`) {
-//         const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
-//         const segmentClicked = e.target.closest(`.actionsSegment`);
-//         const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
-
-//         const listOfdeviceSegments = document.querySelectorAll(`.deviceSegment`);
-//         const deviceSegment = listOfdeviceSegments[indexOfClickedSegment - 1];
-//         const objToCopy = JSON.parse(JSON.stringify(SYSTEM.bus[indexOfClickedSegment - 1]));
-//         SYSTEM.bus.splice(indexOfClickedSegment, 0, objToCopy);
-//         const clonedSegment = segmentClicked.cloneNode(true);
-//         const clonedSegmentSelect = clonedSegment.querySelector(`.segmentDeviceSelect`);
-//         clonedSegmentSelect.value = SYSTEM.bus[indexOfClickedSegment].detectorName;
-//         const clonedsegmentIdentifier = clonedSegment.querySelector(`.segmentIdentifier`);
-//         clonedsegmentIdentifier.value = `${listOfSegments.length}`;
-//         const clonedPreview = deviceSegment.cloneNode(true);
-//         segmentClicked.after(clonedSegment);
-//         deviceSegment.after(clonedPreview);
-
-//         const reducer = systemStatusReducer();
-//         setSystemStateDetectorsList();
-//         setSystemStateSignallersList();
-//         setSystemStateAccessories();
-//         setSystemStateBusLength();
-//         setSystemStatePowerConsumption();
-//         selectEvent(clonedSegmentSelect);
-//         createSystemUsedDevicesPanel();
-//       } else if (e.target.name === `removeSegment`) {
-//         const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
-//         const segmentClicked = e.target.closest(`.actionsSegment`);
-//         const indexOfClickedSegment = listOfSegments.indexOf(segmentClicked);
-
-//         const listOfdeviceSegments = document.querySelectorAll(`.deviceSegment`);
-//         const deviceSegment = listOfdeviceSegments[indexOfClickedSegment - 1];
-//         if (listOfdeviceSegments.length > 1) {
-//           SYSTEM.bus.splice(indexOfClickedSegment - 1, 1);
-//           segmentClicked.remove();
-//           deviceSegment.remove();
-//         }
-//         const reducer = systemStatusReducer();
-//         setSystemStateDetectorsList();
-//         setSystemStateSignallersList();
-//         setSystemStateAccessories();
-//         setSystemStateBusLength();
-//         setSystemStatePowerConsumption();
-//         createSystemUsedDevicesPanel();
-//       }
-//     },
-//     true
-//   );
-// }
-
-// function selectEvent(select) {
-//   select.addEventListener(`change`, e => {
-//     const listOfSegments = Array.from(document.querySelectorAll(`.actionsSegment`));
-//     const segmentClicked = e.target.closest(`.actionsSegment`);
-//     const i = listOfSegments.indexOf(segmentClicked) - 1;
-
-//     SYSTEM.bus[i].detectorName = e.target.value;
-//     if (e.target.value === `Teta SZOA`) {
-//       SYSTEM.bus[i].deviceType = `signaller`;
-//       delete SYSTEM.bus[i].toledText;
-//       const container = document.querySelector(`#actionsSegment${i + 1}`);
-//       const toled = document.querySelector(`#actionsSegment${i + 1} .toledContainer`);
-//       if (toled) {
-//         container.removeChild(toled);
-//       }
-//     } else if (e.target.value === `TOLED`) {
-//       SYSTEM.bus[i].deviceType = `signaller`;
-//       // createSegmentTOLEDDescriptionSelect();
-//     } else {
-//       SYSTEM.bus[i].deviceType = `detector`;
-//       SYSTEM.bus[i].gasDetected = e.target.options[e.target.selectedIndex].getAttribute(`data-detectedgas`);
-//       delete SYSTEM.bus[i].toledText;
-//       const container = document.querySelector(`#actionsSegment${i + 1}`);
-//       const toled = document.querySelector(`#actionsSegment${i + 1} .toledContainer`);
-//       if (toled) {
-//         container.removeChild(toled);
-//       }
-//     }
-//     const reduced = systemStatusReducer();
-//     //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
-//     setSystemStateDetectorsList();
-//     setSystemStateSignallersList();
-//     setSystemStateAccessories();
-//     setSystemStateBusLength();
-//     setSystemStatePowerConsumption();
-//     // setPreviewImages(SYSTEM.bus);
-//     createSystemUsedDevicesPanel();
-//     //Aż do tego miejsca.
-//   });
-// }
-
-//Funkcja odpowiadająca za nadanie każdemu selektowi w podglądzie systemu listenera na zmianę stanu. Jeśli chodzi o uwagi techniczne to szukałbym błędu w wyszukiwaniu elementu ( patrz Uwagi techniczne pkt 6 ) w funkcji selectEvent.
-// function actionsSelectListener() {
-//   const segmentDeviceSelect = document.querySelectorAll(`.segmentDeviceSelect`);
-//   segmentDeviceSelect.forEach(select => {
-//     selectEvent(select);
-//   });
-// }
-
-// function systemStatusReducer() {
-//   const system = getSystem(SYSTEM);
-//   const reduced = Object.values(
-//     system.bus.reduce((key, { gasDetected, detectorName, wireLen_m, deviceType }) => {
-//       if (!key[`amountOfDevices`]) {
-//         key[`amountOfDevices`] = { amountOfDevices: 0 };
-//       }
-//       if (!key[detectorName] && deviceType === `detector`) {
-//         key[detectorName] = { [`detectedGas`]: gasDetected, [`amount`]: 0, detectorName, deviceType };
-//       } else if (!key[detectorName] && deviceType === `signaller`) {
-//         key[detectorName] = { detectorName, deviceType, [`amount`]: 0 };
-//       }
-
-//       if (!key[`wire`]) {
-//         key[`wire`] = { wireLength: 0 };
-//       }
-
-//       key[detectorName][`amount`]++;
-//       key[`amountOfDevices`][`amountOfDevices`]++;
-
-//       key[`wire`][`wireLength`] = parseInt(key[`wire`][`wireLength`]) + parseInt(wireLen_m);
-//       return key;
-//     }, Object.create(null))
-//   );
-//   return reduced;
-// }
-
-// function generateSystem() {
-//   //funckja zliczajaca ile jest danych urzadzeń, ile metrów kabla etc.
-//   const reducer = systemStatusReducer();
-//   //Od tego miejsca tworzone są funkcje które tworzą elementy na liście "Stan systemu" Te funkcje pewnie da się zredukować do jednej, ale nie mam pomysłu jak, a IFowanie to uważam, że słaba opcja. Ewentualnie switch i przekazywać paramentr który warunek ma się wykonywać, ale nie wiem. Jak Ci się uda zoptymalizować to byłoby super.
-//   setSystemStateDetectorsList();
-//   setSystemStateSignallersList();
-//   setSystemStateAccessories();
-//   setSystemStateBusLength();
-//   setSystemStatePowerConsumption();
-//   //Aż do tego miejsca ^^
-
-//   //Tworzenie obrazów
-//   // setPreviewImages(SYSTEM.bus);
-//   actionsSelectListener();
-//   //Dodawanie i usuwanie elementów ( czyli kopiowanie i usuwanie ) oraz dodanie listenera do dodanego segmentu
-//   addRemoveActionListener();
-
-//   //funkcja generująca zestawienie urządzeń w oparciu o dane z reducera
-//   createSystemUsedDevicesPanel();
-//   //zapis do pliku
-//   saveSketch();
-
-//   //zapis do CSV
-
-//   saveListOfDevices();
-// }
-
-function createPreview() {
-  //generowanie konteneru dla zdjęć urządzeń i magistrali
-  createSystemDiagram();
-  //geneowanie numeracji segmentow, dzialań, selectów, numeracji segmentów etc
-  createSystemSegmentsActionsList();
+// Ustawienie nasłuchiwania zdarzeń dot. eksportu zestawienia urządzeń do pliku JSON
+function setExportToJSONButtonEvent() {
+  const exportToCSVButton = document.getElementById("exportToJSON");
+  exportToCSVButton.addEventListener("click", () => exportToJSON());
 }

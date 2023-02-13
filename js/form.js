@@ -86,7 +86,9 @@ function handleFormSubmit() {
     initSystem.batteryBackUp = document.getElementById("batteryBackUp").value;
     initSystem.EWL = parseInt(document.getElementById("EWL").value);
     createSystemData();
-    setSystem(initSystem);
+    setSystem();
+    setExportToCSVButtonEvent();
+    setExportToJSONButtonEvent();
     system.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 }
