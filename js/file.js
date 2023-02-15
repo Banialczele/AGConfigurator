@@ -1,34 +1,30 @@
-// Wyeksportowanie danych systemu do pliku CSV i pobranie go przez użytkownika
-function exportToCSV(dataToSave) {
-  const formattedData = setDataToCSVFormat();
-  const csvFile = "data:text/csv/csv;charset=utf-8, " + formattedData.map(element => element.join(",")).join("\n");
-  console.log("XD");
-  const date = new Date();
-  const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
-  const encodedUri = encodeURI(csvFile);
-  const anchor = document.createElement("a");
-  anchor.style = "display:none";
-  const fileName = prompt("Nazwa pliku?", `${saveFileName}`);
-  anchor.setAttribute(`href`, encodedUri);
-  if (fileName === null) {
-    anchor.setAttribute(`download`, `${saveFileName}.csv`);
-  } else {
-    anchor.setAttribute(`download`, `${fileName}.csv`);
-  }
-  anchor.click();
+// Wyeksportowanie danych systemu do pliku CSV
+function exportToCSV() {
+  const csvData = setDataToCSVFormat();
+  const url = "data:text/csv;charset=utf-8," + encodeURI(csvData);
+  downloadFile(url, "csv");
 }
 
-// Przygotowanie danych systemu do formatu CSV
+// Konwersja danych systemu do formatu CSV
 function setDataToCSVFormat() {
-  const columnTitles = ["Rodzaj urządzenia", "Nazwa urządzenia", "Ilość"];
+  const columnTitles = ["Rodzaj urz.", "Nazwa urz.", "Ilość"];
   const rows = [];
   insertDeviceTypeData("detectors", "Czujnik gazu", rows);
   insertDeviceTypeData("signallers", "Sygnalizator", rows);
   insertDeviceTypeWireLengthData("detector", "czujniki gazu", rows);
   insertDeviceTypeWireLengthData("signaller", "sygnalizatory", rows);
   rows.push(["Zasilacz", systemData.powerSupply, "1 szt."]);
+  const csv = [columnTitles, ...rows].map((row) => `${row.join(",")}\r\n`).join("");
+  
+  return csv;
+}
 
-  return [columnTitles, ...rows];
+// Wyeksportowanie danych systemu do pliku JSON
+function exportToJSON() {
+  const stringData = JSON.stringify(systemData);
+  const blob = new Blob([stringData], { type: "text/javascript" });
+  const url = URL.createObjectURL(blob);
+  downloadFile(url, "json");
 }
 
 // Wstawienie wierszy z danymi dot. użytych w systemie typów urządzeń
@@ -57,24 +53,18 @@ function insertDeviceTypeWireLengthData(deviceType, deviceTypeLabel, store) {
   store.push(["Kabel", deviceTypeLabel, `${wireLength} m`]);
 }
 
-function exportToJSON(dataToSave, saveFileName) {
-  console.log("chuj w dupe JS");
+// Ustawienie parametrów pliku i pobranie go przez użytkownika
+function downloadFile(url, fileType) {
+  const defaultFileName = `TetaSystem_${setDate()}`;
+  const fileName = prompt("Nazwa pliku?", defaultFileName);
   const anchor = document.createElement("a");
-  anchor.style = "display:none";
-  const fileName = `${saveFileName}sketch`;
-  if (fileName === null) return;
-  const dataAsString = JSON.stringify(dataToSave);
-  const blob = new Blob([dataAsString], { type: "text/javascript" });
-  anchor.href = window.URL.createObjectURL(blob);
-  anchor.download = `${fileName}.json`;
-  saveToFile(dataToSave);
-
+  anchor.style = "display: none";
+  if (!fileName) {
+    setAttributes(anchor, { href: url, download: `${defaultFileName}.${fileType}` });
+  } else {
+    setAttributes(anchor, { href: url, download: `${fileName}.${fileType}` });
+  }
   anchor.click();
-}
-
-function getMonth(date) {
-  const month = new Date().getMonth() + 1;
-  return month < 10 ? `0${month}` : month;
 }
 
 function loadFile(e) {
