@@ -4,6 +4,7 @@ function createSystemData() {
   systemData.devices = [];
   systemData.powerSupply = initSystem.powerSupply;
   systemData.structureType = initSystem.structureType;
+  systemData.batteryBackUp = initSystem.batteryBackUp;
   systemData.devicesTypes.detectors.push({
     name: initSystem.detectorName,
     gasDetected: initSystem.gasDetected,

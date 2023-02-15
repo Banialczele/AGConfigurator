@@ -1,67 +1,7 @@
-function prepDataToSaveInFile(systemData) {
-  const CSV = [[`Rodzaj urządzenia`, `Nazwa urządzenia`, `ilość`]];
-  const sumAllDeviceEntries = systemData.bus.reduce((obj, currentValue) => {
-    if (!obj[currentValue.detectorName]) {
-      obj[currentValue.detectorName] = 0;
-    }
-    obj[currentValue.detectorName]++;
-    return obj;
-  }, {});
-
-  const sumAllCableTypes = systemData.bus.reduce((obj, currentValue) => {
-    if (!obj[currentValue.deviceType]) {
-      obj[currentValue.deviceType] = obj[currentValue.deviceType];
-      obj[currentValue.deviceType] = 0;
-    }
-    obj[currentValue.deviceType]++;
-    return obj;
-  }, {});
-
-  const sumAllCableLengths = systemData.bus.reduce((obj, currentValue) => {
-    if (!obj[`cableTotalLength`]) {
-      obj[`cableTotalLength`] = obj["cableTotalLength"];
-      obj[`cableTotalLength`] = 0;
-    }
-    obj[`cableTotalLength`] += parseInt(currentValue.wireLen_m);
-    return obj;
-  }, {});
-
-  const deviceTypes = Object.keys(sumAllDeviceEntries).map(value => {
-    const foundDevice = NewDevices.find(device => (device.type === value ? device : ""));
-    return foundDevice.device;
-  });
-
-  deviceTypes.forEach((device, i) => {
-    CSV.push([device, Object.keys(sumAllDeviceEntries)[i], Object.values(sumAllDeviceEntries)[i]]);
-  });
-
-  Object.keys(sumAllCableTypes).forEach((cable, i) => {
-    CSV.push([`Kabel`, Object.keys(sumAllCableTypes)[i], Object.values(sumAllCableLengths)[i]]);
-  });
-
-  CSV.push([`Zasilacz`, systemData.supplyType]);
-
-  return CSV;
-}
-
-function systemSketch(dataToSave, saveFileName) {
-  console.log("chuj w dupe JS");
-  const anchor = document.createElement("a");
-  anchor.style = "display:none";
-  const fileName = `${saveFileName}sketch`;
-  if (fileName === null) return;
-  const dataAsString = JSON.stringify(dataToSave);
-  const blob = new Blob([dataAsString], { type: "text/javascript" });
-  anchor.href = window.URL.createObjectURL(blob);
-  anchor.download = `${fileName}.json`;
-  saveToFile(dataToSave);
-
-  anchor.click();
-}
-
-function saveToFile(dataToSave) {
-  const result = prepDataToSaveInFile(SYSTEM);
-  const csvFile = "data:text/csv/csv;charset=utf-8, " + result.map(element => element.join(",")).join("\n");
+// Wyeksportowanie danych systemu do pliku CSV i pobranie go przez użytkownika
+function exportToCSV(dataToSave) {
+  const formattedData = setDataToCSVFormat();
+  const csvFile = "data:text/csv/csv;charset=utf-8, " + formattedData.map(element => element.join(",")).join("\n");
   console.log("XD");
   const date = new Date();
   const saveFileName = `TetaSystem_${date.getFullYear()}_${getMonth(date)}_${date.getDate()}__${date.getHours()}_${date.getMinutes()}`;
@@ -75,6 +15,60 @@ function saveToFile(dataToSave) {
   } else {
     anchor.setAttribute(`download`, `${fileName}.csv`);
   }
+  anchor.click();
+}
+
+// Przygotowanie danych systemu do formatu CSV
+function setDataToCSVFormat() {
+  const columnTitles = ["Rodzaj urządzenia", "Nazwa urządzenia", "Ilość"];
+  const rows = [];
+  insertDeviceTypeData("detectors", "Czujnik gazu", rows);
+  insertDeviceTypeData("signallers", "Sygnalizator", rows);
+  insertDeviceTypeWireLengthData("detector", "czujniki gazu", rows);
+  insertDeviceTypeWireLengthData("signaller", "sygnalizatory", rows);
+  rows.push(["Zasilacz", systemData.powerSupply, "1 szt."]);
+
+  return [columnTitles, ...rows];
+}
+
+// Wstawienie wierszy z danymi dot. użytych w systemie typów urządzeń
+function insertDeviceTypeData(type, label, store) {
+  systemData.devicesTypes[type].forEach((deviceType) => {
+    const quantity = systemData.devices.reduce((accumulator, device) => {
+      if (device.name === deviceType.name) {
+        return accumulator += 1;
+      } else {
+        return accumulator;
+      }
+    }, 0);
+    store.push([label, deviceType.name, `${quantity} szt.`]);
+  });
+}
+
+// Wstawienie wierszy z danymi dot. kabli użytych w systemie
+function insertDeviceTypeWireLengthData(deviceType, deviceTypeLabel, store) {
+  const wireLength = systemData.devices.reduce((accumulator, device) => {
+    if (device.type === deviceType) {
+      return accumulator += device.wireLength;
+    } else {
+      return accumulator;
+    }
+  }, 0);
+  store.push(["Kabel", deviceTypeLabel, `${wireLength} m`]);
+}
+
+function exportToJSON(dataToSave, saveFileName) {
+  console.log("chuj w dupe JS");
+  const anchor = document.createElement("a");
+  anchor.style = "display:none";
+  const fileName = `${saveFileName}sketch`;
+  if (fileName === null) return;
+  const dataAsString = JSON.stringify(dataToSave);
+  const blob = new Blob([dataAsString], { type: "text/javascript" });
+  anchor.href = window.URL.createObjectURL(blob);
+  anchor.download = `${fileName}.json`;
+  saveToFile(dataToSave);
+
   anchor.click();
 }
 
