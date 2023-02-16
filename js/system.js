@@ -1,24 +1,32 @@
 // Inicjacja głównego obiektu z danymi systemu
-function createSystemData() {
-  systemData.devicesTypes = { detectors: [], signallers: [] };
-  systemData.devices = [];
-  systemData.powerSupply = initSystem.powerSupply;
-  systemData.structureType = initSystem.structureType;
-  systemData.batteryBackUp = initSystem.batteryBackUp;
-  systemData.devicesTypes.detectors.push({
-    name: initSystem.detectorName,
-    gasDetected: initSystem.gasDetected,
-    docs: DEVICES_DOCS[initSystem.detectorName]
-  });
-  for (let i = 0; i < initSystem.amountOfDetectors; i++) {
-    systemData.devices.push({
-      index: i + 1,
+function createSystemData(fileData = null) {
+  if (fileData) {
+    systemData.powerSupply = fileData.powerSupply;
+    systemData.structureType = fileData.structureType;
+    systemData.batteryBackUp = fileData.batteryBackUp;
+    systemData.devicesTypes = fileData.devicesTypes;
+    systemData.devices = fileData.devices;
+  } else {
+    systemData.devicesTypes = { detectors: [], signallers: [] };
+    systemData.devices = [];
+    systemData.powerSupply = initSystem.powerSupply;
+    systemData.structureType = initSystem.structureType;
+    systemData.batteryBackUp = initSystem.batteryBackUp;
+    systemData.devicesTypes.detectors.push({
       name: initSystem.detectorName,
       gasDetected: initSystem.gasDetected,
-      type: initSystem.deviceType,
-      wireLength: initSystem.EWL,
-      description: ""
-    })
+      docs: DEVICES_DOCS[initSystem.detectorName]
+    });
+    for (let i = 0; i < initSystem.amountOfDetectors; i++) {
+      systemData.devices.push({
+        index: i + 1,
+        name: initSystem.detectorName,
+        gasDetected: initSystem.gasDetected,
+        type: initSystem.deviceType,
+        wireLength: initSystem.EWL,
+        description: ""
+      });
+    }
   }
 }
 

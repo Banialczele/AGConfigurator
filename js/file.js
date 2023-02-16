@@ -67,45 +67,31 @@ function downloadFile(url, fileType) {
   anchor.click();
 }
 
-function loadFile(e) {
-  const reader = new FileReader();
-  reader.onload = function () {
-    getSystem(setSystem(JSON.parse(reader.result), "fileLoad"));
-  };
-  reader.readAsText(e.target.files[0]);
+// Obsługa ładowania pliku i odtwarzania z niego systemu
+function handleDropFile(event) {
+  event.preventDefault();
+  const file = event.dataTransfer.files[0];
+  if (file.type.match("^text/csv")) {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function () {
+      const data = reader.result;
+      const formattedData = data.split("\r\n").map((row) => row.split(","));
+      console.log(formattedData);
+    }
+  } else if (file.type.match("^application/json")) {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function () {
+      const data = reader.result;
+      const formattedData = JSON.parse(data);
+      createSystemData(formattedData);
+      setSystem();
+    }
+  }
 }
 
-function readFromFile() {
-  const fileInput = document.getElementById(`readFileInput`);
-  fileInput.addEventListener("change", loadFile);
-  fileInput.click();
-}
-
-function dragenter(e) {
-  e.stopPropagation();
-  e.preventDefault();
-}
-
-function dragover(e) {
-  e.stopPropagation();
-  e.preventDefault();
-}
-
-function handleDroppedFile(e) {
-  e.stopPropagation();
-  e.preventDefault();
-  const dataTransfer = e.dataTransfer;
-  const files = e.target.files || dataTransfer.files;
-  const reader = new FileReader();
-  reader.onload = function () {
-    getSystem(setSystem(JSON.parse(reader.result), "test"));
-  };
-  reader.readAsText(files[0]);
-}
-
-function handleDragAndDrop() {
-  const dragAndDropContainer = document.querySelector(".dragNDropArea");
-  dragAndDropContainer.addEventListener("dragenter", dragenter);
-  dragAndDropContainer.addEventListener("dragover", dragover);
-  dragAndDropContainer.addEventListener("drop", handleDroppedFile);
+// Zatrzymanie domyślnej akcji przeglądarki przy ładowaniu pliku
+function handleDragOver(event) {
+  event.preventDefault();
 }

@@ -68,9 +68,6 @@ const usedText = {
   },
 };
 
-//Tablica z używanymi indexami
-const usedIndexes = [];
-
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
 };
@@ -83,10 +80,6 @@ window.addEventListener("load", () => {
   highlightTeta();
   // Inicjalizacja formularza z domyślnymi ustawieniami
   formInit();
-  //Obsługa drag'n'drop która nie działa, trzeba to wykończyć!
-  handleDragAndDrop();
-  //Wczytanie systemu z pliku
-  readFromFile();
   //Walidacja danych z podglądu systemu
   handleFormSubmit();
 });

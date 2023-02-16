@@ -24,8 +24,7 @@
 			<h2 id="configuratorInfo">Konfigurator Systemu TetaGas</h2>
 		</div>
 		<div id="headerRevision">
-			<p id="configuratorRevision">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta
-				acelitquis rutrum.</p>
+			<p id="configuratorRevision">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum.</p>
 		</div>
 		<div class="languageVersions">
 			<button class="polishVersion">
@@ -55,33 +54,25 @@
 						<div class="entryDetectorAmounts">
 							<label for="amountOfDetectors" class="amountDescription">Ilość czujników</label>
 							<div class="inputContainer">
-								<input type="number" min="1" max="50" value="3" id="amountOfDetectors" class="detectorAmounts"
-									name="amountOfDetectors" />
+								<input type="number" min="1" max="50" value="3" id="amountOfDetectors" class="detectorAmounts" name="amountOfDetectors" />
 								<span class="amountUnit">szt.</span>
 								<span class="shadedAmount">(max 50 szt.)</span>
 							</div>
-
 						</div>
 						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="buildingInformation tooltip">i</span>
 						<div class="buildingType">
 							<label for="structureType" class="structure">Rodzaj obiektu</label>
-							<select id="structureType" class="structureSelect" name="structureType">
-
-							</select>
+							<select id="structureType" class="structureSelect" name="structureType"></select>
 						</div>
 						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="detectedGasInformation tooltip">i</span>
 						<div class="detectedGas">
 							<label for="gasDetected" class="gas">Wykrywany gaz</label>
-							<select id="gasDetected" class="gasSelect" name="gasDetected">
-
-							</select>
+							<select id="gasDetected" class="gasSelect" name="gasDetected"></select>
 						</div>
 						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="batteryBackUpInformation tooltip">i</span>
 						<div class="batteryBackUp">
 							<label for="batteryBackUp" class="battery">Akumulatorowe podtrzymanie pracy</label>
-							<select id="batteryBackUp" class="batterySelect" name="batteryBackUp">
-
-							</select>
+							<select id="batteryBackUp" class="batterySelect" name="batteryBackUp"></select>
 						</div>
 						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="wireLengthInformation tooltip">i</span>
 						<div class="wireLengthContainer">
@@ -95,38 +86,30 @@
 				<div class="entryDescription">
 					<ol class="entrySteps">
 						<li class="items">Wprowadź podstawowe dane dotyczące Twojego systemu</li>
-						<li class="items">W następnym kroku będzie możliwość modyfikowania wprowadzonych danych oraz
-							dodanie
-							sygnalizatorów czy zaworów</li>
-						<li class="items">Na końcu system dobierze optymalny przekrój kabla dla systemu oraz umożliwi
-							zarówno
-							zapis jak i wygenerowanie zestawienia urządzeń z kodami PW.</li>
+						<li class="items">W następnym kroku będzie możliwość modyfikowania wprowadzonych danych oraz dodanie sygnalizatorów czy zaworów</li>
+						<li class="items">Na końcu system dobierze optymalny przekrój kabla dla systemu oraz umożliwi zarówno zapis jak i wygenerowanie zestawienia urządzeń z kodami PW.</li>
 					</ol>
 					<div class="aboutEntry">
-						<p>Konfigurator prezentuje system na podstawie konfigurowalnych segmentów zawierających
-							urządzenia.
-							Aktualnie możliwe jest dodanie 50 segmentów do systemu - np. 40 segmentów zawierających
-							czujniki
-							gazu oraz 10 segmentów zawierających sygnalizatory.
-						</p>
-						<p class="moreInf">Więcej informacji znajdziecie Państwo w dokumencie <a
-								href="http://doc.atestgaz.pl/AG/POD/POD-047-PLWydruk.pdf"
-								class="tetaGasGuidance">Przewodnik
-								Systemu
-								TetaGas</a>.</p>
+						<p>Konfigurator prezentuje system na podstawie konfigurowalnych segmentów zawierających urządzenia.
+							Aktualnie możliwe jest dodanie 50 segmentów do systemu – np. 40 segmentów zawierających
+							czujniki gazu oraz 10 segmentów zawierających sygnalizatory.</p>
+						<p class="moreInf">Więcej informacji znajdziecie Państwo w dokumencie
+							<a href="http://doc.atestgaz.pl/AG/POD/POD-047-PLWydruk.pdf" class="tetaGasGuidance">Przewodnik Systemu TetaGas</a>.</p>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="dragAndDropContainer">
-			<div class="dragNDropArea">
-				Upuść plik aby wczytać wcześniej zapisany system
-			</div>
-			<label for="readFileInput">Wczytaj plik</label>
-			<input class="dragNDropSubmit" id="readFileInput" type="file" title=" agdgadags" />
+			<div
+				id="dragNDropArea"
+				class="dragNDropArea"
+				ondrop="handleDropFile(event);"
+				ondragover="handleDragOver(event);"
+				>Upuść plik aby wczytać wcześniej zapisany system</div>
+			<!-- <label for="readFileInput">Wczytaj plik</label> -->
+			<!-- <input class="dragNDropSubmit" id="readFileInput" type="file" title=" agdgadags" /> -->
 		</div>
 	</div>
-
 	<div class="system" id="system">
 		<a href="entry" id="scrollUp"></a>
 		<div class="systemStatus panelStyle">
@@ -217,34 +200,12 @@
 				<div class="setOfDevices">
 					<img src="./SVG/save.svg" alt="Export to JSON">
 					<button id="exportToJSON">Zestawienie urządzeń</button>
-
 				</div>
 			</div>
 		</div>
 		<div class="usedDevices panelStyle">
 			<h3 class="systemHeader">Zastosowane urządzenia</h3>
-			<div id="usedDevicesContainer" class="usedDevicesContainer">
-				<div class="usedDevicePair">
-					<div class="usedDeviceItem">
-						<div class="usedDeviceName">
-							<p></p>
-						</div>
-						<div class="usedDeviceGasDetected">
-							<p></p>
-						</div>
-						<div class="usedDeviceDocs">
-							<p class="usedDeviceDocsParagraph">
-								<a href="" alt="unable to find image" class="usedDeviceDocsAnchor">Dokumentacja techniczna</a>
-							</p>
-						</div>
-						<div class="usedDeviceImageContainer">
-							<img />
-						</div>
-
-					</div>
-					<div class="usedDeviceDivider"></div>
-				</div>
-			</div>
+			<div id="usedDevicesContainer" class="usedDevicesContainer"></div>
 		</div>
 	</div>
 
