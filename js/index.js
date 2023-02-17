@@ -1,8 +1,5 @@
-//Podgląd systemu, na tych danych bazują wszystkie funkcje
-const SYSTEM = {
-  powerSupply: "",
-  bus: [],
-};
+// Ustawienie domyślnego języka widoku aplikacji
+let lang = "PL";
 
 // Główny obiekt zawierający dane utworzonego systemu
 const systemData = {
@@ -11,8 +8,8 @@ const systemData = {
   devices: []
 };
 
-//Dane, które są wprowadzane z pierwszego widoku.
-let initSystem = {
+// Obiekt inicjacyjny systemu
+const initSystem = {
   powerSupply: "Teta MOD Control 1",
   amountOfDetectors: 3,
   EWL: 15,
@@ -23,8 +20,7 @@ let initSystem = {
   batteryBackUp: "YES",
 };
 
-let lang = "PL";
-
+// Etykiety dla widoku aplikacji w obsługiwanych przez aplikację językach
 const usedText = {
   konfigurator: {
     pl: "Konfigurator Systemów Teta",
@@ -68,42 +64,19 @@ const usedText = {
   },
 };
 
-window.onbeforeunload = function () {
-  window.scrollTo(0, 0);
-};
-
-//Entry point apki, generowanie całego widoku do wproadzenia danych.
-window.addEventListener("load", () => {
-  //Sprawdzenie języka po URL
-  checkLang();
-  //Podświetlenie napisu TETA
-  highlightTeta();
-  // Inicjalizacja formularza z domyślnymi ustawieniami
-  formInit();
-  //Walidacja danych z podglądu systemu
-  handleFormSubmit();
-});
-
-//Podświetlenie napisu "TETA" na czerwono w nagłówku strony
-function highlightTeta() {
-  let text = document.getElementById(`configuratorInfo`);
-  const highlightedText = text.innerHTML.replace(/Teta/, "<span class=hightlighted>Teta</span>");
-  text.innerHTML = highlightedText;
-}
-
-// index file
+// Ustawienie języka aplikacji
 function checkLang() {
   let HREF = window.location.href;
-  if (HREF.includes(`lang=pl`)) {
+  if (HREF.includes("lang=pl")) {
     lang = "PL";
-  } else if (HREF.includes(`lang=eng`)) {
+  } else if (HREF.includes("lang=eng")) {
     lang = "EN";
-  } else if (HREF.includes(`licenses`)) {
+  } else if (HREF.includes("licenses")) {
     displayLicenseInfo();
   }
 }
 
-//Wybór języka
+// Wybór języka treści etykiety
 function chooseText(text) {
   let res;
   switch (lang) {
@@ -119,6 +92,22 @@ function chooseText(text) {
   return res;
 }
 
+// Entry point aplikacji, generowanie całego widoku do wproadzenia danych
+window.addEventListener("load", () => {
+  // Sprawdzenie języka widoku aplikacji po URL
+  checkLang();
+  // Inicjalizacja formularza wraz z domyślnymi ustawieniami
+  formInit();
+  // Przetwarzanie formularza dot. systemu
+  handleFormSubmit();
+});
+
+// Reset pozycji scrolla do początku strony
+window.onbeforeunload = function () {
+  window.scrollTo(0, 0);
+};
+
+// Zbiór rodzaju obiektów
 const STRUCTURE_TYPES = [
   {
     type: "garageAndUndergroundCarPark",
@@ -253,6 +242,7 @@ const STRUCTURE_TYPES = [
   },
 ];
 
+// Lista możliwych do wyboru przez użytkownika etykiet dla urządzenia typu TOLED
 const TOLED_OPTIONS = [
   { type: "WE", label: "NADMIAR SPALIN NIE WCHODZIĆ" },
   { type: "WJ", label: "NADMIAR SPALIN NIE WJEŻDŻAĆ" },
@@ -260,6 +250,7 @@ const TOLED_OPTIONS = [
   { type: "WS", label: "Napis na życzenie klienta" },
 ];
 
+// Lista z linkami do dokumentacji poszczególnych urządzeń
 const DEVICES_DOCS = {
   "Teta EcoWent": "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecowent",
   "Teta EcoWent + MiniDet": "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecowent",
