@@ -106,8 +106,8 @@
 				ondrop="handleDropFile(event);"
 				ondragover="handleDragOver(event);"
 				>Upuść plik aby wczytać wcześniej zapisany system</div>
-			<!-- <label for="readFileInput">Wczytaj plik</label> -->
-			<!-- <input class="dragNDropSubmit" id="readFileInput" type="file" title=" agdgadags" /> -->
+			<label for="readFileInput">Wczytaj plik</label>
+			<input class="dragNDropSubmit" id="readFileInput" type="file" accept=".json" onchange="handleInputLoadFile(event);"/>
 		</div>
 	</div>
 	<div class="system" id="system">

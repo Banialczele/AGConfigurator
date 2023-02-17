@@ -67,19 +67,25 @@ function downloadFile(url, fileType) {
   anchor.click();
 }
 
-// Obsługa ładowania pliku i odtwarzania z niego systemu
+// Obsługa ładowania pliku przyciągniętego i upuszczonego na drop area
 function handleDropFile(event) {
   event.preventDefault();
-  const file = event.dataTransfer.files[0];
-  if (file.type.match("^text/csv")) {
-    const reader = new FileReader();
-    reader.readAsText(file);
-    reader.onload = function () {
-      const data = reader.result;
-      const formattedData = data.split("\r\n").map((row) => row.split(","));
-      console.log(formattedData);
-    }
-  } else if (file.type.match("^application/json")) {
+  convertAndLoadFileData(event.dataTransfer.files[0]);
+}
+
+// Zatrzymanie domyślnej akcji przeglądarki przy ładowaniu pliku
+function handleDragOver(event) {
+  event.preventDefault();
+}
+
+// Obsługa ładowania pliku przez inputa
+function handleInputLoadFile(event) {
+  convertAndLoadFileData(event.target.files[0]);
+}
+
+// Konwersja pliku JSON do obiektu JS i wygenerowanie systemu
+function convertAndLoadFileData(file) {
+  if (file.type.match("^application/json")) {
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = function () {
@@ -89,9 +95,4 @@ function handleDropFile(event) {
       setSystem();
     }
   }
-}
-
-// Zatrzymanie domyślnej akcji przeglądarki przy ładowaniu pliku
-function handleDragOver(event) {
-  event.preventDefault();
 }
