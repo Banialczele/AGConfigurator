@@ -5,9 +5,11 @@
 }
 
 :root {
+  --main-font-family: "Spartan", Helvetica, sans-serif;
   --panel-bg-color: #ffffff;
   /* --panel-bg-color: #333; */
   --accent-bg-color: #fafaf9;
+  --accent-font-color: #959494;
   --secondary-bg-color: #cc2a27;
   --input-height: 40px;
   --input-margin: 5px;
@@ -19,7 +21,7 @@
 body {
   margin: 0px;
   padding: 0px;
-  font-family: "Spartan";
+  font-family: var(--main-font-family);
   font-size: 14px;
   background: #e7e7e6;
   /* background: #111; */
@@ -60,7 +62,7 @@ select {
 input, .formSelectInput:has(select) {
   height: var(--input-height);
   font-size: var(--input-font-size);
-  font-family: "Spartan", Helvetica, sans-serif;
+  font-family: var(--main-font-family);
   font-weight: var(--input-font-weight);
   border: 2px solid var(--input-border-color);
 }
@@ -104,48 +106,40 @@ header {
   width: 100%;
   display: grid;
   grid-template-areas:
-    "configurator configurator language logo"
-    "revision revision revision logo";
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 2fr 1fr 0 0;
+    "info info info logo";
+  grid-template-columns: 2fr fit-content(100%);
+  padding: 30px 30px 0;
   background-color: var(--accent-bg-color);
   border-bottom: 2px solid #fff;
 }
 
-header #headerContainer {
-  grid-area: configurator;
-  place-self: center start;
+header #configuratorInfo { grid-area: info; place-self: start start; }
+
+header #configuratorTitle { margin: 0 0 10px 0; font-weight: 400; }
+header #configuratorDescription {
+  margin: 0;
+  color: var(--accent-font-color);
 }
 
-header #headerContainer h2 {
-  margin: 0 0 0 25px;
+header #configuratorTitle > span { font-weight: 700; }
+header #configuratorTitle span:has(span) span { color: var(--secondary-bg-color); }
+
+header #configuratorLogo { grid-area: logo; place-self: start end; }
+
+header #configuratorLogoImage {
+  height: 25px;
+  width: 187px;
+  margin-bottom: 5px;
 }
 
-header #headerRevision {
-  grid-area: revision;
+header #configuratorLanguage { color: gray; text-align: right; }
+header #configuratorLanguage .langLink {
+  color: gray;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-header #headerRevision #configuratorRevision {
-  margin: 0 0 0 25px;
-}
-
-header .languageVersions {
-  grid-area: language;
-  place-self: end;
-}
-
-header #logoImgContainer {
-  grid-area: logo;
-  place-self: center;
-}
-
-header #logoImgContainer img {
-  height: 55px;
-  width: 240px;
-}
-
-.hightlighted {
-  color: rgb(189, 37, 37);
+header #configuratorLanguage .langLink:first-child { margin-right: 5px;
 }
 
 .appEntry {
@@ -238,7 +232,7 @@ header #logoImgContainer img {
   bottom: 180%;
   left: -50%;
   padding: 10px;
-  font-family: 'Spartan';
+  font-family: var(--main-font-family);
   font-size: 12px;
   color: #fff;
   font-weight: 600;
@@ -340,7 +334,7 @@ header #logoImgContainer img {
 .batteryBackUp .batteryBackUpSelect { position: relative; }
 
 .detectorAmounts .shadedAmount {
-  color: #959494;
+  color: var(--accent-font-color);
   margin: 0 var(--input-margin);
 }
 
