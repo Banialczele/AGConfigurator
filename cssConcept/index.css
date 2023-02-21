@@ -102,15 +102,17 @@ input, .formSelectInput:has(select) {
 }
 
 header {
-  height: 100%;
   width: 100%;
+  position: fixed;
   display: grid;
   grid-template-areas:
     "info info info logo";
   grid-template-columns: 2fr fit-content(100%);
   padding: 30px 30px 0;
+  top: 0;
   background-color: var(--accent-bg-color);
   border-bottom: 2px solid #fff;
+  z-index: 999;
 }
 
 header #configuratorInfo { grid-area: info; place-self: start start; }
