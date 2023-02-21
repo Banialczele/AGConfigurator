@@ -17,7 +17,7 @@
 }
 
 .system .systemHeader {
-  background: rgba(39, 39, 39, 0.037);
+  background: var(--accent-bg-color);
   border-radius: 10px;
   padding-left: 10px;
   height: 50px;

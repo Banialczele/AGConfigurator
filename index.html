@@ -4,24 +4,19 @@
 <head>
 	<meta charset="utf-8">
 	<title>Power Management</title>
-	<link href="./cssConcept/index.css" rel="stylesheet" type="text/css">
-	</link>
-	<link href="./cssConcept/system.css" rel="stylesheet" type="text/css">
-	</link>
-	<link href="./cssConcept/systemPreview.css" rel="stylesheet" type="text/css">
-	</link>
-	<link href="./cssConcept/files.css" rel="stylesheet" type="text/css">
-	</link>
-	<link href="./cssConcept/usedDevices.css" rel="stylesheet" type="text/css">
-	</link>
-	<link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
-	</link>
+	<link href="./cssConcept/fonts.css" rel="stylesheet" type="text/css"/>
+	<link href="./cssConcept/index.css" rel="stylesheet" type="text/css"/>
+	<link href="./cssConcept/system.css" rel="stylesheet" type="text/css"/>
+	<link href="./cssConcept/systemPreview.css" rel="stylesheet" type="text/css"/>
+	<link href="./cssConcept/files.css" rel="stylesheet" type="text/css"/>
+	<link href="./cssConcept/usedDevices.css" rel="stylesheet" type="text/css"/>
+	<link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'/>
 </head>
 
 <body id="body">
 	<header id="top">
 		<div id="headerContainer">
-			<h2 id="configuratorInfo">Konfigurator Systemu <span class="hightlighted">Teta</span>span>Gas</h2>
+			<h2 id="configuratorInfo">Konfigurator Systemu <span class="hightlighted">Teta</span> Gas</h2>
 		</div>
 		<div id="headerRevision">
 			<p id="configuratorRevision">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum.</p>
@@ -44,40 +39,47 @@
 		</div>
 	</header>
 	<div class="appEntry">
-		<div class="appEntryDescription">
-			<div class="entryHeader">
+		<div class="appEntryDescription panelStyle">
+			<div class="entryHeader panelStyleHeader">
 				<h3>Dane Podstawowe</h3>
 			</div>
 			<div class="configuratorConfig">
 				<div class="entryConfig">
 					<form class="configForm">
-						<div class="entryDetectorAmounts">
-							<label for="amountOfDetectors" class="amountDescription">Ilość czujników</label>
-							<div class="inputContainer">
-								<input type="number" min="1" max="50" value="3" id="amountOfDetectors" class="detectorAmounts" name="amountOfDetectors" />
-								<span class="amountUnit">szt.</span>
+						<div class="detectorAmounts">
+							<label for="amountOfDetectors" class="detectorAmountsLabel">Ilość czujników</label>
+							<div class="detectorAmountsInputContainer">
+								<input type="number" min="1" max="50" value="1" id="amountOfDetectors" class="detectorAmountsInput" name="amountOfDetectors"/>szt.
 								<span class="shadedAmount">(max 50 szt.)</span>
 							</div>
 						</div>
-						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="buildingInformation tooltip">i</span>
+						<span data-text="Wybierz rodzaj obiektu, dla jakiego będą zastosowane urządzenia" class="buildingInformation tooltip">i</span>
 						<div class="buildingType">
-							<label for="structureType" class="structure">Rodzaj obiektu</label>
-							<select id="structureType" class="structureSelect" name="structureType"></select>
+							<label for="structureType" class="structureLabel">Rodzaj obiektu</label>
+							<div id="structureSelectForm" class="structureSelect formSelectInput">
+								<select id="structureType" name="structureType"></select>
+							</div>
 						</div>
-						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="detectedGasInformation tooltip">i</span>
+						<span data-text="Wybierz rodzaj gazu, jaki ma być wykrywany. W późniejszych krokach będziesz mieć możliwość wyboru gazu dla każdego z czujników" class="detectedGasInformation tooltip">i</span>
 						<div class="detectedGas">
-							<label for="gasDetected" class="gas">Wykrywany gaz</label>
-							<select id="gasDetected" class="gasSelect" name="gasDetected"></select>
+							<label for="gasDetected" class="detectedGasLabel">Wykrywany gaz</label>
+							<div id="gasSelectForm" class="gasSelect formSelectInput">
+								<select id="gasDetected" name="gasDetected"></select>
+							</div>
 						</div>
-						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="batteryBackUpInformation tooltip">i</span>
+						<span data-text="Czy system ma mieć możliwość czasowego zasilania na wypadek braku zasilania zewnętrznego?" class="batteryBackUpInformation tooltip">i</span>
 						<div class="batteryBackUp">
-							<label for="batteryBackUp" class="battery">Akumulatorowe podtrzymanie pracy</label>
-							<select id="batteryBackUp" class="batterySelect" name="batteryBackUp"></select>
+							<label for="batteryBackUp" class="batteryBackUpLabel">Akumulatorowe podtrzymanie pracy</label>
+							<div id="batterySelectFormBtn" class="batteryBackUpSelect formSelectInput">
+								<select id="batteryBackUp" name="batteryBackUp"></select>
+							</div>
 						</div>
-						<span data-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta acelitquis rutrum" class="wireLengthInformation tooltip">i</span>
-						<div class="wireLengthContainer">
-							<label for="EWL" class="wireLength">Orientacyjna odległość między urządzeniami</label>
-							<input min="1" max="999" value="15" type="number" class="wireLengthInput" id="EWL" name="EWL" /> m
+						<span data-text="Wpisz orientacyjną odległość między kolejnymi czujnikami na magistrali" class="wireLengthInformation tooltip">i</span>
+						<div class="wireLength">
+							<label for="EWL" class="wireLengthLabel">Orientacyjna odległość między urządzeniami</label>
+							<div class="wireLengthInputContainer">
+								<input min="1" max="999" value="15" type="number" class="wireLengthInput" id="EWL" name="EWL"/>m
+							</div>
 						</div>
 						<button class="formButton">Zatwierdź</button>
 					</form>
@@ -99,7 +101,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="dragAndDropContainer">
+		<div class="dragAndDropContainer panelStyle">
 			<div
 				id="dragNDropArea"
 				class="dragNDropArea"

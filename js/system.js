@@ -42,7 +42,7 @@ function createSegmentDiagram(device) {
   const deviceSegment = document.createElement("div");
   setAttributes(deviceSegment, { class: "deviceSegment", id: `segmentDiagram${device.index}` });
   deviceSegment.appendChild(createSegmentWarningDeviceImageDiagram(device));
-  deviceSegment.appendChild(createSegmentBusImageDiagram());
+  deviceSegment.appendChild(createSegmentBusImageDiagram(device.type));
   deviceSegment.appendChild(createSegmentDetectorImageDiagram(device));
 
   return deviceSegment;
@@ -85,11 +85,11 @@ function createSegmentWarningDeviceImageDiagram(device) {
 }
 
 // Tworzenie obrazu T-Konektora dla schematu segmentu urządzenia
-function createSegmentBusImageDiagram() {
+function createSegmentBusImageDiagram(type) {
   const busImageContainer = document.createElement("div");
   const busImage = document.createElement("img");
   setAttributes(busImageContainer, { class: "busImageContainer" });
-  setAttributes(busImage, { src: "./SVG/tconP.svg", alt: "T-Konektor image" });
+  setAttributes(busImage, { src: `./SVG/tcon${type === "detector" ? "P" : "L"}.svg`, alt: "T-Konektor image" });
   busImageContainer.appendChild(busImage);
 
   return busImageContainer;

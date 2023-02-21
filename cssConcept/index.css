@@ -4,11 +4,25 @@
   box-sizing: border-box;
 }
 
+:root {
+  --panel-bg-color: #ffffff;
+  /* --panel-bg-color: #333; */
+  --accent-bg-color: #fafaf9;
+  --secondary-bg-color: #cc2a27;
+  --input-height: 40px;
+  --input-margin: 5px;
+  --input-font-size: 12px;
+  --input-font-weight: 300;
+  --input-border-color: #dadada;
+}
+
 body {
   margin: 0px;
   padding: 0px;
   font-family: "Spartan";
   font-size: 14px;
+  background: #e7e7e6;
+  /* background: #111; */
 }
 
 input::-webkit-outer-spin-button,
@@ -22,6 +36,69 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+input {
+  width: var(--input-height);
+  padding: 10px 4px;
+  margin-right: var(--input-margin);
+  text-align: center;
+}
+
+select {
+  appearance: none;
+  width: 100%;
+  padding: 10px 4px;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: inherit;
+  z-index: 1;
+}
+
+input, .formSelectInput:has(select) {
+  height: var(--input-height);
+  font-size: var(--input-font-size);
+  font-family: "Spartan", Helvetica, sans-serif;
+  font-weight: var(--input-font-weight);
+  border: 2px solid var(--input-border-color);
+}
+
+.formSelectInput:has(select) {
+  display: grid;
+  grid-template-areas: "select";
+  position: relative;
+  align-items: center;
+  width: 100%;
+  background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+  cursor: pointer;
+}
+
+.formSelectInput:has(select)::after {
+  content: "▼";
+  grid-area: select;
+  display: flex;
+  position: absolute;
+  justify-self: end;
+  align-items: center;
+  justify-content: center;
+  width: var(--input-height);
+  height: var(--input-height);
+  right: -2px;
+  font-size: var(--input-font-size);
+  color: #ffffff;
+  background-color: var(--secondary-bg-color);
+}
+
+.formSelectInput:has(select:focus) { border-color: var(--secondary-bg-color); }
+
+.formSelectInput:has(select) select { grid-area: select; }
+
+.panelStyle {
+  background-color: var(--panel-bg-color);
+}
+
 header {
   height: 100%;
   width: 100%;
@@ -31,7 +108,8 @@ header {
     "revision revision revision logo";
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 2fr 1fr 0 0;
-  background: rgba(39, 39, 39, 0.037);
+  background-color: var(--accent-bg-color);
+  border-bottom: 2px solid #fff;
 }
 
 header #headerContainer {
@@ -122,9 +200,7 @@ header #logoImgContainer img {
   grid-template-columns: 1fr 1px 1fr;
 }
 
-.configuratorConfig .entryConfig {
-  grid-area: form;
-}
+.configuratorConfig .entryConfig { grid-area: form; }
 
 .entryConfig .configForm {
   height: 100%;
@@ -138,26 +214,14 @@ header #logoImgContainer img {
     "batteryInfo batterybackup"
     "wireInfo wireLength"
     ". button";
-}
-
-.configForm > div {
-  place-self: center start;
-}
-
-.configForm > span {
-  place-self: center;
-  color: rgba(39, 39, 39, 0.322);
-  margin-top: 25px;
-}
-
-.configForm .gasSelect,
-.configForm .batterySelect {
-  width: 50px;
+    row-gap: calc(3 * var(--input-margin));
 }
 
 .configForm .tooltip {
+  place-self: center;
   position: relative;
   padding: 0px 6px;
+  margin-top: 20px;
   font-family: 'Times New Roman', Times, serif;
   color: grey;
   font-weight: bold;
@@ -170,16 +234,17 @@ header #logoImgContainer img {
   position: absolute;
   display: none;
   content: attr(data-text);
+  width: 300px;
   bottom: 180%;
   left: -50%;
-  width: 300px;
   padding: 10px;
   font-family: 'Spartan';
+  font-size: 12px;
   color: #fff;
-  font-weight: lighter;
+  font-weight: 600;
   text-align: center;
   background: #222;
-  border-radius: 10px;
+  border-radius: 5px;
   z-index: 2;
 }
 
@@ -195,98 +260,88 @@ header #logoImgContainer img {
 }
 
 .configForm .tooltip:hover::before,
-.configForm .tooltip:hover::after {
-  display: block;
-}
+.configForm .tooltip:hover::after { display: block; }
 
-.configForm .entryDetectorAmounts {
-  grid-area: amounts;
+.configForm .detectorAmounts,
+.configForm .buildingType,
+.configForm .detectedGas,
+.configForm .batteryBackUp,
+.configForm .wireLength {
   width: 100%;
   display: grid;
-  grid-template-areas:
-    "description"
-    "input";
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-  row-gap: 10px;
+  row-gap: var(--input-margin);
 }
 
-.entryDetectorAmounts .amountDescription {
-  grid-area: description;
-}
-
-.entryDetectorAmounts .inputContainer {
-  grid-area: input;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.inputContainer > span {
-  margin: 0 5px;
-}
-
-.inputContainer input {
-  width: 35px;
-  text-align: center;
-}
-
-.entryDetectorAmounts .shadedAmount {
-  color: rgba(39, 39, 39, 0.322);
-  grid-area: input;
-}
-
-.configForm .buildingInformation {
-  grid-area: buildingInfo;
+.configForm .detectorAmounts {
+  grid-area: amounts;
+  grid-template-areas:
+    "detectorAmountsLabel"
+    "detectorAmountsInputContainer";
 }
 
 .configForm .buildingType {
   grid-area: building;
-}
-
-.buildingType .structure {
-  margin-bottom: 10px;
-}
-
-.configForm .detectedGasInformation {
-  grid-area: gasInfo;
+  grid-template-areas:
+    "structureLabel"
+    "structureSelect";
 }
 
 .configForm .detectedGas {
   grid-area: gas;
-}
-
-.detectedGas .gas {
-  margin-bottom: 10px;
-}
-
-.configForm .batteryBackUpInformation {
-  grid-area: batteryInfo;
+  grid-template-areas:
+    "detectedGasLabel"
+    "detectedGasSelect";
 }
 
 .configForm .batteryBackUp {
   grid-area: batterybackup;
+  grid-template-areas:
+    "batteryBackUpLabel"
+    "batteryBackUpSelect";
 }
 
-.batteryBackUp .battery {
-  margin-bottom: 10px;
-}
-
-.configForm .wireLengthInformation {
-  grid-area: wireInfo;
-}
-
-.configForm .wireLengthContainer {
+.configForm .wireLength {
   grid-area: wireLength;
+  grid-template-areas:
+    "wireLengthLabel"
+    "wireLengthInputContainer";
 }
 
-.wireLengthContainer .wireLength {
-  margin-bottom: 10px;
-}
+.detectorAmounts .detectorAmountsLabel { grid-area: detectorAmountsLabel; }
+.detectorAmounts .detectorAmountsInputContainer { grid-area: detectorAmountsInputContainer; }
+.buildingType .structureLabel { grid-area: structureLabel; }
+.buildingType .structureSelect { grid-area: structureSelect; }
+.detectedGas .detectedGasLabel { grid-area: detectedGasLabel; }
+.detectedGas .detectedGasSelect { grid-area: detectedGasSelect; }
+.batteryBackUp .batteryBackUpLabel { grid-area: batteryBackUpLabel; }
+.batteryBackUp .batteryBackUpSelect { grid-area: batteryBackUpSelect; }
+.wireLength .wireLengthLabel { grid-area: wireLengthLabel; }
+.wireLength .wireLengthInputContainer { grid-area: wireLengthInputContainer; }
 
-.wireLengthContainer input {
-  width: 35px;
+.configForm .buildingInformation { grid-area: buildingInfo; }
+.configForm .detectedGasInformation { grid-area: gasInfo; }
+.configForm .batteryBackUpInformation { grid-area: batteryInfo; }
+.configForm .wireLengthInformation { grid-area: wireInfo; }
+
+.configForm .buildingType,
+.configForm .detectedGas,
+.configForm .batteryBackUp { max-width: 280px; }
+
+.detectorAmounts .detectorAmountsLabel,
+.buildingType .structureLabel,
+.detectedGas .detectedGasLabel,
+.batteryBackUp .batteryBackUpLabel,
+.wireLength .wireLengthLabel { font-weight: 400; }
+
+.buildingType .structureSelect,
+.detectedGas .detectedGasSelect,
+.batteryBackUp .batteryBackUpSelect { position: relative; }
+
+.detectorAmounts .shadedAmount {
+  color: #959494;
+  margin: 0 var(--input-margin);
 }
 
 .configForm .formButton {
@@ -355,6 +410,7 @@ header #logoImgContainer img {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--accent-bg-color);
   border: 1px dashed rgba(63, 63, 63, 0.301);
 }
 
