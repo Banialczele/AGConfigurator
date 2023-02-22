@@ -27,84 +27,83 @@
 			</div>
 		</div>
 	</header>
-	<div class="appEntry">
-		<div class="appEntryDescription panelStyle">
-			<div class="entryHeader panelStyleHeader">
-				<h3>Dane Podstawowe</h3>
-			</div>
-			<div class="configuratorConfig">
-				<div class="entryConfig">
-					<form class="configForm">
-						<div class="detectorAmounts">
-							<label for="amountOfDetectors" class="detectorAmountsLabel">Ilość czujników</label>
-							<div class="detectorAmountsInputContainer">
-								<input type="number" min="1" max="50" value="1" id="amountOfDetectors" class="detectorAmountsInput" name="amountOfDetectors"/>szt.
-								<span class="shadedAmount">(max 50 szt.)</span>
-							</div>
-						</div>
-						<span data-text="Wybierz rodzaj obiektu, dla jakiego będą zastosowane urządzenia" class="buildingInformation tooltip">i</span>
-						<div class="buildingType">
-							<label for="structureType" class="structureLabel">Rodzaj obiektu</label>
-							<div id="structureSelectForm" class="structureSelect formSelectInput">
-								<select id="structureType" name="structureType"></select>
-							</div>
-						</div>
-						<span data-text="Wybierz rodzaj gazu, jaki ma być wykrywany. W późniejszych krokach będziesz mieć możliwość wyboru gazu dla każdego z czujników" class="detectedGasInformation tooltip">i</span>
-						<div class="detectedGas">
-							<label for="gasDetected" class="detectedGasLabel">Wykrywany gaz</label>
-							<div id="gasSelectForm" class="gasSelect formSelectInput">
-								<select id="gasDetected" name="gasDetected"></select>
-							</div>
-						</div>
-						<span data-text="Czy system ma mieć możliwość czasowego zasilania na wypadek braku zasilania zewnętrznego?" class="batteryBackUpInformation tooltip">i</span>
-						<div class="batteryBackUp">
-							<label for="batteryBackUp" class="batteryBackUpLabel">Akumulatorowe podtrzymanie pracy</label>
-							<div id="batterySelectFormBtn" class="batteryBackUpSelect formSelectInput">
-								<select id="batteryBackUp" name="batteryBackUp"></select>
-							</div>
-						</div>
-						<span data-text="Wpisz orientacyjną odległość między kolejnymi czujnikami na magistrali" class="wireLengthInformation tooltip">i</span>
-						<div class="wireLength">
-							<label for="EWL" class="wireLengthLabel">Orientacyjna odległość między urządzeniami</label>
-							<div class="wireLengthInputContainer">
-								<input min="1" max="999" value="15" type="number" class="wireLengthInput" id="EWL" name="EWL"/>m
-							</div>
-						</div>
-						<button class="formButton">Zatwierdź</button>
-					</form>
-				</div>
-				<div class="divider"></div>
-				<div class="entryDescription">
-					<ol class="entrySteps">
-						<li class="items">Wprowadź podstawowe dane dotyczące Twojego systemu</li>
-						<li class="items">W następnym kroku będzie możliwość modyfikowania wprowadzonych danych oraz dodanie sygnalizatorów czy zaworów</li>
-						<li class="items">Na końcu system dobierze optymalny przekrój kabla dla systemu oraz umożliwi zarówno zapis jak i wygenerowanie zestawienia urządzeń z kodami PW.</li>
-					</ol>
-					<div class="aboutEntry">
-						<p>Konfigurator prezentuje system na podstawie konfigurowalnych segmentów zawierających urządzenia.
-							Aktualnie możliwe jest dodanie 50 segmentów do systemu – np. 40 segmentów zawierających
-							czujniki gazu oraz 10 segmentów zawierających sygnalizatory.</p>
-						<p class="moreInf">Więcej informacji znajdziecie Państwo w dokumencie
-							<a href="http://doc.atestgaz.pl/AG/POD/POD-047-PLWydruk.pdf" class="tetaGasGuidance">Przewodnik Systemu TetaGas</a>.</p>
-					</div>
-				</div>
-			</div>
+	<div class="configuratorPanel panelContainer">
+		<div class="panelHeaderContainer">
+			<h3>Dane podstawowe</h3>
 		</div>
-		<div class="dragAndDropContainer panelStyle">
-			<div
-				id="dragNDropArea"
-				class="dragNDropArea"
-				ondrop="handleDropFile(event);"
-				ondragover="handleDragOver(event);"
-				>Upuść plik aby wczytać wcześniej zapisany system</div>
-			<label for="readFileInput">Wczytaj plik</label>
-			<input class="dragNDropSubmit" id="readFileInput" type="file" accept=".json" onchange="handleInputLoadFile(event);"/>
+		<div class="contentContainer">
+			<div class="formContainer">
+				<form class="form">
+					<div class="detectorAmounts">
+						<label for="amountOfDetectors" class="detectorAmountsLabel">Ilość czujników</label>
+						<div class="detectorAmountsInputContainer">
+							<input type="number" min="1" max="50" value="1" id="amountOfDetectors" class="detectorAmountsInput" name="amountOfDetectors"/>szt.
+							<span class="shadedAmount">(max 50 szt.)</span>
+						</div>
+					</div>
+					<span data-text="Wybierz rodzaj obiektu, dla jakiego będą zastosowane urządzenia" class="buildingInformation tooltip">i</span>
+					<div class="buildingType">
+						<label for="structureType" class="structureLabel">Rodzaj obiektu</label>
+						<div id="structureSelectForm" class="structureSelect formSelectInput">
+							<select id="structureType" name="structureType"></select>
+						</div>
+					</div>
+					<span data-text="Wybierz rodzaj gazu, jaki ma być wykrywany. W późniejszych krokach będziesz mieć możliwość wyboru gazu dla każdego z czujników" class="detectedGasInformation tooltip">i</span>
+					<div class="detectedGas">
+						<label for="gasDetected" class="detectedGasLabel">Wykrywany gaz</label>
+						<div id="gasSelectForm" class="gasSelect formSelectInput">
+							<select id="gasDetected" name="gasDetected"></select>
+						</div>
+					</div>
+					<span data-text="Czy system ma mieć możliwość czasowego zasilania na wypadek braku zasilania zewnętrznego?" class="batteryBackUpInformation tooltip">i</span>
+					<div class="batteryBackUp">
+						<label for="batteryBackUp" class="batteryBackUpLabel">Akumulatorowe podtrzymanie pracy</label>
+						<div id="batterySelectFormBtn" class="batteryBackUpSelect formSelectInput">
+							<select id="batteryBackUp" name="batteryBackUp"></select>
+						</div>
+					</div>
+					<span data-text="Wpisz orientacyjną odległość między kolejnymi czujnikami na magistrali" class="wireLengthInformation tooltip">i</span>
+					<div class="wireLength">
+						<label for="EWL" class="wireLengthLabel">Orientacyjna odległość między urządzeniami</label>
+						<div class="wireLengthInputContainer">
+							<input min="1" max="999" value="15" type="number" class="wireLengthInput" id="EWL" name="EWL"/>m
+						</div>
+					</div>
+					<button class="formButton">Zatwierdź <span>▶</span></button>
+				</form>
+			</div>
+			<div class="descriptionContainer">
+				<ol>
+					<li>Wprowadź podstawowe dane dotyczące Twojego systemu.</li>
+					<li>W następnym kroku będzie możliwość modyfikowania wprowadzonych danych oraz dodanie sygnalizatorów czy zaworów.</li>
+					<li>Na końcu system dobierze optymalny przekrój kabla dla systemu oraz umożliwi zarówno zapis jak i wygenerowanie zestawienia urządzeń z kodami PW.</li>
+				</ol>
+				<div class="descriptionAboutContainer">
+					<p>Konfigurator prezentuje system na podstawie konfigurowalnych segmentów zawierających urządzenia.
+						Aktualnie możliwe jest dodanie 50 segmentów do systemu — np. 40 segmentów zawierających
+						czujniki gazu oraz 10 segmentów zawierających sygnalizatory.</p>
+					<br>
+					<p class="moreInf">Więcej informacji znajdziecie Państwo w dokumencie
+						<a href="http://doc.atestgaz.pl/AG/POD/POD-047-PLWydruk.pdf" class="tetaGasGuidance">Przewodnik Systemu TetaGas</a>.</p>
+				</div>
+			</div>
 		</div>
 	</div>
+	<div class="dragAndDropPanel panelContainer">
+		<div
+			id="dragNDropArea"
+			class="dragAndDropArea"
+			ondrop="handleDropFile(event);"
+			ondragover="handleDragOver(event);"
+			>Upuść plik tutaj, by wczytać wcześniej zapisany system</div>
+		<label class="formButton" for="readFileInput">Wczytaj plik  <span>▶</span></label>
+		<input class="formButton" id="readFileInput" type="file" accept=".json" onchange="handleInputLoadFile(event);"/>
+	</div>
 	<div class="system" id="system">
-		<a href="entry" id="scrollUp"></a>
-		<div class="systemStatus panelStyle">
-			<h3 class="systemHeader">Stan systemu</h3>
+		<div class="systemStatus panelContainer">
+			<div class="panelHeaderContainer">
+				<h3>Stan systemu</h3>
+			</div>
 			<div class="systemPreviewContainer">
 				<div class="devices">
 					<p class="deviceListHeader">CZUJNIKI GAZU</p>
@@ -164,21 +163,27 @@
 				</div>
 			</div>
 		</div>
-		<div class="systemPreview panelStyle">
+		<div class="systemPreview panelContainer">
 			<div class="systemGraphics">
-				<h3 class="systemHeader">Podgląd systemu</h3>
+				<div class="panelHeaderContainer">
+					<h3>Podgląd systemu</h3>
+				</div>
 				<div class="systemPreviewControlUnit">
-					<img src="./SVG/controlUnit.svg" alt="unable to find image" />
+					<img src="./SVG/controlUnit.svg" alt="Control unit image"/>
 				</div>
 				<div id="systemDiagram" class="systemDiagram"></div>
 			</div>
 			<div class="systemActions">
-				<h3 class="systemHeader">Działania</h3>
+				<div class="panelHeaderContainer">
+					<h3 class="systemHeader">Działania</h3>
+				</div>
 				<div id="actionsList" class="actionsList"></div>
 			</div>
 		</div>
-		<div class="systemFiles panelStyle">
-			<h3 class="systemHeader">Plik</h3>
+		<div class="systemFiles panelContainer">
+			<div class="panelHeaderContainer">
+				<h3>Plik</h3>
+			</div>
 			<div class="filesContainer">
 				<div class="saveSystem">
 					<img src="./SVG/save.svg" alt="Export to CSV">
@@ -190,8 +195,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="usedDevices panelStyle">
-			<h3 class="systemHeader">Zastosowane urządzenia</h3>
+		<div class="usedDevices panelContainer">
+			<div class="panelHeaderContainer">
+				<h3>Zastosowane urządzenia</h3>
+			</div>
 			<div id="usedDevicesContainer" class="usedDevicesContainer"></div>
 		</div>
 	</div>

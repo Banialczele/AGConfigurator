@@ -7,7 +7,6 @@
 :root {
   --main-font-family: "Spartan", Helvetica, sans-serif;
   --panel-bg-color: #ffffff;
-  /* --panel-bg-color: #333; */
   --accent-bg-color: #fafaf9;
   --accent-font-color: #959494;
   --secondary-bg-color: #cc2a27;
@@ -97,8 +96,29 @@ input, .formSelectInput:has(select) {
 
 .formSelectInput:has(select) select { grid-area: select; }
 
-.panelStyle {
+.panelContainer {
+  width: 100%;
+  max-width: 1000px;
   background-color: var(--panel-bg-color);
+  border: 1px solid rgba(39, 39, 39, 0.096);
+  box-shadow: 0px 0px 12px 10px rgba(227, 227, 227, 1);
+  -webkit-box-shadow: 0px 0px 12px 10px rgba(227, 227, 227, 1);
+  -moz-box-shadow: 0px 0px 12px 10px rgba(227, 227, 227, 1);
+  border-radius: 10px;
+}
+
+.panelHeaderContainer {
+  width: 100%;
+  padding: 0 15px 0 5px;
+  margin-bottom: 18px;
+}
+
+.panelHeaderContainer h3 {
+  width: 100%;
+  padding: 20px 30px;
+  font-size: 18px;
+  font-weight: 400;
+  background: var(--accent-bg-color);
 }
 
 header {
@@ -144,62 +164,26 @@ header #configuratorLanguage .langLink {
 header #configuratorLanguage .langLink:first-child { margin-right: 5px;
 }
 
-.appEntry {
-  height: calc(100vh - 85px);
-  width: 60%;
-  margin: 60px auto 0 auto;
-  display: grid;
-  grid-template-areas:
-    "configurator"
-    "dragndrop";
-  grid-template-rows: 525px 200px;
-  grid-template-columns: 1fr;
-  row-gap: 20px;
-}
-
-.appEntry .appEntryDescription {
-  display: grid;
-  grid-template-areas:
-    "header"
-    "config";
-  grid-template-rows: 100px 1fr;
-  grid-template-columns: 1fr;
-}
-
-.appEntry .entryHeader {
-  grid-area: header;
-  place-self: center;
+.configuratorPanel {
   width: 100%;
-  height: 100%;
+  padding: 23px 31px 41px;
+  margin: 166px auto 11px;
+}
+
+.configuratorPanel .contentContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
 }
 
-.appEntry .entryHeader h3 {
-  font-weight: 300;
-  height: 60px;
-  width: 100%;
-  border-radius: 10px;
-  background: rgba(39, 39, 39, 0.037);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 0 40px;
-  padding-left: 10px;
+.contentContainer .formContainer {
+  width: 50%;
+  padding-right: 22px;
+  border-right: 2px solid var(--input-border-color);
+  box-sizing: border-box;
 }
 
-.appEntry .configuratorConfig {
-  grid-area: config;
-  display: grid;
-  grid-template-areas: "form divider description";
-  grid-template-columns: 1fr 1px 1fr;
-}
-
-.configuratorConfig .entryConfig { grid-area: form; }
-
-.entryConfig .configForm {
-  height: 100%;
+.formContainer .form {
   display: grid;
   grid-template-columns: 50px 1fr;
   grid-template-rows: repeat(6, 1fr);
@@ -213,7 +197,7 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
     row-gap: calc(3 * var(--input-margin));
 }
 
-.configForm .tooltip {
+.form .tooltip {
   place-self: center;
   position: relative;
   padding: 0px 6px;
@@ -226,7 +210,7 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
   cursor: pointer;
 }
 
-.configForm .tooltip::before {
+.form .tooltip::before {
   position: absolute;
   display: none;
   content: attr(data-text);
@@ -244,7 +228,7 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
   z-index: 2;
 }
 
-.configForm .tooltip::after {
+.form .tooltip::after {
   position: absolute;
   display: none;
   content: "";
@@ -255,14 +239,14 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
   z-index: 2;
 }
 
-.configForm .tooltip:hover::before,
-.configForm .tooltip:hover::after { display: block; }
+.form .tooltip:hover::before,
+.form .tooltip:hover::after { display: block; }
 
-.configForm .detectorAmounts,
-.configForm .buildingType,
-.configForm .detectedGas,
-.configForm .batteryBackUp,
-.configForm .wireLength {
+.form .detectorAmounts,
+.form .buildingType,
+.form .detectedGas,
+.form .batteryBackUp,
+.form .wireLength {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
@@ -270,35 +254,35 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
   row-gap: var(--input-margin);
 }
 
-.configForm .detectorAmounts {
+.form .detectorAmounts {
   grid-area: amounts;
   grid-template-areas:
     "detectorAmountsLabel"
     "detectorAmountsInputContainer";
 }
 
-.configForm .buildingType {
+.form .buildingType {
   grid-area: building;
   grid-template-areas:
     "structureLabel"
     "structureSelect";
 }
 
-.configForm .detectedGas {
+.form .detectedGas {
   grid-area: gas;
   grid-template-areas:
     "detectedGasLabel"
     "detectedGasSelect";
 }
 
-.configForm .batteryBackUp {
+.form .batteryBackUp {
   grid-area: batterybackup;
   grid-template-areas:
     "batteryBackUpLabel"
     "batteryBackUpSelect";
 }
 
-.configForm .wireLength {
+.form .wireLength {
   grid-area: wireLength;
   grid-template-areas:
     "wireLengthLabel"
@@ -316,14 +300,14 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
 .wireLength .wireLengthLabel { grid-area: wireLengthLabel; }
 .wireLength .wireLengthInputContainer { grid-area: wireLengthInputContainer; }
 
-.configForm .buildingInformation { grid-area: buildingInfo; }
-.configForm .detectedGasInformation { grid-area: gasInfo; }
-.configForm .batteryBackUpInformation { grid-area: batteryInfo; }
-.configForm .wireLengthInformation { grid-area: wireInfo; }
+.form .buildingInformation { grid-area: buildingInfo; }
+.form .detectedGasInformation { grid-area: gasInfo; }
+.form .batteryBackUpInformation { grid-area: batteryInfo; }
+.form .wireLengthInformation { grid-area: wireInfo; }
 
-.configForm .buildingType,
-.configForm .detectedGas,
-.configForm .batteryBackUp { max-width: 280px; }
+.form .buildingType,
+.form .detectedGas,
+.form .batteryBackUp { max-width: 280px; }
 
 .detectorAmounts .detectorAmountsLabel,
 .buildingType .structureLabel,
@@ -340,100 +324,71 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
   margin: 0 var(--input-margin);
 }
 
-.configForm .formButton {
-  grid-area: button;
+.formButton {
   width: 150px;
-  height: 30px;
-  place-self: center end;
-  margin-right: 25px;
+  height: var(--input-height);
+  margin: 0;
+  font-family: var(--main-font-family);
+  font-size: 15px;
+  color: #ffffff;
+  background: var(--secondary-bg-color);
   border: none;
-  background: #cc2a27;
-
-  color: white;
+  cursor: pointer;
 }
 
-.configuratorConfig .divider {
-  grid-area: divider;
-  border-left: 1px solid rgba(63, 63, 63, 0.377);
-  height: 85%;
+.formButton span {
+  margin-left: calc(3 * var(--input-margin));
+  font-size: 10px;
 }
 
-.configuratorConfig .entryDescription {
-  grid-area: description;
+.form .formButton {
+  grid-area: button;
+  place-self: end end;
+}
+
+.contentContainer .descriptionContainer {
+  width: 50%;
+  padding-left: 22px;
+  line-height: calc(var(--input-font-size) + 10px);
   text-align: justify;
-  width: 100%;
+  box-sizing: border-box;
+}
+
+.descriptionContainer ol { margin: 0; }
+.descriptionContainer ol li { margin: 10px 0; }
+.descriptionAboutContainer p { margin: 0; }
+
+.descriptionContainer .descriptionAboutContainer a {
+  color: var(--secondary-bg-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.dragAndDropPanel {
   display: flex;
   flex-direction: column;
-  /* justify-content: center;  */
-  align-items: center;
-  padding: 0 25px;
+  align-items: end;
+  width: 100%;
+  padding: 23px 31px;
+  margin: 0 auto 30px;
 }
 
-.entryDescription ol {
-  margin: 0;
-}
-
-.entryDescription ol li {
-  margin: 10px 0;
-}
-
-.entryDescription .aboutEntry a {
-  text-decoration: none;
-  color: rgb(189, 37, 37);
-}
-
-.aboutEntry p {
-  margin: 0;
-}
-
-.appEntry .dragAndDropContainer {
-  grid-area: dragndrop;
-  display: grid;
-  grid-template-areas:
-    "dropArea"
-    "dragAreaButton";
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 60px;
-}
-
-.dragAndDropContainer .dragNDropArea {
-  grid-area: dropArea;
-  color: rgba(63, 63, 63, 0.5);
-  place-self: center;
-  font-size: large;
-  height: 75%;
-  width: 95%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.dragAndDropPanel .dragAndDropArea {
+  width: 100%;
+  padding: 40px 30px;
+  margin-bottom: 23px;
+  color: var(--accent-font-color);
+  text-align: center;
+  text-transform: uppercase;
   background-color: var(--accent-bg-color);
-  border: 1px dashed rgba(63, 63, 63, 0.301);
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23DADADAFF' stroke-width='3' stroke-dasharray='12' stroke-dashoffset='5' stroke-linecap='square'/%3e%3c/svg%3e");
 }
 
-.dragAndDropContainer input[type="file"] {
-  display: none;
-}
+.dragAndDropPanel input[type="file"] { display: none; }
 
-.dragAndDropContainer label {
-  grid-area: dragAreaButton;
-  width: 150px;
-  height: 30px;
-  place-self: center end;
-  margin-right: 25px;
-  border: none;
-  background: #cc2a27;
-  color: white;
+.dragAndDropPanel label {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.appEntryDescription,
-.dragAndDropContainer {
-  border: 1px solid rgba(39, 39, 39, 0.096);
-
-  box-shadow: 0px 0px 102px 10px rgba(227, 227, 227, 1);
-  -webkit-box-shadow: 0px 0px 102px 10px rgba(227, 227, 227, 1);
-  -moz-box-shadow: 0px 0px 102px 10px rgba(227, 227, 227, 1);
-  border-radius: 10px;
+  width: 150px;
 }
