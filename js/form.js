@@ -76,7 +76,7 @@ function formInit() {
 // Przetwarzanie formularza dot. systemu
 function handleFormSubmit() {
   //Zatwierdzenie formularza, przypisanie wybranych przez użytkownika parametrów do obiektu inicjującego podgląd systemu i wygenerowanie podglądu
-  const form = document.querySelector(".configForm");
+  const form = document.querySelector(".form");
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const system = document.getElementById("system");
