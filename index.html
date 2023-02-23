@@ -180,26 +180,28 @@
 				<div id="actionsList" class="actionsList"></div>
 			</div>
 		</div>
-		<div class="systemFiles panelContainer">
-			<div class="panelHeaderContainer">
-				<h3>Plik</h3>
-			</div>
-			<div class="filesContainer">
-				<div class="saveSystem">
-					<img src="./SVG/save.svg" alt="Export to CSV">
-					<button id="exportToCSV">Zachowaj system</button>
+		<div class="wrapper">
+			<div class="systemFiles panelContainer">
+				<div class="panelHeaderContainer">
+					<h3>Plik</h3>
 				</div>
-				<div class="setOfDevices">
-					<img src="./SVG/save.svg" alt="Export to JSON">
-					<button id="exportToJSON">Zestawienie urządzeń</button>
+				<div class="panelContentContainer">
+					<div class="saveSystem fileButton">
+						<img src="./SVG/save.svg" alt="Export to CSV">
+						<button id="exportToCSV">Zapisz system</button>
+					</div>
+					<div class="setOfDevices fileButton">
+						<img src="./SVG/save.svg" alt="Export to JSON">
+						<button id="exportToJSON">Pobierz zestawienie urządzeń</button>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="usedDevices panelContainer">
-			<div class="panelHeaderContainer">
-				<h3>Zastosowane urządzenia</h3>
+			<div class="usedDevices panelContainer">
+				<div class="panelHeaderContainer">
+					<h3>Zastosowane urządzenia</h3>
+				</div>
+				<div id="usedDevicesContainer" class="usedDevicesContainer"></div>
 			</div>
-			<div id="usedDevicesContainer" class="usedDevicesContainer"></div>
 		</div>
 	</div>
 

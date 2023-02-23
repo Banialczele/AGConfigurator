@@ -1,39 +1,26 @@
-.systemFiles .filesContainer {
-  height: calc(100% - 65px);
-  width: 100%;
-  display: grid;
-  grid-template-areas: "saveSystem" "listOfDevices";
-}
-
-.filesContainer .saveSystem {
-  grid-area: saveSystem;
-  place-self: center;
-  width: 100%;
+.systemFiles .fileButton {
   display: flex;
-  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
+  cursor: pointer;
 }
 
-.filesContainer .setOfDevices {
-  grid-area: listOfDevices;
-  place-self: center;
+.systemFiles .fileButton:first-child { margin-bottom: 15px; }
+
+.systemFiles .fileButton img {
+  width: calc(var(--input-height) - 6px);
+  height: calc(var(--input-height) - 6px);
+}
+
+.systemFiles .fileButton button {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.saveSystem img,
-.setOfDevices img {
-  width: 30px;
-  height: 30px;
-}
-
-.saveSystem button,
-.setOfDevices button {
-  min-width: 150px;
-  height: 30px;
-  border: none;
+  height: calc(var(--input-height) - 8px);
+  font-family: var(--main-font-family);
+  font-size: 14px;
+  background: #ffffff;
+  border: 2px solid var(--input-border-color);
+  border-left: none;
+  cursor: pointer;
+  box-sizing: border-box;
 }
