@@ -6,17 +6,23 @@
 
 #usedDevicesContainer .usedDeviceItem {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: space-between;
   width: 100%;
-  padding: 15px 0;
+  padding: 25px 0;
   border-bottom: 2px solid var(--input-border-color);
+  box-sizing: border-box;
 }
 
 #usedDevicesContainer .usedDeviceItem:first-child { padding-top: 0; }
 
-.usedDeviceItem .systemUsedDeviceDataContainer {
+.usedDeviceItem .systemUsedDeviceDataContainer,
+.usedDeviceItem .usedDeviceImageContainer {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  font-size: 12px;
 }
 
 .systemUsedDeviceDataContainer p { margin: 0; }
@@ -27,16 +33,13 @@
 }
 
 .systemUsedDeviceDataContainer .usedDeviceDocs {
-  align-self: end;
   color: var(--secondary-bg-color);
   text-decoration: none;
 }
 
-.systemUsedDeviceDataContainer .usedDeviceImageContainer {
-  max-width: 100px;
-}
-
 .usedDeviceImageContainer img {
+  display: block;
   width: 100%;
-  max-height: 100px;
+  max-width: 60px;
+  max-height: 80px;
 }

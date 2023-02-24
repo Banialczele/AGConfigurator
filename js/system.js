@@ -455,6 +455,7 @@ function setSystemUsedDevice(device, isSignaller = false) {
   setAttributes(systemUsedDeviceImageContainer, { class: "usedDeviceImageContainer" });
   const systemUsedDeviceName = document.createElement("p");
   const systemUsedDeviceType = document.createElement("p");
+  const systemUsedDeviceBreak = document.createElement("br");
   const systemUsedDeviceDocsLink = document.createElement("a");
   const systemUsedDeviceImage = document.createElement("img");
   setAttributes(systemUsedDeviceName, { class: "usedDeviceName" });
@@ -470,6 +471,7 @@ function setSystemUsedDevice(device, isSignaller = false) {
   systemUsedDeviceDocsLink.appendChild(document.createTextNode("Dokumentacja techniczna"));
   systemUsedDeviceDataContainer.appendChild(systemUsedDeviceName);
   systemUsedDeviceDataContainer.appendChild(systemUsedDeviceType);
+  systemUsedDeviceDataContainer.appendChild(systemUsedDeviceBreak);
   systemUsedDeviceDataContainer.appendChild(systemUsedDeviceDocsLink);
   systemUsedDeviceImageContainer.appendChild(systemUsedDeviceImage);
   systemUsedDevice.appendChild(systemUsedDeviceDataContainer);

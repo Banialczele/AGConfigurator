@@ -8,7 +8,7 @@
 }
 
 .system .panelContainer { padding: 15px 20px 40px 10px; }
-.system .panelContentContainer { padding-left: 15px; }
+.system .panelContentContainer { padding-left: 15px; padding-right: 5px; }
 .system .panelHeaderContainer { padding: 0; }
 .system .panelHeaderContainer h3 { margin: 0 0 30px; }
 .usedDevices .panelHeaderContainer h3 { padding: 20px 24px; }
