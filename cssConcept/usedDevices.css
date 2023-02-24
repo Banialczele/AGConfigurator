@@ -1,61 +1,42 @@
-.usedDevicesContainer {
-  width: 100%;
-  height: 100%;
+#usedDevicesContainer {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.usedDevicesContainer .usedDeviceItem {
-  display: grid;
-  grid-template-areas:
-    "detectorName detectorName detectorImage"
-    "detectorGas detectorGas detectorImage"
-    "detectorLink detectorLink detectorImage";
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
   width: 100%;
-  height: 100px;
-  padding: 10px 25px;
 }
 
-.usedDeviceItem p {
-  margin: 0;
-  padding: 0;
+#usedDevicesContainer .usedDeviceItem {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 15px 0;
+  border-bottom: 2px solid var(--input-border-color);
 }
 
-.usedDeviceItem .usedDeviceName {
-  grid-area: detectorName;
+#usedDevicesContainer .usedDeviceItem:first-child { padding-top: 0; }
+
+.usedDeviceItem .systemUsedDeviceDataContainer {
+  display: flex;
+  flex-direction: column;
 }
 
-.usedDeviceItem .usedDeviceGasDetected {
-  grid-area: detectorGas;
+.systemUsedDeviceDataContainer p { margin: 0; }
+
+.systemUsedDeviceDataContainer .usedDeviceName {
+  font-weight: 500;
+  margin-bottom: 2px;
 }
 
-.usedDeviceItem .usedDeviceDocs {
-  grid-area: detectorLink;
-}
-
-.usedDeviceDocs .usedDeviceDocsAnchor {
+.systemUsedDeviceDataContainer .usedDeviceDocs {
+  align-self: end;
+  color: var(--secondary-bg-color);
   text-decoration: none;
-  color: #cc2a27;
 }
 
-.usedDeviceItem .usedDeviceImageContainer {
-  grid-area: detectorImage;
-  place-self: center;
+.systemUsedDeviceDataContainer .usedDeviceImageContainer {
   max-width: 100px;
 }
 
 .usedDeviceImageContainer img {
   width: 100%;
   max-height: 100px;
-}
-
-.usedDevicesContainer .usedDeviceDivider {
-  border-bottom: 1px solid rgba(38, 38, 37, 0.28);
-  width: 85%;
-  place-self: center;
-  margin: 10px 0;
 }

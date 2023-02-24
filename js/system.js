@@ -447,39 +447,35 @@ function createSystemUsedDevicesPanel() {
 
 // Ustawienie wykorzystanego w systemie rodzaju urządzenia
 function setSystemUsedDevice(device, isSignaller = false) {
-  const systemUsedDeviceContainer = document.createElement("div");
   const systemUsedDevice = document.createElement("div");
-  const systemUsedDeviceDivider = document.createElement("div");
-  setAttributes(systemUsedDeviceContainer, { class: "usedDevicePair" });
-  setAttributes(systemUsedDevice, { class: "usedDeviceItem", id: `used${device.name.replace(/ |\+/g, "")}Device` });
-  setAttributes(systemUsedDeviceDivider, { class: "usedDeviceDivider" });
-  systemUsedDeviceContainer.appendChild(systemUsedDevice);
-  systemUsedDeviceContainer.appendChild(systemUsedDeviceDivider);
-  const systemUsedDeviceName = document.createElement("div");
-  const systemUsedDeviceDocs = document.createElement("div");
+  const systemUsedDeviceDataContainer = document.createElement("div");
   const systemUsedDeviceImageContainer = document.createElement("div");
-  setAttributes(systemUsedDeviceName, { class: "usedDeviceName" });
-  setAttributes(systemUsedDeviceDocs, { class: "usedDeviceDocs" });
+  setAttributes(systemUsedDevice, { class: "usedDeviceItem", id: `used${device.name.replace(/ |\+/g, "")}Device` });
+  setAttributes(systemUsedDeviceDataContainer, { class: "systemUsedDeviceDataContainer" });
   setAttributes(systemUsedDeviceImageContainer, { class: "usedDeviceImageContainer" });
-  systemUsedDeviceName.appendChild(document.createTextNode(device.name));
+  const systemUsedDeviceName = document.createElement("p");
+  const systemUsedDeviceType = document.createElement("p");
   const systemUsedDeviceDocsLink = document.createElement("a");
   const systemUsedDeviceImage = document.createElement("img");
-  setAttributes(systemUsedDeviceDocsLink, { class: "usedDeviceDocsAnchor", href: device.docs, target: "_blank" });
+  setAttributes(systemUsedDeviceName, { class: "usedDeviceName" });
+  setAttributes(systemUsedDeviceType, { class: "systemUsedDeviceType" });
+  setAttributes(systemUsedDeviceDocsLink, { class: "usedDeviceDocs", href: device.docs, target: "_blank" });
   setAttributes(systemUsedDeviceImage, { src: `./PNG/${device.name}.png`, alt: `${device.name} image` });
-  systemUsedDeviceDocsLink.appendChild(document.createTextNode("Dokumentacja techniczna"));
-  systemUsedDeviceDocs.appendChild(systemUsedDeviceDocsLink);
-  systemUsedDeviceImageContainer.appendChild(systemUsedDeviceImage);
-  systemUsedDevice.appendChild(systemUsedDeviceName);
+  systemUsedDeviceName.appendChild(document.createTextNode(device.name));
   if (!isSignaller) {
-    const systemUsedDeviceGasDetected = document.createElement("div");
-    setAttributes(systemUsedDeviceGasDetected, { class: "usedDeviceGasDetected" });
-    systemUsedDeviceGasDetected.appendChild(document.createTextNode(device.gasDetected));
-    systemUsedDevice.appendChild(systemUsedDeviceGasDetected);
+    systemUsedDeviceType.appendChild(document.createTextNode(`Czujnik gazu ${device.gasDetected}`));
+  } else {
+    systemUsedDeviceType.appendChild(document.createTextNode("Sygnalizator opt.-aku."));
   }
-  systemUsedDevice.appendChild(systemUsedDeviceDocs);
+  systemUsedDeviceDocsLink.appendChild(document.createTextNode("Dokumentacja techniczna"));
+  systemUsedDeviceDataContainer.appendChild(systemUsedDeviceName);
+  systemUsedDeviceDataContainer.appendChild(systemUsedDeviceType);
+  systemUsedDeviceDataContainer.appendChild(systemUsedDeviceDocsLink);
+  systemUsedDeviceImageContainer.appendChild(systemUsedDeviceImage);
+  systemUsedDevice.appendChild(systemUsedDeviceDataContainer);
   systemUsedDevice.appendChild(systemUsedDeviceImageContainer);
 
-  return systemUsedDeviceContainer;
+  return systemUsedDevice;
 }
 
 // Tworzenie systemu

@@ -7,7 +7,7 @@
   row-gap: 17px;
 }
 
-.system .panelContainer { padding: 15px 20px 15px 10px; }
+.system .panelContainer { padding: 15px 20px 40px 10px; }
 .system .panelContentContainer { padding-left: 15px; }
 .system .panelHeaderContainer { padding: 0; }
 .system .panelHeaderContainer h3 { margin: 0 0 30px; }
