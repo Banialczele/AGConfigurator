@@ -104,61 +104,51 @@
 			<div class="panelHeaderContainer">
 				<h3>Stan systemu</h3>
 			</div>
-			<div class="systemPreviewContainer">
-				<div class="devices">
-					<p class="deviceListHeader">CZUJNIKI GAZU</p>
-					<div class="detectorsListContainer">
-						<ol id="detectorsTypesList" class="detectorTypes"></ol>
+			<div class="systemStatusContainer">
+				<div class="panelContentContainer">
+					<div class="detectorsContainer">
+						<h4 class="detectorsListHeader">Czujniki gazu</h4>
+						<ol id="detectorsList" class="detectorsList"></ol>
 					</div>
-					<div class="deviceAmounts">
-						<ol id="detectorsQuantityList" class="detectorTypesAmounts"></ol>
+					<div class="signallersContainer">
+						<h4 class="signallerListHeader">Sygnalizatory</h4>
+						<ol id="signallersList" class="signallersList"></ol>
 					</div>
-				</div>
-				<div class="divider"></div>
-				<div class="signallers">
-					<p class="signallerListHeader">SYGNALIZATORY</p>
-					<div class="signallerListContainer">
-						<ol id="signallersTypesList" class="signallerTypes"></ol>
+					<div class="accessoriesContainer">
+						<h4 class="accessoriesListHeader">Akcesoria</h4>
+						<ol id="accessoriesList" class="accessoriesList"></ol>
 					</div>
-					<div class="signallerAmounts">
-						<ol id="signallersQuantityList" class="signallerTypesAmounts"></ol>
-					</div>
-				</div>
-				<div class="divider"></div>
-				<div class="accessories">
-					<p class="accessoriesListHeader">AKCESORIA</p>
-					<div class="accessoriesListContainer">
-						<ol id="accessoriesList" class="accessoriesTypes"></ol>
-					</div>
-					<div class="accessoriesAmounts">
-						<ol id="accessoriesQuantityList" class="accessoriesTypesAmounts"></ol>
+					<div class="controlUnitContainer">
+						<h4 class="controlUnitHeader">Jednostka sterująca i zasilanie</h4>
+						<ol id="controlUnitList" class="controlUnitList">
+							<li>
+								<div>Długość magistrali</div>
+								<div><span id="busLength">399</span>m</div>
+							</li>
+							<li>
+								<div>Pobór mocy</div>
+								<div><span id="powerConsumption">150</span>W</div>
+							</li>
+						</ol>
 					</div>
 				</div>
-				<div class="divider"></div>
-				<div class="controlUnit">
-					<p class="controlUnitHeader">JEDNOSTKA STERUJĄCA</p>
-					<p class="busLengthDescription">Długość magistrali</p>
-					<p class="systemPowerConsumption">Pobór mocy</p>
-					<p id="busLength" class="busLength"></p>
-					<p id="powerConsumption" class="powerConsumption"></p>
-				</div>
-				<div class="divider"></div>
 				<div class="powerSupplyContainer">
-					<p class="powerSupplyHeader">ZASILANIE</p>
-					<div class="supplyType">
-						<p class="powerSupply">Teta MOD Control 1</p>
-						<p class="powerSupplyDetails"> 432/41 83W zas</p>
-					</div>
-					<div class="wireDiameterContainer">
-						<p class="wireDiameter">Przekrój kabla</p>
-						<p class="typeOfWire">2x2,5mm2</p>
-					</div>
-					<div class="systemStatusContainer">
-						<p class="systemState">Status systemu</p>
-						<p class="systemOutput">OK</p>
-					</div>
-					<div class="optimizeContainer">
-						<button class="optimizeSystem">Optymalizuj</button>
+					<ol class="powerSupplyList">
+						<li>
+							<div>Teta Control 1-S24</div>
+							<div><span id="powerSupply">230/24 60 W</span>zas.</div>
+						</li>
+						<li>
+							<div>Przekrój kabla</div>
+							<div><span id="wireCrossSection">2x1</span>mm<sup>2</sup></div>
+						</li>
+					</ol>
+					<div class="systemStatusStateContainer">
+						<div class="systemStatusState">Status systemu</div>
+						<div class="systemStatusActionsContainer">
+							<button class="systemOutput">OK</button>
+							<button class="optimizeSystem">Optymalizuj</button>
+						</div>
 					</div>
 				</div>
 			</div>

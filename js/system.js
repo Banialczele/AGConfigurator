@@ -369,71 +369,88 @@ function setSystemStatePanel() {
 
 // Ustawienie typów gazu mierzonych przez wybrane czujniki + liczebności tych czujników w panelu stanu
 function setSystemStateDetectorsList() {
-  const detectorsTypesList = document.getElementById("detectorsTypesList");
-  const detectorsQuantityList = document.getElementById("detectorsQuantityList");
-  detectorsTypesList.replaceChildren();
-  detectorsQuantityList.replaceChildren();
+  const detectorsList = document.getElementById("detectorsList");
+  detectorsList.replaceChildren();
   systemData.devicesTypes.detectors.forEach((detector) => {
     const detectorListItem = document.createElement("li");
-    const detectorQuantityListItem = document.createElement("li");
-    const detectorQuantity = systemData.devices.reduce((accumulator, device) => {
+    const detectorTypeContainer = document.createElement("div");
+    const detectorQuantityContainer = document.createElement("div");
+    const detectorQuantity = document.createElement("span");
+    const quantity = systemData.devices.reduce((accumulator, device) => {
       if (detector.gasDetected === device.gasDetected) {
         return accumulator + 1;
       } else {
         return accumulator;
       }
     }, 0);
-    detectorListItem.appendChild(document.createTextNode(detector.gasDetected));
-    detectorQuantityListItem.appendChild(document.createTextNode(`${detectorQuantity} szt.`));
-    detectorsTypesList.appendChild(detectorListItem);
-    detectorsQuantityList.appendChild(detectorQuantityListItem);
+    detectorTypeContainer.appendChild(document.createTextNode(detector.gasDetected));
+    detectorQuantity.appendChild(document.createTextNode(quantity));
+    detectorQuantityContainer.appendChild(detectorQuantity)
+    detectorQuantityContainer.appendChild(document.createTextNode("szt."))
+    detectorListItem.appendChild(detectorTypeContainer);
+    detectorListItem.appendChild(detectorQuantityContainer);
+    detectorsList.appendChild(detectorListItem);
   });
 }
 
 // Ustawienie rodzajów sygnalizatorów + ich liczebności w panelu stanu
 function setSystemStateSignallersList() {
-  const signallersTypesList = document.getElementById("signallersTypesList");
-  const signallersQuantityList = document.getElementById("signallersQuantityList");
-  signallersTypesList.replaceChildren();
-  signallersQuantityList.replaceChildren();
+  const signallersList = document.getElementById("signallersList");
+  signallersList.replaceChildren();
   systemData.devicesTypes.signallers.forEach((signaller) => {
     const signallerListItem = document.createElement("li");
-    const signallerQuantityListItem = document.createElement("li");
-    const signallerQuantity = systemData.devices.reduce((accumulator, device) => {
+    const signallerTypeContainer = document.createElement("div");
+    const signallerQuantityContainer = document.createElement("div");
+    const signallerQuantity = document.createElement("span");
+    const quantity = systemData.devices.reduce((accumulator, device) => {
       if (signaller.name === device.name) {
         return accumulator + 1;
       } else {
         return accumulator;
       }
     }, 0);
-    signallerListItem.appendChild(document.createTextNode(signaller.name));
-    signallerQuantityListItem.appendChild(document.createTextNode(`${signallerQuantity} szt.`));
-    signallersTypesList.appendChild(signallerListItem);
-    signallersQuantityList.appendChild(signallerQuantityListItem);
+    if (signaller.name === "TOLED") {
+      signallerTypeContainer.appendChild(document.createTextNode("Tablica ostrzegawcza"));
+    } else {
+      signallerTypeContainer.appendChild(document.createTextNode("Optyczno-akustyczne"));
+    }
+    signallerQuantity.appendChild(document.createTextNode(quantity));
+    signallerQuantityContainer.appendChild(signallerQuantity);
+    signallerQuantityContainer.appendChild(document.createTextNode("szt."));
+    signallerListItem.appendChild(signallerTypeContainer);
+    signallerListItem.appendChild(signallerQuantityContainer);
+    signallersList.appendChild(signallerListItem);
   });
 }
 
 // Ustawienie akcesoriów + ich liczebności w panelu stanu
 function setSystemStateAccessories() {
   const accessoriesList = document.getElementById("accessoriesList");
-  const accessoriesQuantityList = document.getElementById("accessoriesQuantityList");
   accessoriesList.replaceChildren();
-  accessoriesQuantityList.replaceChildren();
-  accessoriesList.appendChild(document.createTextNode("T-Konektor"));
-  accessoriesQuantityList.appendChild(document.createTextNode(`${systemData.devices.length} szt.`));
+  const accessoryListItem = document.createElement("li");
+  const accessoryTypeContainer = document.createElement("div");
+  const accessoryQuantityContainer = document.createElement("div");
+  const accessoryQuantity = document.createElement("span");
+  accessoryTypeContainer.appendChild(document.createTextNode("T-Konektor"));
+  accessoryQuantity.appendChild(document.createTextNode(systemData.devices.length));
+  accessoryQuantityContainer.appendChild(accessoryQuantity);
+  accessoryQuantityContainer.appendChild(document.createTextNode("szt."));
+  accessoryListItem.appendChild(accessoryTypeContainer);
+  accessoryListItem.appendChild(accessoryQuantityContainer);
+  accessoriesList.appendChild(accessoryListItem);
 }
 
 // Ustawienie długości magistrali w panelu stanu 
 function setSystemStateBusLength() {
   const busLength = document.getElementById("busLength");
   const busLengthValue = systemData.devices.reduce((accumulator, device) => accumulator + device.wireLength, 0);
-  busLength.replaceChildren(busLength.appendChild(document.createTextNode(`${busLengthValue} m.`)))
+  busLength.replaceChildren(busLength.appendChild(document.createTextNode(busLengthValue)));
 }
 
 // Ustawienie wartości zużycia energii dla systemu w panelu stanu
 function setSystemStatePowerConsumption(value = 25) {
   const powerConsumption = document.getElementById("powerConsumption");
-  powerConsumption.replaceChildren(powerConsumption.appendChild(document.createTextNode(`${value} W`)));
+  powerConsumption.replaceChildren(powerConsumption.appendChild(document.createTextNode(value)));
 }
 
 // Tworzenie panelu z listą rodzajów wykorzystanych w systemie urządzeń
