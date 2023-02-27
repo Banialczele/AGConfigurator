@@ -93,73 +93,42 @@
   border: 2px solid #46bd36;
 }
 
-.powerSupplyContainer .powerSupplyHeader {
-  grid-area: powerSupplyHeader;
-}
-
-.powerSupplyContainer .supplyType {
-  grid-area: psu;
-  height: 100%;
+.powerSupplyContainer .systemStatusStateContainer {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  font-size: 13px;
+  white-space: nowrap;
+  column-gap: 30px;
 }
 
-.supplyType .powerSupply {
-  place-self: start;
-  padding-left: 15px;
-}
+.systemStatusStateContainer .systemStatusState { padding: 4px 0; font-weight: 500; }
 
-.supplyType .powerSupplyDetails {
-  place-self: end;
-  padding-right: 15px;
-}
-
-.powerSupplyContainer .wireDiameterContainer {
-  grid-area: wireDim;
-  height: 100%;
+.systemStatusStateContainer .systemStatusActionsContainer {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  row-gap: 10px;
 }
 
-.wireDiameterContainer .wireDiameter {
-  place-self: start;
-  padding-left: 15px;
-}
-
-.wireDiameterContainer .typeOfWire {
-  place-self: end;
-  padding-right: 15px;
-}
-
-.powerSupplyContainer .systemStatusContainer {
-  grid-area: systemStatus;
-  height: 100%;
+.systemStatusActionsContainer button {
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  padding: 4px 0;
+  font-family: var(--main-font-family);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  box-sizing: border-box;
 }
 
-.systemStatusContainer .systemState {
-  place-self: start;
-  padding-left: 15px;
-}
-
-.systemStatusContainer .systemOutput {
-  place-self: end;
-  padding-right: 15px;
-}
-
-.powerSupplyContainer .optimizeContainer {
-  grid-area: optimizeButton;
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
-.optimizeContainer .optimizeSystem {
-  width: 150px;
-  height: 30px;
-  place-self: center end;
+.systemStatusActionsContainer .systemOutput {
+  color: #ffffff;
+  background-color: #46bd36;
   border: none;
+}
+
+.systemStatusActionsContainer .optimizeSystem {
+  color: #eaeaea;
+  background-color: #f4f4f4;
+  border: 2px solid #eaeaea;
 }
