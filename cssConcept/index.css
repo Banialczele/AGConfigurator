@@ -7,9 +7,10 @@
 :root {
   --main-font-family: "Spartan", Helvetica, sans-serif;
   --panel-bg-color: #ffffff;
-  --accent-bg-color: #fafaf9;
+  --accent-bg-color: #f4f4f4;
   --accent-font-color: #959494;
   --secondary-bg-color: #cc2a27;
+  --third-bg-color: #46bd36;
   --input-height: 40px;
   --input-margin: 5px;
   --input-font-size: 12px;

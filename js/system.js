@@ -106,14 +106,20 @@ function createSystemSegmentsActionsList() {
 // Tworzenie panelu działań dla segmentu urządzenia
 function createSegmentActions(device) {
   const actionsSegment = document.createElement("div");
+  const wrapper = document.createElement("div");
+  const deviceTypeWrapper = document.createElement("div");
   setAttributes(actionsSegment, { class: "actionsSegment", id: `actionsSegment${device.index}`, "data-segmentType": "detectors", "data-segmentIndex": `${device.index}` });
-  actionsSegment.appendChild(createSegmentIndex(device));
-  actionsSegment.appendChild(createSegmentDeviceTypeSelect(device));
+  setAttributes(wrapper, { class: "wrapper" });
+  setAttributes(deviceTypeWrapper, { class: "deviceTypeWrapper" });
+  wrapper.appendChild(createSegmentIndex(device));
+  wrapper.appendChild(deviceTypeWrapper);
+  deviceTypeWrapper.appendChild(createSegmentDeviceTypeSelect(device));
   if (device.name === "TOLED") {
-    actionsSegment.appendChild(createSegmentTOLEDDescriptionSelect(device));
+    deviceTypeWrapper.appendChild(createSegmentTOLEDDescriptionSelect(device));
   }
-  actionsSegment.appendChild(createSegmentWireLengthInput(device));
-  actionsSegment.appendChild(createSegmentButtons(device));
+  wrapper.appendChild(createSegmentWireLengthInput(device));
+  wrapper.appendChild(createSegmentButtons(device));
+  actionsSegment.appendChild(wrapper);
 
   return actionsSegment;
 }
@@ -134,13 +140,16 @@ function createSegmentIndex(device) {
 function createSegmentDeviceTypeSelect(device) {
   const segmentDeviceSelectContainer = document.createElement("div");
   const segmentDeviceLabel = document.createElement("label");
+  const segmentDeviceSelectWrapper = document.createElement("div");
   const segmentDeviceSelect = document.createElement("select");
   setAttributes(segmentDeviceSelectContainer, { class: "segmentDeviceSelectContainer" });
   setAttributes(segmentDeviceLabel, { class: "segmentDeviceLabel", for: `actionsSegmentDevice${device.index}` });
+  setAttributes(segmentDeviceSelectWrapper, { class: "formSelectInput" });
   setAttributes(segmentDeviceSelect, { class: "segmentDeviceSelect", id: `actionsSegmentDevice${device.index}` });
   segmentDeviceLabel.appendChild(document.createTextNode("Urządzenie"));
   segmentDeviceSelectContainer.appendChild(segmentDeviceLabel);
-  segmentDeviceSelectContainer.appendChild(segmentDeviceSelect);
+  segmentDeviceSelectWrapper.appendChild(segmentDeviceSelect);
+  segmentDeviceSelectContainer.appendChild(segmentDeviceSelectWrapper);
   const structureType = STRUCTURE_TYPES.find((structureType) => structureType.type === systemData.structureType);
   structureType.devices.forEach((structureDevice) => {
     const deviceTypeOption = document.createElement("option");
@@ -216,13 +225,16 @@ function createSegmentTOLEDDescriptionSelect(device) {
   }
   const segmentTOLEDSelectContainer = document.createElement("div");
   const segmentTOLEDLabel = document.createElement("label");
+  const segmentTOLEDSelectWrapper = document.createElement("div");
   const segmentTOLEDSelect = document.createElement("select");
   setAttributes(segmentTOLEDSelectContainer, { class: "toledContainer" });
   setAttributes(segmentTOLEDLabel, { class: "toledDescription" });
+  setAttributes(segmentTOLEDSelectWrapper, { class: "formSelectInput" });
   setAttributes(segmentTOLEDSelect, { class: "toledSelect" });
   segmentTOLEDLabel.appendChild(document.createTextNode("Napis"));
   segmentTOLEDSelectContainer.appendChild(segmentTOLEDLabel);
-  segmentTOLEDSelectContainer.appendChild(segmentTOLEDSelect);
+  segmentTOLEDSelectWrapper.appendChild(segmentTOLEDSelect);
+  segmentTOLEDSelectContainer.appendChild(segmentTOLEDSelectWrapper);
   TOLED_OPTIONS.forEach((option) => {
     const toledOption = document.createElement("option");
     setAttributes(toledOption, { value: option.type });
@@ -248,13 +260,16 @@ function setSegmentTOLEDDescriptionSelectChangeEvent(event, index) {
 function createSegmentWireLengthInput(device) {
   const segmentWireLengthContainer = document.createElement("div");
   const segmentWireLengthLabel = document.createElement("label");
+  const breakLineElem = document.createElement("br");
   const segmentWireLengthInput = document.createElement("input");
   setAttributes(segmentWireLengthContainer, { class: "segmentWireLengthContainer" });
   setAttributes(segmentWireLengthLabel, { class: "segmentWireLengthLabel", for: `actionsSegmentWireLength${device.index}` });
   setAttributes(segmentWireLengthInput, { class: "segmentWireLength", id: `actionsSegmentWireLength${device.index}`, type: "number", min: 1, value: device.wireLength });
   segmentWireLengthLabel.appendChild(document.createTextNode("Odległość do poprzedniego segmentu"));
   segmentWireLengthContainer.appendChild(segmentWireLengthLabel);
+  segmentWireLengthContainer.appendChild(breakLineElem);
   segmentWireLengthContainer.appendChild(segmentWireLengthInput);
+  segmentWireLengthContainer.appendChild(document.createTextNode("m"));
   segmentWireLengthInput.addEventListener("change", (event) => setSegmentWireLengthInputChangeEvent(event, device.index));
 
   return segmentWireLengthContainer;
@@ -276,18 +291,14 @@ function setSegmentWireLengthInputChangeEvent(event, index) {
 function createSegmentButtons(device) {
   const segmentButtonsContainer = document.createElement("div");
   const duplicateDeviceButton = document.createElement("button");
-  const duplicateButtonImage = document.createElement("img");
   const removeDeviceButton = document.createElement("button");
-  const removeButtonImage = document.createElement("img");
   setAttributes(segmentButtonsContainer, { class: "segmentButtonsContainer" });
   setAttributes(duplicateDeviceButton, { class: "duplicateDeviceButton", id: `duplicateDevice${device.index}` });
-  setAttributes(duplicateButtonImage, { src: "./SVG/add.svg", alt: "Duplicate device button" });
   setAttributes(removeDeviceButton, { class: "removeDeviceButton", id: `removeDevice${device.index}` });
-  setAttributes(removeButtonImage, { src: "./SVG/remove.svg", alt: "Remove device button" });
+  duplicateDeviceButton.appendChild(document.createTextNode("+"));
+  removeDeviceButton.appendChild(document.createTextNode("–"));
   segmentButtonsContainer.appendChild(duplicateDeviceButton);
   segmentButtonsContainer.appendChild(removeDeviceButton);
-  duplicateDeviceButton.appendChild(duplicateButtonImage);
-  removeDeviceButton.appendChild(removeButtonImage);
   duplicateDeviceButton.addEventListener("click", (event) => setSegmentDuplicateDeviceButtonClickEvent(device.index));
   removeDeviceButton.addEventListener("click", (event) => setSegmentRemoveDeviceButtonClickEvent(device.index));
 
@@ -339,20 +350,25 @@ function setSegmentRemoveDeviceButtonClickEvent(index) {
 // Tworzenie panelu działań dla segmentu jednostki sterującej
 function createSegmentActionsPSU() {
   const actionsSegment = document.createElement("div");
+  const wrapper = document.createElement("div");
   const segmentIndexLabel = document.createElement("label");
   const segmentDeviceLabel = document.createElement("label");
+  const breakLineElem = document.createElement("br");
   setAttributes(actionsSegment, { class: "actionsSegment", id: "actionsSegment0", "data-segmentType": "PSU", "data-segmentIndex": "0" });
+  setAttributes(wrapper, { class: "wrapper" });
   setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: "actionsSegmentIndex0" });
   setAttributes(segmentDeviceLabel, { class: "segmentDeviceLabel", for: "actionsSegmentDevice0" });
   segmentIndexLabel.appendChild(document.createTextNode("Segment nr "));
   segmentDeviceLabel.appendChild(document.createTextNode("Urządzenie"));
-  actionsSegment.appendChild(segmentIndexLabel);
-  actionsSegment.appendChild(segmentDeviceLabel);
+  actionsSegment.appendChild(wrapper);
+  wrapper.appendChild(segmentIndexLabel);
+  wrapper.appendChild(segmentDeviceLabel);
   const segmentIndexInput = document.createElement("input");
   const segmentDeviceInput = document.createElement("input");
   setAttributes(segmentIndexInput, { class: "segmentId", id: "actionsSegmentIndex0", type: "number", min: 0, max: 50, value: 0 });
   setAttributes(segmentDeviceInput, { class: "segmentDeviceSelect", id: "actionsSegmentDevice0", value: systemData.powerSupply });
   segmentIndexLabel.appendChild(segmentIndexInput);
+  segmentDeviceLabel.appendChild(breakLineElem);
   segmentDeviceLabel.appendChild(segmentDeviceInput);
 
   return actionsSegment;

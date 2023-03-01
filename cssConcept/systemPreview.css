@@ -1,8 +1,33 @@
 .system .systemPreview {
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 45% 55%;
   height: 100%;
   overflow: auto;
+}
+
+.systemPreview .systemActions input {
+  width: calc(var(--input-height) - 15px);
+  height: calc(var(--input-height) - 15px);
+  padding: 5px 2px;
+  font-size: 11px;
+}
+
+.systemPreview .systemActions select {
+  width: 100%;
+  height: calc(var(--input-height) - 15px);
+  padding: 5px 2px;
+  font-size: 10px;
+}
+
+.systemPreview .systemActions .formSelectInput:has(select) {
+  height: calc(var(--input-height) - 15px);
+  margin: 0;
+}
+
+.systemPreview .systemActions .formSelectInput:has(select)::after {
+  width: calc(var(--input-height) - 25px);
+  height: calc(var(--input-height) - 15px);
+  bottom: 2px;
 }
 
 .systemPreview .systemGraphics,
@@ -55,6 +80,9 @@
   grid-template-columns: 1fr 100px 1fr;
 }
 
+.systemGraphics .systemDiagram .deviceSegment:nth-child(odd) { background-color: var(--accent-bg-color); }
+
+
 .systemDiagram .deviceSegment .warningDeviceImageContainer {
   grid-row: sirenImage;
   display: flex;
@@ -85,12 +113,7 @@
     "actionHeader"
     "."
     "actions";
-  grid-template-columns: 1fr;
   grid-template-rows: 50px 30px 1fr;
-}
-
-.systemActions .systemHeader {
-  grid-area: actionHeader;
 }
 
 .systemActions .actionsList {
@@ -101,113 +124,57 @@
   grid-auto-rows: 200px;
 }
 
-.actionsList .segmentId {
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  padding: 2px;
-}
+.actionsList .actionsSegment { width: 100%; padding: 15px 0; }
 
-.actionsList p {
-  padding: 0;
-  margin: 0;
-}
+.actionsList .actionsSegment:nth-child(even) { background-color: var(--accent-bg-color); }
 
-.actionsList .actionsSegment:first-child {
+.actionsList .actionsSegment .wrapper {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
   justify-content: center;
-  align-items: flex-start;
+  position: relative;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  padding: 0 40px 0 40px;
+  border-left: 2px solid var(--input-border-color);
+  box-sizing: border-box;
 }
 
-.actionsSegment:first-child > * {
-  margin: 10px 0;
-}
+.actionsList .actionsSegment .wrapper div { font-size: 12px; font-weight: 500; }
+.actionsList .actionsSegment .wrapper .segmentIndexLabel { font-size: 18px; }
 
-.actionsList .actionsSegment:not(:first-child) {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-areas:
-    "segmentIndexLabel . ."
-    "segmentDevice . signallerDevice"
-    "cableLength cableLength buttons";
-}
+.actionsList .actionsSegment .wrapper .segmentIndexLabel,
+.actionsList .actionsSegment .wrapper .deviceTypeWrapper { margin-bottom: 20px; }
 
-.actionsSegment:not(:first-child) .segmentIndexLabel {
-  grid-area: segmentIndexLabel;
-  place-self: center start;
-}
-
-.actionsSegment:not(:first-child) .segmentDeviceSelectContainer {
-  grid-area: segmentDevice;
-  place-self: center start;
+.actionsList .actionsSegment .wrapper .deviceTypeWrapper {
   display: flex;
-  flex-direction: column;
-  height: 100%;
   width: 100%;
-  justify-content: center;
-  align-items: flex-start;
+  column-gap: 15px;
 }
 
-.actionsSegment .segmentDeviceSelectContainer > *,
-.actionsSegment .toledContainer > * {
-  margin: 5px 0;
-}
+.actionsList .actionsSegment:first-child .wrapper input.segmentDeviceSelect,
+.actionsList .actionsSegment .wrapper .deviceTypeWrapper .segmentDeviceSelectContainer { width: 160px; }
+.actionsList .actionsSegment .wrapper .deviceTypeWrapper .toledContainer { width: 210px; }
+.actionsList .actionsSegment .wrapper .segmentWireLength { width: 30px; }
 
-.actionsSegment .toledContainer {
-  grid-area: signallerDevice;
-  place-self: center start;
+.segmentButtonsContainer {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column-reverse;
+  position: absolute;
+  bottom: calc(50% - 30px);
+  right: 15px;
 }
 
-.actionsSegment:not(:first-child) .segmentWireLengthContainer {
-  grid-area: cableLength;
-  place-self: center start;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.segmentWireLengthContainer > * {
-  margin: 10px 0;
-}
-
-.actionsList input,
-.actionsList select {
-  width: 150px;
-}
-
-.deviceSegment:nth-child(odd),
-.actionsSegment:nth-child(even) {
-  background: #f6f6f6;
-}
-
-.actionsSegment:not(:first-child) .segmentButtonsContainer {
-  grid-area: buttons;
-  place-self: end center;
-}
-
-.segmentButtonsContainer > button {
-  height: 20px;
-  width: 35px;
+.segmentButtonsContainer button {
+  width: calc(var(--input-height) - 10px);
+  height: calc(var(--input-height) - 10px);
+  color: #ffffff;
+  font-family: var(--main-font-family);
+  font-size: 16px;
+  font-weight: 900;
   border: none;
-  padding: 0;
-  margin: 0 2px;
-  cursor: pointer;
 }
 
-.segmentButtonsContainer > button img {
-  width: 100%;
-  height: 100%;
-}
+.segmentButtonsContainer button.duplicateDeviceButton { background-color: var(--third-bg-color); }
+.segmentButtonsContainer button.removeDeviceButton { background-color: var(--secondary-bg-color); }

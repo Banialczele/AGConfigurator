@@ -90,7 +90,7 @@
   width: 100%;
   padding: 20px 5px 20px 30px;
   background: var(--accent-bg-color);
-  border: 2px solid #46bd36;
+  border: 2px solid var(--third-bg-color);
 }
 
 .powerSupplyContainer .systemStatusStateContainer {
@@ -123,12 +123,12 @@
 
 .systemStatusActionsContainer .systemOutput {
   color: #ffffff;
-  background-color: #46bd36;
+  background-color: var(--third-bg-color);
   border: none;
 }
 
 .systemStatusActionsContainer .optimizeSystem {
   color: #eaeaea;
-  background-color: #f4f4f4;
+  background-color: var(--accent-bg-color);
   border: 2px solid #eaeaea;
 }

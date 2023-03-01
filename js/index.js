@@ -177,7 +177,7 @@ const STRUCTURE_TYPES = [
         typeOfDevice: "detector",
       },
       {
-        type: "Teta Term",
+        type: "Teta EcoTerm",
         gasDetected: "NG",
         typeOfDevice: "detector",
       },
@@ -226,7 +226,7 @@ const STRUCTURE_TYPES = [
         typeOfDevice: "detector",
       },
       {
-        type: "Teta Term",
+        type: "Teta EcoTerm",
         gasDetected: "NG",
         typeOfDevice: "detector",
       },
