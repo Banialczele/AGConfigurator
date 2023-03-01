@@ -65,12 +65,23 @@ function setInputDefaultData() {
   document.getElementById("EWL").value = initSystem.EWL;
 }
 
+// Ustawienie nasłuchiwania zdarzeń dot. zmiany wybranego typu struktury systemu
+function setFormSelectChangeEvent() {
+  const structureType = document.getElementById("structureType");
+  structureType.addEventListener("change", (event) => {
+    const gasDetected = document.getElementById("gasDetected");
+    gasDetected.value = gasDetected.options[0].value;
+    initSystem.detectorName = gasDetected.options[0].dataset.devicename;
+  });
+}
+
 // Inicjowanie formularza wraz z domyślnymi ustawieniami
 function formInit() {
   createStructureTypesListSelect();
   createDetectedGasListSelect();
   createBatteryBackUpListSelect();
   setInputDefaultData();
+  setFormSelectChangeEvent();
 }
 
 // Przetwarzanie formularza dot. systemu
