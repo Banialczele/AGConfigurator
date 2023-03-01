@@ -11,7 +11,7 @@ const systemData = {
 // Obiekt inicjacyjny systemu
 const initSystem = {
   powerSupply: "Teta MOD Control 1",
-  amountOfDetectors: 3,
+  amountOfDetectors: 1,
   EWL: 15,
   detectorName: "Teta EcoWent",
   deviceType: "detector",
