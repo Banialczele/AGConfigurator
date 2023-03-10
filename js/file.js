@@ -93,6 +93,7 @@ function convertAndLoadFileData(file) {
       const formattedData = JSON.parse(data);
       createSystemData(formattedData);
       setSystem();
+      system.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 }
