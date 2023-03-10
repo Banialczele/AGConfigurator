@@ -17,6 +17,8 @@
 
 #usedDevicesContainer .usedDeviceItem:first-child { padding-top: 0; }
 
+#usedDevicesContainer .usedDeviceItem:last-child { border: none; }
+
 .usedDeviceItem .systemUsedDeviceDataContainer,
 .usedDeviceItem .usedDeviceImageContainer {
   display: flex;

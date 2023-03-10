@@ -100,6 +100,8 @@ window.addEventListener("load", () => {
   formInit();
   // Przetwarzanie formularza dot. systemu
   handleFormSubmit();
+  setExportToCSVButtonEvent();
+  setExportToJSONButtonEvent();
 });
 
 // Reset pozycji scrolla do początku strony

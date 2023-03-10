@@ -98,8 +98,6 @@ function handleFormSubmit() {
     initSystem.EWL = parseInt(document.getElementById("EWL").value);
     createSystemData();
     setSystem();
-    setExportToCSVButtonEvent();
-    setExportToJSONButtonEvent();
     system.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 }
