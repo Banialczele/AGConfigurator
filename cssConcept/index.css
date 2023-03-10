@@ -24,7 +24,7 @@ body {
   font-family: var(--main-font-family);
   font-size: 14px;
   background: #e7e7e6;
-  /* background: #111; */
+  overflow-x: hidden;
 }
 
 input::-webkit-outer-spin-button,
@@ -162,8 +162,7 @@ header #configuratorLanguage .langLink {
   cursor: pointer;
 }
 
-header #configuratorLanguage .langLink:first-child { margin-right: 5px;
-}
+header #configuratorLanguage .langLink:first-child { margin-right: 5px; }
 
 .configuratorPanel {
   width: 100%;
@@ -173,7 +172,6 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
 
 .configuratorPanel .contentContainer {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap-reverse;
 }
 
@@ -186,8 +184,7 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
 
 .formContainer .form {
   display: grid;
-  grid-template-columns: 50px 1fr;
-  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: auto 1fr;
   grid-template-areas:
     ". amounts"
     "buildingInfo building"
@@ -202,13 +199,22 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
   place-self: center;
   position: relative;
   padding: 0px 6px;
-  margin-top: 20px;
+  margin-right: 15px;
+  bottom: 0;
   font-family: 'Times New Roman', Times, serif;
   color: grey;
   font-weight: bold;
   border: 2px solid grey;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.form .buildingInformation,
+.form .detectedGasInformation,
+.form .batteryBackUpInformation,
+.form .wireLengthInformation {
+  align-self: end;
+  margin-bottom: 10px;
 }
 
 .form .tooltip::before {
@@ -247,64 +253,7 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
 .form .buildingType,
 .form .detectedGas,
 .form .batteryBackUp,
-.form .wireLength {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  row-gap: var(--input-margin);
-}
-
-.form .detectorAmounts {
-  grid-area: amounts;
-  grid-template-areas:
-    "detectorAmountsLabel"
-    "detectorAmountsInputContainer";
-}
-
-.form .buildingType {
-  grid-area: building;
-  grid-template-areas:
-    "structureLabel"
-    "structureSelect";
-}
-
-.form .detectedGas {
-  grid-area: gas;
-  grid-template-areas:
-    "detectedGasLabel"
-    "detectedGasSelect";
-}
-
-.form .batteryBackUp {
-  grid-area: batterybackup;
-  grid-template-areas:
-    "batteryBackUpLabel"
-    "batteryBackUpSelect";
-}
-
-.form .wireLength {
-  grid-area: wireLength;
-  grid-template-areas:
-    "wireLengthLabel"
-    "wireLengthInputContainer";
-}
-
-.detectorAmounts .detectorAmountsLabel { grid-area: detectorAmountsLabel; }
-.detectorAmounts .detectorAmountsInputContainer { grid-area: detectorAmountsInputContainer; }
-.buildingType .structureLabel { grid-area: structureLabel; }
-.buildingType .structureSelect { grid-area: structureSelect; }
-.detectedGas .detectedGasLabel { grid-area: detectedGasLabel; }
-.detectedGas .detectedGasSelect { grid-area: detectedGasSelect; }
-.batteryBackUp .batteryBackUpLabel { grid-area: batteryBackUpLabel; }
-.batteryBackUp .batteryBackUpSelect { grid-area: batteryBackUpSelect; }
-.wireLength .wireLengthLabel { grid-area: wireLengthLabel; }
-.wireLength .wireLengthInputContainer { grid-area: wireLengthInputContainer; }
-
-.form .buildingInformation { grid-area: buildingInfo; }
-.form .detectedGasInformation { grid-area: gasInfo; }
-.form .batteryBackUpInformation { grid-area: batteryInfo; }
-.form .wireLengthInformation { grid-area: wireInfo; }
+.form .wireLength { width: 100%; }
 
 .form .buildingType,
 .form .detectedGas,
@@ -314,11 +263,25 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
 .buildingType .structureLabel,
 .detectedGas .detectedGasLabel,
 .batteryBackUp .batteryBackUpLabel,
-.wireLength .wireLengthLabel { font-weight: 400; }
+.wireLength .wireLengthLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 400;
+}
 
 .buildingType .structureSelect,
 .detectedGas .detectedGasSelect,
 .batteryBackUp .batteryBackUpSelect { position: relative; }
+
+.form .detectorAmounts { grid-area: amounts; }
+.form .buildingType { grid-area: building; }
+.form .detectedGas { grid-area: gas; }
+.form .batteryBackUp { grid-area: batterybackup; }
+.form .wireLength { grid-area: wireLength; }
+.form .buildingInformation { grid-area: buildingInfo; }
+.form .detectedGasInformation { grid-area: gasInfo; }
+.form .batteryBackUpInformation { grid-area: batteryInfo; }
+.form .wireLengthInformation { grid-area: wireInfo; }
 
 .detectorAmounts .shadedAmount {
   color: var(--accent-font-color);
@@ -392,4 +355,46 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px;
   justify-content: center;
   align-items: center;
   width: 150px;
+}
+
+@media screen and (max-width: 699px) {
+  .panelContainer { border-radius: 0; }
+
+  header #configuratorTitle { font-size: 18px; }
+
+  header #configuratorLogoImage { width: 150px; height: auto; }
+
+  .configuratorPanel,
+  .dragAndDropPanel { padding: 23px 8px; }
+}
+
+@media screen and (min-width: 700px) and (max-width: 1015px) {
+  .configuratorPanel,
+  .dragAndDropPanel { max-width: 684px; padding: 23px 31px; }
+}
+
+@media screen and (max-width: 1015px) {
+  header { padding: 15px 15px 0; }
+
+  header #configuratorTitle { margin-bottom: 0; }
+  header #configuratorDescription { display: none; }
+
+  .contentContainer .formContainer,
+  .contentContainer .descriptionContainer {
+    width: 100%;
+    padding: 0;
+    border: none;
+  }
+
+  .contentContainer .descriptionContainer { margin-bottom: 22px; }
+  .descriptionContainer ol { padding-left: 22px; }
+
+  .form .buildingType,
+  .form .detectedGas,
+  .form .batteryBackUp { max-width: 100%; }
+}
+
+@media screen and (min-width: 1016px) and (max-width: 1642px) {
+  .configuratorPanel,
+  .dragAndDropPanel { max-width: 1000px; }
 }

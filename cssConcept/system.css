@@ -5,17 +5,18 @@
   grid-template-columns: 1fr 2fr 1fr;
   column-gap: 25px;
   row-gap: 17px;
+  margin-bottom: 17px;
 }
 
 .system .panelContainer { padding: 15px 20px 40px 10px; }
 .system .panelContentContainer { padding-left: 15px; padding-right: 5px; }
-.system .panelHeaderContainer { padding: 0; }
+.system .panelHeaderContainer { padding: 0; margin-bottom: 0; }
 .system .panelHeaderContainer h3 { margin: 0 0 30px; }
 .usedDevices .panelHeaderContainer h3 { padding: 20px 24px; }
 
 .system .systemStatus { grid-area: systemStatus; place-self: start end; }
 .system .systemPreview { grid-area: systemPreview; }
-.system .wrapper { grid-area: wrapper; place-self: start start;}
+.system .wrapper { grid-area: wrapper; place-self: start start; }
 
 .system .systemStatus,
 .system .wrapper { width: 100%; max-width: 325px; }
@@ -131,4 +132,47 @@
   color: #eaeaea;
   background-color: var(--accent-bg-color);
   border: 2px solid #eaeaea;
+}
+
+@media screen and (max-width: 699px) {
+  .system {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 11px;
+    column-gap: 0;
+    width: 100%;
+    margin-bottom: 11px;
+  }
+
+  .system .panelContentContainer { padding: 0; }
+  
+  .system .systemFiles { margin-bottom: 11px; }
+}
+
+@media screen and (min-width: 700px) and (max-width: 1015px) {
+  .system { max-width: 700px; }
+}
+
+@media screen and (max-width: 1015px) {
+  .system .panelContainer { padding: 23px 8px; }
+}
+
+@media screen and (min-width: 700px) and (max-width: 1642px) {
+  .system {
+    grid-template-areas:
+      "systemPreview systemPreview"
+      "systemStatus wrapper";
+    grid-template-columns: 1fr 1fr;
+    padding: 0 8px;
+    margin: 0 auto 17px;
+  }
+}
+
+@media screen and (min-width: 1016px) and (max-width: 1642px) {
+  .system { max-width: 927px; }
+}
+
+@media screen and (max-width: 1642px) {
+  .system .systemStatus,
+  .system .wrapper { max-width: 100%; }
 }
