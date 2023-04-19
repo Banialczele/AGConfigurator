@@ -129,7 +129,7 @@ function createSegmentIndex(device) {
   const segmentIndexLabel = document.createElement("label");
   const segmentIndexInput = document.createElement("input");
   setAttributes(segmentIndexLabel, { class: "segmentIndexLabel", for: `actionsSegmentIndex${device.index}` });
-  setAttributes(segmentIndexInput, { class: "segmentId", id: `actionsSegmentIndex${device.index}`, type: "number", min: 0, max: 50, value: device.index });
+  setAttributes(segmentIndexInput, { class: "segmentId", id: `actionsSegmentIndex${device.index}`, type: "number", min: 0, max: 50, value: device.index, disabled: true });
   segmentIndexLabel.appendChild(document.createTextNode("Segment nr "));
   segmentIndexLabel.appendChild(segmentIndexInput);
 
@@ -365,7 +365,7 @@ function createSegmentActionsPSU() {
   wrapper.appendChild(segmentDeviceLabel);
   const segmentIndexInput = document.createElement("input");
   const segmentDeviceInput = document.createElement("input");
-  setAttributes(segmentIndexInput, { class: "segmentId", id: "actionsSegmentIndex0", type: "number", min: 0, max: 50, value: 0 });
+  setAttributes(segmentIndexInput, { class: "segmentId", id: "actionsSegmentIndex0", type: "number", min: 0, max: 50, value: 0, disabled: true });
   setAttributes(segmentDeviceInput, { class: "segmentDeviceSelect", id: "actionsSegmentDevice0", value: systemData.powerSupply });
   segmentIndexLabel.appendChild(segmentIndexInput);
   segmentDeviceLabel.appendChild(breakLineElem);
@@ -474,8 +474,39 @@ function createSystemUsedDevicesPanel() {
   const systemUsedDevicesContainer = document.getElementById("usedDevicesContainer");
   systemUsedDevicesContainer.replaceChildren();
   const { detectors, signallers } = systemData.devicesTypes;
+  systemUsedDevicesContainer.appendChild(setSystemUsedPSU(systemData.powerSupply));
   detectors.forEach((detector) => systemUsedDevicesContainer.appendChild(setSystemUsedDevice(detector)));
   signallers.forEach((signaller) => systemUsedDevicesContainer.appendChild(setSystemUsedDevice(signaller, true)));
+}
+
+// Ustawienie wykorzystanego w systemie rodzaju jednostki sterującej
+function setSystemUsedPSU(powerSupply) {
+  const systemUsedPSU = document.createElement("div");
+  const systemUsedPSUDataContainer = document.createElement("div");
+  const systemUsedPSUImageContainer = document.createElement("div");
+  setAttributes(systemUsedPSU, { class: "usedDeviceItem", id: "usedPSU" });
+  setAttributes(systemUsedPSUDataContainer, { class: "systemUsedDeviceDataContainer" });
+  setAttributes(systemUsedPSUImageContainer, { class: "usedDeviceImageContainer" });
+  const systemUsedPSUName = document.createElement("p");
+  const systemUsedPSUType = document.createElement("p");
+  const systemUsedPSUBreak = document.createElement("br");
+  const systemUsedPSUDocsLink = document.createElement("a");
+  const systemUsedPSUImage = document.createElement("img");
+  setAttributes(systemUsedPSUName, { class: "usedDeviceName" });
+  setAttributes(systemUsedPSUType, { class: "systemUsedDeviceType" });
+  setAttributes(systemUsedPSUDocsLink, { class: "usedDeviceDocs", href: "https://www.atestgaz.pl/produkt/modul-js-teta-mod-control-1", target: "_blank" });
+  setAttributes(systemUsedPSUImage, { src: `./PNG/${powerSupply}.png`, alt: `${powerSupply} image` });
+  systemUsedPSUName.appendChild(document.createTextNode(powerSupply));
+  systemUsedPSUType.appendChild(document.createTextNode("Moduł jednostki sterującej"));
+  systemUsedPSUDocsLink.appendChild(document.createTextNode("Dokumentacja techniczna"));
+  systemUsedPSUDataContainer.appendChild(systemUsedPSUName);
+  systemUsedPSUDataContainer.appendChild(systemUsedPSUType);
+  systemUsedPSUDataContainer.appendChild(systemUsedPSUBreak);
+  systemUsedPSUDataContainer.appendChild(systemUsedPSUDocsLink);
+  systemUsedPSUImageContainer.appendChild(systemUsedPSUImage);
+  systemUsedPSU.appendChild(systemUsedPSUDataContainer);
+  systemUsedPSU.appendChild(systemUsedPSUImageContainer);
+  return systemUsedPSU;
 }
 
 // Ustawienie wykorzystanego w systemie rodzaju urządzenia

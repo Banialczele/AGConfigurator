@@ -174,13 +174,13 @@ const STRUCTURE_TYPES = [
     label: "Hale",
     devices: [
       {
-        type: "Teta EcoDet",
-        gasDetected: "LPG",
+        type: "Teta EcoTerm",
+        gasDetected: "NG",
         typeOfDevice: "detector",
       },
       {
-        type: "Teta EcoTerm",
-        gasDetected: "NG",
+        type: "Teta EcoDet",
+        gasDetected: "LPG",
         typeOfDevice: "detector",
       },
       {
