@@ -511,6 +511,7 @@ function setSystemUsedPSU(powerSupply) {
 
 // Ustawienie wykorzystanego w systemie rodzaju urządzenia
 function setSystemUsedDevice(device, isSignaller = false) {
+  console.log(device);
   const systemUsedDevice = document.createElement("div");
   const systemUsedDeviceDataContainer = document.createElement("div");
   const systemUsedDeviceImageContainer = document.createElement("div");
@@ -520,11 +521,9 @@ function setSystemUsedDevice(device, isSignaller = false) {
   const systemUsedDeviceName = document.createElement("p");
   const systemUsedDeviceType = document.createElement("p");
   const systemUsedDeviceBreak = document.createElement("br");
-  const systemUsedDeviceDocsLink = document.createElement("a");
   const systemUsedDeviceImage = document.createElement("img");
   setAttributes(systemUsedDeviceName, { class: "usedDeviceName" });
   setAttributes(systemUsedDeviceType, { class: "systemUsedDeviceType" });
-  setAttributes(systemUsedDeviceDocsLink, { class: "usedDeviceDocs", href: device.docs, target: "_blank" });
   setAttributes(systemUsedDeviceImage, { src: `./PNG/${device.name}.png`, alt: `${device.name} image` });
   systemUsedDeviceName.appendChild(document.createTextNode(device.name));
   if (!isSignaller) {
@@ -532,11 +531,24 @@ function setSystemUsedDevice(device, isSignaller = false) {
   } else {
     systemUsedDeviceType.appendChild(document.createTextNode("Sygnalizator opt.-aku."));
   }
-  systemUsedDeviceDocsLink.appendChild(document.createTextNode("Dokumentacja techniczna"));
   systemUsedDeviceDataContainer.appendChild(systemUsedDeviceName);
   systemUsedDeviceDataContainer.appendChild(systemUsedDeviceType);
   systemUsedDeviceDataContainer.appendChild(systemUsedDeviceBreak);
-  systemUsedDeviceDataContainer.appendChild(systemUsedDeviceDocsLink);
+  if (device.name === "Teta EcoWent + MiniDet") {
+    const systemUsedDeviceDocsLink1 = document.createElement("a");
+    const systemUsedDeviceDocsLink2 = document.createElement("a");
+    setAttributes(systemUsedDeviceDocsLink1, { class: "usedDeviceDocs", href: "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-ecowent", target: "_blank" });
+    setAttributes(systemUsedDeviceDocsLink2, { class: "usedDeviceDocs", href: "https://www.atestgaz.pl/produkt/czujnik-gazu-teta-minidet", target: "_blank" });
+    systemUsedDeviceDocsLink1.appendChild(document.createTextNode("Dokumentacja techniczna dla CO"));
+    systemUsedDeviceDocsLink2.appendChild(document.createTextNode("Dokumentacja techniczna dla LPG"));
+    systemUsedDeviceDataContainer.appendChild(systemUsedDeviceDocsLink1);
+    systemUsedDeviceDataContainer.appendChild(systemUsedDeviceDocsLink2);
+  } else {
+    const systemUsedDeviceDocsLink = document.createElement("a");
+    setAttributes(systemUsedDeviceDocsLink, { class: "usedDeviceDocs", href: device.docs, target: "_blank" });
+    systemUsedDeviceDocsLink.appendChild(document.createTextNode("Dokumentacja techniczna"));
+    systemUsedDeviceDataContainer.appendChild(systemUsedDeviceDocsLink);
+  }
   systemUsedDeviceImageContainer.appendChild(systemUsedDeviceImage);
   systemUsedDevice.appendChild(systemUsedDeviceDataContainer);
   systemUsedDevice.appendChild(systemUsedDeviceImageContainer);
