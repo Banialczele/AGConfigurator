@@ -127,7 +127,7 @@ header {
   position: fixed;
   display: grid;
   grid-template-areas:
-    "info info info logo";
+    "info info navi logo";
   grid-template-columns: 2fr fit-content(100%);
   padding: 30px 30px 0;
   top: 0;
@@ -146,6 +146,105 @@ header #configuratorDescription {
 
 header #configuratorTitle > span { font-weight: 700; }
 header #configuratorTitle span:has(span) span { color: var(--secondary-bg-color); }
+
+header #configuratorNav {
+  grid-area: navi; 
+  place-self: flex-end center;
+  display: flex;
+}
+
+header #configuratorNav .configuratorNavList {
+  display: flex;
+  padding: 0;
+  margin: 0 30px;
+}
+
+header #configuratorNav .configuratorNavList li {
+  list-style: none;
+  padding: 10px 0;
+  margin-right: 5px;
+}
+
+header #configuratorNav .configuratorNavList li:last-of-type { margin-right: 0; }
+
+header #configuratorNav .configuratorNavList li a {
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #000;
+  background-color: #bcbcbc;
+}
+
+#configuratorNavMobile {
+  display: none;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  transform: translateX(-100%);
+  transition: 1s ease;
+  z-index: 999;
+}
+
+#configuratorNavMobile.active {
+  transform: translateX(0);
+  transition: 1s ease;
+}
+
+#configuratorNavMobile .configuratorNavList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#configuratorNavMobile .configuratorNavList li {
+  width: 100%;
+  list-style: none;
+}
+
+#configuratorNavMobile .configuratorNavList li a {
+  display: block;
+  padding: 20px 0;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  color: #000;
+}
+
+#navMobileActivationBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px; right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0px 0px 12px 10px rgba(227, 227, 227, 1);
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+#navMobileActivationBtn .navMobileActivationBtnIcon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000000' width='24px' height='24px'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px;
+  transition: 0.3s ease;
+}
+
+#navMobileActivationBtn .navMobileActivationBtnIcon.active {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cc2a27' width='24px' height='24px'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z'/%3E%3C/svg%3E");
+  transition: 0.3s ease;
+}
 
 header #configuratorLogo { grid-area: logo; place-self: start end; }
 
@@ -392,6 +491,12 @@ header #configuratorLanguage .langLink:first-child { margin-right: 5px; }
   .form .buildingType,
   .form .detectedGas,
   .form .batteryBackUp { max-width: 100%; }
+}
+
+@media screen and (max-width: 1440px) {
+  header #configuratorNav { display: none; }
+  #configuratorNavMobile { display: flex; }
+  #navMobileActivationBtn { display: block; }
 }
 
 @media screen and (min-width: 1016px) and (max-width: 1642px) {

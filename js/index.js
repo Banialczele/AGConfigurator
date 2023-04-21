@@ -92,8 +92,18 @@ function chooseText(text) {
   return res;
 }
 
+// Ustawienie nasłuchiwania na przycisku mobilnego menu
+function setMobileMenuClickEvent() {
+  document.getElementById("navMobileActivationBtn")
+    .addEventListener("click", () => {
+      document.getElementById("configuratorNavMobile").classList.toggle("active");
+      document.querySelector(".navMobileActivationBtnIcon").classList.toggle("active");
+    });
+}
+
 // Entry point aplikacji, generowanie całego widoku do wproadzenia danych
 window.addEventListener("load", () => {
+  setMobileMenuClickEvent();
   // Sprawdzenie języka widoku aplikacji po URL
   checkLang();
   // Inicjalizacja formularza wraz z domyślnymi ustawieniami
