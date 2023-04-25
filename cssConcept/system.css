@@ -2,7 +2,7 @@
   display: grid;
   grid-template-areas:
     "systemStatus systemPreview wrapper";
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   column-gap: 25px;
   row-gap: 17px;
   margin-bottom: 17px;
@@ -20,7 +20,7 @@
 
 .system .systemStatus,
 .system .wrapper { width: 100%; max-width: 325px; }
-.system .systemPreview { width: 100%; max-width: 1100px; }
+.system .systemPreview { width: 100%; }
 
 .system .systemFiles { margin-bottom: 17px; }
 
