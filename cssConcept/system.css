@@ -16,9 +16,29 @@
 .system .systemPreview { grid-area: systemPreview; }
 .system .wrapper { grid-area: wrapper; place-self: start start; }
 
-.system .systemStatus,
+.system .systemStatus {
+  width: 100%;
+  max-width: 325px;
+  height: 100%;
+  max-height: calc(100vh - 118px);
+  overflow-y: scroll;
+}
+
 .system .wrapper { width: 100%; max-width: 325px; }
-.system .systemPreview { width: 100%; min-width: 943px; max-width: 1100px; }
+
+.system .systemPreview {
+  width: 100%;
+  min-width: 943px;
+  max-width: 1100px;
+  max-height: calc(100vh - 118px);
+  overflow-y: scroll;
+}
+
+.system .wrapper .usedDevices {
+  min-height: 350px;
+  max-height: calc(100vh - 366px);
+  overflow-y: scroll;
+}
 
 .system .systemFiles { margin-bottom: 17px; }
 
@@ -172,6 +192,11 @@
 }
 
 @media screen and (max-width: 1642px) {
+  .system .systemPreview {
+    height: 100%;
+    overflow: auto;
+  }
+
   .system .systemStatus,
   .system .wrapper { max-width: 100%; }
 }
