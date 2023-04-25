@@ -511,7 +511,6 @@ function setSystemUsedPSU(powerSupply) {
 
 // Ustawienie wykorzystanego w systemie rodzaju urządzenia
 function setSystemUsedDevice(device, isSignaller = false) {
-  console.log(device);
   const systemUsedDevice = document.createElement("div");
   const systemUsedDeviceDataContainer = document.createElement("div");
   const systemUsedDeviceImageContainer = document.createElement("div");
