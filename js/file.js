@@ -16,7 +16,7 @@ function setDataToCSVFormat() {
   rows.push(["Zasilacz", systemData.powerSupply, "1 szt."]);
   const csv = [columnTitles, ...rows].map((row) => `${row.join(",")}\r\n`).join("");
   
-  return csv;
+  return "sep=,\r\n" + csv;
 }
 
 // Wyeksportowanie danych systemu do pliku JSON
