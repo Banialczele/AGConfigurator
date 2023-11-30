@@ -40,7 +40,8 @@
   overflow-y: scroll;
 }
 
-.system .systemFiles { margin-bottom: 17px; }
+.system .systemFiles,
+.system .systemOperations { margin-bottom: 17px; }
 
 .systemStatusContainer .panelContentContainer { width: 100%; }
 

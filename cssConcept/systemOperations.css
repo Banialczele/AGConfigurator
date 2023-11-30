@@ -1,0 +1,57 @@
+.systemOperations .panelContentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px 0;
+}
+
+.systemOperations input {
+    width: calc(var(--input-height) - 15px);
+    height: calc(var(--input-height) - 15px);
+    padding: 5px 2px;
+    font-size: 11px;
+  }
+  
+  .systemOperations select {
+    width: 100%;
+    height: calc(var(--input-height) - 15px);
+    padding: 5px 2px;
+    font-size: 10px;
+  }
+
+  .systemOperations .operationsSegmentsRangeWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .systemOperations .operationsSegmentIndexRangeSelect {
+    width: calc(var(--input-height) - 15px);
+  }
+  
+  .systemOperations .formSelectInput:has(select) {
+    height: calc(var(--input-height) - 15px);
+    margin: 0;
+  }
+
+  .systemOperations .formSelectInput:has(.operationsSegmentIndexRangeSelect) {
+    width: var(--input-height);
+  }
+  
+  .systemOperations .formSelectInput:has(select)::after {
+    width: calc(var(--input-height) - 25px);
+    height: calc(var(--input-height) - 15px);
+    bottom: 2px;
+  }
+
+  .systemOperations label,
+  .systemOperations .operationsSegmentLabel {
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .systemOperations .formButton {
+    width: 50%;
+    height: calc(var(--input-height) - 15px);
+    font-size: 12px;
+    align-self: flex-end;
+  }

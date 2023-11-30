@@ -8,6 +8,7 @@
 	<link href="./cssConcept/index.css" rel="stylesheet" type="text/css"/>
 	<link href="./cssConcept/system.css" rel="stylesheet" type="text/css"/>
 	<link href="./cssConcept/systemPreview.css" rel="stylesheet" type="text/css"/>
+	<link href="./cssConcept/systemOperations.css" rel="stylesheet" type="text/css"/>
 	<link href="./cssConcept/files.css" rel="stylesheet" type="text/css"/>
 	<link href="./cssConcept/usedDevices.css" rel="stylesheet" type="text/css"/>
 	<link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'/>
@@ -147,6 +148,10 @@
 							<div><span id="powerSupply">230/24 60 W</span>zas.</div>
 						</li>
 						<li>
+							<div>Zasilanie</div>
+							<div><span id="voltage">24 V</span>zas.</div>
+						</li>
+						<li>
 							<div>Przekrój kabla</div>
 							<div><span id="wireCrossSection">2x1</span>mm<sup>2</sup></div>
 						</li>
@@ -192,6 +197,41 @@
 						<img src="./SVG/save.svg" alt="Export to JSON">
 						<button id="exportToJSON">Pobierz zestawienie urządzeń</button>
 					</div>
+				</div>
+			</div>
+			<div class="systemOperations panelContainer">
+				<div class="panelHeaderContainer">
+					<h3>Operacje masowe</h3>
+				</div>
+				<div id="operationsContainer" class="panelContentContainer">
+					<div class="operationsSegmentsRangeContainer">
+						<span class="operationsSegmentLabel">Segment</span>
+						<br>
+						<div class="operationsSegmentsRangeWrapper">
+							<label for="operationsStartingIndex">Od </label>
+							<div class="formSelectInput">
+								<select id="operationsStartingIndex" class="operationsSegmentIndexRangeSelect"></select>
+							</div>
+							<label for="operationsEndingIndex">Do </label>
+							<div class="formSelectInput">
+								<select id="operationsEndingIndex" class="operationsSegmentIndexRangeSelect"></select>
+							</div>
+						</div>
+					</div>
+					<div class="operationsDeviceTypeWrapper">
+						<div class="operationsDeviceTypeSelectContainer">
+							<label class="operationsDeviceTypeSelectLabel" for="operationsDeviceTypeSelect">Zmień urządzenia na</label>
+							<div class="formSelectInput">
+								<select id="operationsDeviceTypeSelect" class="operationsDeviceTypeSelect"></select>
+							</div>
+						</div>
+					</div>
+					<div class="operationsSegmentWireLengthContainer">
+						<label class="operationsSegmentWireLengthLabel" for="operationsSegmentWireLengthInput">Odległość od poprzedniego segmentu</label>
+						<br>
+						<input type="number" min="1" value="15" id="operationsSegmentWireLengthInput" class="operationsSegmentWireLengthInput"> m
+					</div>
+					<button class="formButton">Wykonaj <span>▶</span></button>
 				</div>
 			</div>
 			<div class="usedDevices panelContainer">
