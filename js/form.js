@@ -10,7 +10,7 @@ function createStructureTypesListSelect() {
     structureOption.appendChild(document.createTextNode(structure.label));
     structureTypeSelect.appendChild(structureOption);
   });
-  // Wyłapanie zmian w select dot. wybranego typu struktury, przypisanie go do obiektu inicjującego podgląd systemu, a następnie wygenerowanie listy możliwych do wyboru typu gazu
+  // Wyłapanie zmian w select dot. wybranego typu struktury, przypisanie go do obiektu inicjującego podgląd systemu, a następnie wygenerowanie listy możliwych do wyboru typów gazu
   structureTypeSelect.addEventListener("change", (event) => {
     initSystem.structureType = event.target[event.target.selectedIndex].value;
     createDetectedGasListSelect();

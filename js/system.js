@@ -150,6 +150,15 @@ function createSegmentDeviceTypeSelect(device) {
   segmentDeviceSelectContainer.appendChild(segmentDeviceLabel);
   segmentDeviceSelectWrapper.appendChild(segmentDeviceSelect);
   segmentDeviceSelectContainer.appendChild(segmentDeviceSelectWrapper);
+  createDeviceTypeOptionsList(segmentDeviceSelect, device.name);
+
+  // Nasłuchiwanie zdarzeń dot. zmiany typu urządzenia w wybranym segmencie
+  segmentDeviceSelect.addEventListener("change", (event) => setSegmentDeviceTypeSelectChangeEvent(event, device.index));
+
+  return segmentDeviceSelectContainer;
+}
+
+function createDeviceTypeOptionsList(deviceTypeSelect, deviceName = null) {
   const structureType = STRUCTURE_TYPES.find((structureType) => structureType.type === systemData.structureType);
   structureType.devices.forEach((structureDevice) => {
     const deviceTypeOption = document.createElement("option");
@@ -159,15 +168,11 @@ function createSegmentDeviceTypeSelect(device) {
     } else {
       deviceTypeOption.appendChild(document.createTextNode(`Sygnalizator ${structureDevice.type}`));
     }
-    if (device.name === structureDevice.type) {
+    if (deviceName && (deviceName === structureDevice.type)) {
       setAttributes(deviceTypeOption, { selected: "selected" });
     }
-    segmentDeviceSelect.appendChild(deviceTypeOption);
+    deviceTypeSelect.appendChild(deviceTypeOption);
   });
-  // Nasłuchiwanie zdarzeń dot. zmiany typu urządzenia w wybranym segmencie
-  segmentDeviceSelect.addEventListener("change", (event) => setSegmentDeviceTypeSelectChangeEvent(event, device.index));
-
-  return segmentDeviceSelectContainer;
 }
 
 // Ustawienie nasłuchiwania zdarzeń dot. zmiany typu urządzenia w wybranym segmencie
@@ -472,6 +477,7 @@ function setSystemStatePowerConsumption(value = 25) {
 // Tworzenie panelu z operacjami masowymi dla wybranych segmentów systemu
 function setSystemOperationsPanel() {
   createSegmentsIndexLists();
+  createDeviceTypeSelect();
 }
 
 // Tworzenie list z indeksami segmentów utworzonego systemu
@@ -496,6 +502,13 @@ function createSegmentsIndexList(selectElement, startIndex = false) {
   } else {
     setAttributes(selectElement.lastElementChild, { selected: "selected" });
   }
+}
+
+// Tworzenie listy dla selecta z typami urządzeń do zamiany w wybranych segmentach systemu
+function createDeviceTypeSelect() {
+  const operationsDeviceTypeSelect = document.getElementById("operationsDeviceTypeSelect");
+  operationsDeviceTypeSelect.replaceChildren();
+  createDeviceTypeOptionsList(operationsDeviceTypeSelect);
 }
 
 // Tworzenie panelu z listą rodzajów wykorzystanych w systemie urządzeń
