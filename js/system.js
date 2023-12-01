@@ -469,6 +469,35 @@ function setSystemStatePowerConsumption(value = 25) {
   powerConsumption.replaceChildren(powerConsumption.appendChild(document.createTextNode(value)));
 }
 
+// Tworzenie panelu z operacjami masowymi dla wybranych segmentów systemu
+function setSystemOperationsPanel() {
+  createSegmentsIndexLists();
+}
+
+// Tworzenie list z indeksami segmentów utworzonego systemu
+function createSegmentsIndexLists() {
+  const operationsStartingIndex = document.getElementById("operationsStartingIndex");
+  const operationsEndingIndex = document.getElementById("operationsEndingIndex");
+  createSegmentsIndexList(operationsStartingIndex, true);
+  createSegmentsIndexList(operationsEndingIndex);
+}
+
+// Tworzenie listy dla selecta z indeksami segmentów utworzonego systemu
+function createSegmentsIndexList(selectElement, startIndex = false) {
+  selectElement.replaceChildren();
+  for (let i = 0; i < systemData.devices.length; i++) {
+    const segmentIndexOption = document.createElement("option");
+    setAttributes(segmentIndexOption, { value: i + 1 });
+    segmentIndexOption.appendChild(document.createTextNode(i + 1));
+    selectElement.appendChild(segmentIndexOption);
+  }
+  if (startIndex) {
+    setAttributes(selectElement.firstElementChild, { selected: "selected" });
+  } else {
+    setAttributes(selectElement.lastElementChild, { selected: "selected" });
+  }
+}
+
 // Tworzenie panelu z listą rodzajów wykorzystanych w systemie urządzeń
 function createSystemUsedDevicesPanel() {
   const systemUsedDevicesContainer = document.getElementById("usedDevicesContainer");
@@ -560,6 +589,7 @@ function setSystem() {
   createSystemDiagram();
   createSystemSegmentsActionsList();
   setSystemStatePanel();
+  setSystemOperationsPanel();
   createSystemUsedDevicesPanel();
 }
 
