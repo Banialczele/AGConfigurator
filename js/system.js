@@ -488,6 +488,7 @@ function setSystemStatePowerConsumption(value = 25) {
 function setSystemOperationsPanel() {
   createSegmentsIndexLists();
   createDeviceTypeSelect();
+  document.getElementById("operationsBtn").disabled = false;
 }
 
 // Tworzenie list z indeksami segmentów utworzonego systemu

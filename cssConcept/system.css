@@ -147,12 +147,6 @@
   border: none;
 }
 
-.systemStatusActionsContainer .optimizeSystem {
-  color: #eaeaea;
-  background-color: var(--accent-bg-color);
-  border: 2px solid #eaeaea;
-}
-
 @media screen and (max-width: 699px) {
   .system {
     display: flex;
