@@ -112,6 +112,7 @@ window.addEventListener("load", () => {
   handleFormSubmit();
   setExportToCSVButtonEvent();
   setExportToJSONButtonEvent();
+  setOperationsSubmitButtonEvent();
 });
 
 // Reset pozycji scrolla do początku strony

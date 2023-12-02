@@ -158,6 +158,7 @@ function createSegmentDeviceTypeSelect(device) {
   return segmentDeviceSelectContainer;
 }
 
+// Tworzenie opcji dla selecta typu urządzeń dla segmentu urządzenia
 function createDeviceTypeOptionsList(deviceTypeSelect, deviceName = null) {
   const structureType = STRUCTURE_TYPES.find((structureType) => structureType.type === systemData.structureType);
   structureType.devices.forEach((structureDevice) => {
@@ -175,8 +176,14 @@ function createDeviceTypeOptionsList(deviceTypeSelect, deviceName = null) {
   });
 }
 
-// Ustawienie nasłuchiwania zdarzeń dot. zmiany typu urządzenia w wybranym segmencie
+// Obsłużenie zdarzeń dot. zmiany typu urządzenia w wybranym segmencie
 function setSegmentDeviceTypeSelectChangeEvent(event, index) {
+  setSegmentDeviceTypeChange(index, event)
+  setSystem();
+}
+
+// Ustawienie typu urządzenia w wybranym segmencie systemu
+function setSegmentDeviceTypeChange(index, event = null, deviceName = null) {
   const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
   // Sprawdzenie liczebności urządzeń dotychczas wybranego typu w systemie
   const oldNameDeviceQuantity = systemData.devices.reduce((accumulator, setDeviceType) => {
@@ -197,7 +204,11 @@ function setSegmentDeviceTypeSelectChangeEvent(event, index) {
   if (setDevice.name === "TOLED") {
     setDevice.description = "";
   }
-  setDevice.name = event.target[event.target.selectedIndex].value;
+  if (event) {
+    setDevice.name = event.target[event.target.selectedIndex].value;
+  } else {
+    setDevice.name = deviceName;
+  }
   const setStructureType = STRUCTURE_TYPES.find((structureType) => structureType.type === systemData.structureType);
   const newDeviceType = setStructureType.devices.find((structureTypeDevice) => structureTypeDevice.type === setDevice.name);
   setDevice.type = newDeviceType.typeOfDevice;
@@ -219,7 +230,6 @@ function setSegmentDeviceTypeSelectChangeEvent(event, index) {
       });
     }
   }
-  setSystem();
 }
 
 // Tworzenie selecta rodzaju etykiety dla segmentu urządzenia typu TOLED
@@ -250,13 +260,13 @@ function createSegmentTOLEDDescriptionSelect(device) {
     segmentTOLEDSelect.appendChild(toledOption);
   });
   // Nasłuchiwanie zdarzeń dot. zmiany opisu urządzenia typu TOLED
-  segmentTOLEDSelectContainer.addEventListener("change", (event) => setSegmentTOLEDDescriptionSelectChangeEvent(event, device.index));
+  segmentTOLEDSelectContainer.addEventListener("change", (event) => setSegmentTOLEDDescriptionSelectChange(event, device.index));
 
   return segmentTOLEDSelectContainer;
 }
 
-// Ustawienie nasłuchiwania zdarzeń dot. zmiany opisu urządzenia typu TOLED
-function setSegmentTOLEDDescriptionSelectChangeEvent(event, index) {
+// Obsłużenie zdarzeń dot. zmiany opisu urządzenia typu TOLED
+function setSegmentTOLEDDescriptionSelectChange(event, index) {
   const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
   setDevice.description = event.target[event.target.selectedIndex].value;
 }
@@ -275,19 +285,19 @@ function createSegmentWireLengthInput(device) {
   segmentWireLengthContainer.appendChild(breakLineElem);
   segmentWireLengthContainer.appendChild(segmentWireLengthInput);
   segmentWireLengthContainer.appendChild(document.createTextNode("m"));
-  segmentWireLengthInput.addEventListener("change", (event) => setSegmentWireLengthInputChangeEvent(event, device.index));
+  segmentWireLengthInput.addEventListener("change", (event) => setSegmentWireLengthInputChange(device.index, event));
 
   return segmentWireLengthContainer;
 }
 
-// Ustawienie nasłuchiwania zdarzeń dot. długości kabla (odległości od poprzedniego segmentu) w wybranym segmencie
-function setSegmentWireLengthInputChangeEvent(event, index) {
+// Obsłużenie zdarzeń dot. długości kabla (odległości od poprzedniego segmentu) w wybranym segmencie
+function setSegmentWireLengthInputChange(index, event = null, wireLength = null) {
   const setDevice = systemData.devices.find((systemDevice) => systemDevice.index === index);
-  const newValue = parseInt(event.target.value);
-  if (newValue > 0) {
-    setDevice.wireLength = newValue;
+  if (event) {
+    const newValue = parseInt(event.target.value);
+    setDevice.wireLength = newValue > 0 ? newValue : 0;
   } else {
-    setDevice.wireLength = 0;
+    setDevice.wireLength = wireLength > 0 ? wireLength : 0;
   }
   setSystemStateBusLength();
 }
@@ -509,6 +519,25 @@ function createDeviceTypeSelect() {
   const operationsDeviceTypeSelect = document.getElementById("operationsDeviceTypeSelect");
   operationsDeviceTypeSelect.replaceChildren();
   createDeviceTypeOptionsList(operationsDeviceTypeSelect);
+}
+
+// Ustawienie parametrów wybranych segmentów systemu
+function setSelectedSegments() {
+  const startingIndex = parseInt(document.getElementById("operationsStartingIndex").value);
+  const endingIndex = parseInt(document.getElementById("operationsEndingIndex").value);
+  const deviceType = document.getElementById("operationsDeviceTypeSelect").value;
+  const wireLength = parseInt(document.getElementById("operationsSegmentWireLengthInput").value);
+  for (let i = startingIndex; i < endingIndex + 1; i++) {
+    setSegmentDeviceTypeChange(i, null, deviceType);
+    setSegmentWireLengthInputChange(i, null, wireLength);
+  }
+  setSystem();
+}
+
+// Ustawienie nasłuchiwania zatwierdzenia wykonania zmian w wybranych segmentach systemu
+function setOperationsSubmitButtonEvent() {
+  const operationsBtn = document.getElementById("operationsBtn");
+  operationsBtn.addEventListener("click", () => setSelectedSegments());
 }
 
 // Tworzenie panelu z listą rodzajów wykorzystanych w systemie urządzeń
