@@ -636,13 +636,13 @@ function setSystem() {
   createSystemUsedDevicesPanel();
 }
 
-// Ustawienie nasłuchiwania zdarzeń dot. eksportu systemu do pliku CSV
+// Ustawienie nasłuchiwania zdarzeń dot. eksportu zestawienia urządzeń do pliku CSV
 function setExportToCSVButtonEvent() {
   const exportToCSVButton = document.getElementById("exportToCSV");
   exportToCSVButton.addEventListener("click", () => exportToCSV());
 }
 
-// Ustawienie nasłuchiwania zdarzeń dot. eksportu zestawienia urządzeń do pliku JSON
+// Ustawienie nasłuchiwania zdarzeń dot. eksportu systemu do pliku JSON
 function setExportToJSONButtonEvent() {
   const exportToCSVButton = document.getElementById("exportToJSON");
   exportToCSVButton.addEventListener("click", () => exportToJSON());
